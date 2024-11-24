@@ -7,7 +7,7 @@ export const columnsData = {
     { name: 'GÉNERO', uid: 'gender' },
     { name: 'EDAD', uid: 'age', sortable: true },
     { name: 'EMAIL', uid: 'email' },
-    { name: 'STATUS', uid: 'status', sortable: true },
+    { name: 'Estado', uid: 'status', sortable: true },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
   statusOptions: [
