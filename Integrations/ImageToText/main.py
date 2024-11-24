@@ -25,8 +25,6 @@ def image_to_text():
         gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         th = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)[1]
-        cv2.imshow("Ti", th)
-        cv2.waitKey(0)
 
         text = pytesseract.image_to_string(th, lang="spa")
 
