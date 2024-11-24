@@ -81,7 +81,7 @@ export const EditConsultModal = () => {
             <h3 className=' default-text-color'>Editar Consulta</h3>
           </ModalHeader>
           <ModalBody>
-            <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
+            <div className='flex w-full flex-col gap-4'>
               {inputs.map((input, index) => (
                 <Input
                   key={index}
@@ -93,7 +93,7 @@ export const EditConsultModal = () => {
                 />
               ))}
             </div>
-            <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
+            <div className='flex w-full flex-col gap-4'>
               <DatePicker
                 label='Fecha de la consulta'
                 onChange={(e) => {
