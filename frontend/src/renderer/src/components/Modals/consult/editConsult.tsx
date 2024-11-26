@@ -3,8 +3,8 @@ import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Modal,
-  Input,
   Button,
+  Textarea,
   ModalBody,
   DatePicker,
   ModalFooter,
@@ -12,7 +12,6 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
-import { inputs } from './inputs'
 import { parseDate } from '@internationalized/date'
 import { RootState } from '@renderer/store'
 import { editConsult } from '@renderer/features/consultSlice'
@@ -40,10 +39,9 @@ export const EditConsultModal = () => {
   const handleChange = (e: any) => {
     let name = e.target.name
     let value = e.target.value
-    let intValues = ['patientId', 'doctorId']
     setData({
       ...data,
-      [name]: intValues.includes(name) ? parseInt(value) : value,
+      [name]: value,
     })
   }
 
@@ -82,18 +80,6 @@ export const EditConsultModal = () => {
           </ModalHeader>
           <ModalBody>
             <div className='flex w-full flex-col gap-4'>
-              {inputs.map((input, index) => (
-                <Input
-                  key={index}
-                  name={input.name}
-                  type={input.type}
-                  label={input.label}
-                  onChange={(e) => handleChange(e)}
-                  defaultValue={currentConsultEdit && currentConsultEdit[input.name]}
-                />
-              ))}
-            </div>
-            <div className='flex w-full flex-col gap-4'>
               <DatePicker
                 label='Fecha de la consulta'
                 onChange={(e) => {
@@ -107,6 +93,12 @@ export const EditConsultModal = () => {
                   currentConsultEdit &&
                   parseDate(`${parsedDate?.year}-${parsedDate?.month}-${parsedDate?.day}`)
                 }
+              />
+              <Textarea
+                name='reason'
+                label='Razón de la consulta'
+                onChange={handleChange}
+                defaultValue={currentConsultEdit?.reason}
               />
             </div>
           </ModalBody>

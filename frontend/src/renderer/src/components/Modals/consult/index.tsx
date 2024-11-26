@@ -4,8 +4,8 @@ import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { useDispatch } from 'react-redux'
 import {
   Modal,
-  Input,
   Button,
+  Textarea,
   ModalBody,
   DatePicker,
   ModalFooter,
@@ -13,9 +13,10 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
-import { inputs } from './inputs'
 import { addConsult } from '@renderer/features/consultSlice'
 import { reqCreateConsult } from '@renderer/api/Requests'
+import { SearchAutocomplete } from '@renderer/components/SearchAutocomplete'
+import { reqSearchPatientByName, reqSearchClinicalStaffByName } from '@renderer/api/Requests'
 
 export const CreateConsultModal = () => {
   const dispatch = useDispatch()
@@ -23,13 +24,12 @@ export const CreateConsultModal = () => {
 
   const [data, setData] = React.useState<any>({})
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
-    let intValues = ['patientId', 'doctorId']
     setData({
       ...data,
-      [name]: intValues.includes(name) ? parseInt(value) : value,
+      [name]: value,
     })
   }
 
@@ -56,27 +56,45 @@ export const CreateConsultModal = () => {
           </ModalHeader>
           <ModalBody>
             <div className='flex w-full flex-col gap-4'>
-              {inputs.map((input, index) => (
-                <Input
-                  key={index}
-                  name={input.name}
-                  type={input.type}
-                  label={input.label}
-                  onChange={(e) => handleChange(e)}
-                />
-              ))}
-            </div>
-            <div className='flex w-full flex-col gap-4'>
+              <SearchAutocomplete
+                label='Paciente'
+                itemKey='id'
+                itemLabel='name'
+                setSelectedItem={(item) => {
+                  setData((prevInfo) => ({
+                    ...prevInfo,
+                    patientId: item?.id,
+                  }))
+                }}
+                searchFunction={(searchValue: string) =>
+                  reqSearchPatientByName(searchValue).then((res) => res.data)
+                }
+              />
+              <SearchAutocomplete
+                label='Doctor'
+                itemKey='id'
+                itemLabel='name'
+                setSelectedItem={(item) => {
+                  setData((prevInfo) => ({
+                    ...prevInfo,
+                    doctorId: item?.id,
+                  }))
+                }}
+                searchFunction={(searchValue: string) =>
+                  reqSearchClinicalStaffByName(searchValue).then((res) => res.data)
+                }
+              />
               <DatePicker
                 label='Fecha de la consulta'
                 onChange={(e) => {
-                  const consultDate = new Date(`${e.year}-${e.month}-${e.day}`)
+                  const consultDate = new Date(`${e.year}-${e.month}-${e.day + 1}`)
                   setData({
                     ...data,
                     ['date']: consultDate.toISOString(),
                   })
                 }}
               />
+              <Textarea name='reason' label='Razón de la consulta' onChange={handleChange} />
             </div>
           </ModalBody>
           <ModalFooter>

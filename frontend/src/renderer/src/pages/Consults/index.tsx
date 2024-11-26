@@ -42,11 +42,11 @@ export const Consults = () => {
       label: <Checkbox />,
     },
     {
-      key: 'doctorId',
+      key: 'doctor',
       label: 'DOCTOR',
     },
     {
-      key: 'patientId',
+      key: 'patient',
       label: 'PACIENTE',
     },
     {
@@ -67,6 +67,14 @@ export const Consults = () => {
     const cellValue = item[columnKey]
 
     switch (columnKey) {
+      case 'doctor':
+      case 'patient':
+        return (
+          <h3>
+            {cellValue?.name} {cellValue?.lastName}
+          </h3>
+        )
+
       case 'date':
         const parsedDate = newParseDate({ date: cellValue })
         return (

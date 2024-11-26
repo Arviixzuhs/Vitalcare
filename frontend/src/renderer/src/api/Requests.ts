@@ -6,6 +6,8 @@ export const reqEditPatient = ({ data, id }: { data: any; id: any }) =>
   api.put('/patient/update/' + id, data)
 export const reqDeletePatient = (id: any) => api.delete('/patient/delete/' + id)
 export const reqLoadAllPatients = () => api.get('/patient/get-all')
+export const reqSearchPatientByName = (name: string) =>
+  api.get(`/patient/search-by-name?name=${name}`)
 
 /* Rutas para manejar el auth */
 export const authLogin = async (data: any) => api.post('/auth/login', data)
@@ -26,5 +28,7 @@ export const reqEditStaff = ({ data, id }: { data: any; id: any }) =>
   api.put('/clinicalstaff/update/' + id, data)
 export const reqDeleteStaff = (id: any) => api.delete('/clinicalstaff/delete/' + id)
 export const reqLoadAllStaff = () => api.get('/clinicalstaff/get-all')
+export const reqSearchClinicalStaffByName = (name: string) =>
+  api.get(`/clinicalstaff/search-by-name?name=${name}`)
 
 export const reqGetHospitalStats = () => api.get('/hospital/get-stats')

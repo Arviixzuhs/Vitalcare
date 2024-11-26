@@ -9,10 +9,27 @@ export class ConsultService {
 
   async createConsult(data: ConsultDto) {
     const consultDate = new Date(data.date)
+    console.log(data)
     return this.prisma.consult.create({
       data: {
         ...data,
         date: consultDate.toISOString(),
+      },
+      include: {
+        doctor: {
+          select: {
+            CI: true,
+            name: true,
+            lastName: true,
+          },
+        },
+        patient: {
+          select: {
+            CI: true,
+            name: true,
+            lastName: true,
+          },
+        },
       },
     })
   }
@@ -26,7 +43,22 @@ export class ConsultService {
   }
 
   async getAllConsults(): Promise<Consult[]> {
-    return this.prisma.consult.findMany()
+    return this.prisma.consult.findMany({
+      include: {
+        patient: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+      },
+    })
   }
 
   async updateConsult(id: number, data: ConsultDto) {

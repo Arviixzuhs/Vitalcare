@@ -1,8 +1,19 @@
 import { PatientDto } from './dto/patient.dto'
 import { PatientService } from './patient.service'
 import { EditPatientDto } from './dto/edit-patient.dto'
+import { SearchPatientDto } from './dto/search-patient.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common'
 
 @Controller('/patient')
 @ApiTags('Patient')
@@ -28,6 +39,11 @@ export class PatientController {
   @Delete('/delete/:id')
   deleteUser(@Param('id') id: string) {
     return this.patientService.deletePatient(Number(id))
+  }
+
+  @Get('/search-by-name')
+  searchPatientByName(@Query() query: SearchPatientDto) {
+    return this.patientService.searchPatientByName(query.name)
   }
 
   @Put('/update/:id')

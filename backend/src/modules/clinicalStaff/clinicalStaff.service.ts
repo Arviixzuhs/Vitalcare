@@ -72,6 +72,35 @@ export class ClinicalStaffService {
     }
   }
 
+  async searchClinicalStaffByName(name: string) {
+    return await this.prisma.clinicalStaff.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: name.toLowerCase(),
+            },
+          },
+          {
+            lastName: {
+              contains: name.toLowerCase(),
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        age: true,
+        name: true,
+        email: true,
+        gender: true,
+        avatar: true,
+        lastName: true,
+        createdAt: true,
+      },
+    })
+  }
+
   async deleteClinicalStaff(id: number) {
     const clinicalStaff = await this.getClinicalStaffById(id)
     if (!clinicalStaff)

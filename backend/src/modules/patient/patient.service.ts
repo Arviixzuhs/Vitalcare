@@ -63,6 +63,39 @@ export class PatientService {
     }
   }
 
+  async searchPatientByName(name: string) {
+    return await this.prisma.patient.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: name.toLowerCase(),
+            },
+          },
+          {
+            lastName: {
+              contains: name.toLowerCase(),
+            },
+          },
+        ],
+      },
+      select: {
+        id: true,
+        age: true,
+        name: true,
+        email: true,
+        gender: true,
+        avatar: true,
+        status: true,
+        lastName: true,
+        createdAt: true,
+        reasonEntry: true,
+        reasonDeath: true,
+        description: true,
+      },
+    })
+  }
+
   async deletePatient(id: number) {
     const user = await this.getPatientById(id)
 
