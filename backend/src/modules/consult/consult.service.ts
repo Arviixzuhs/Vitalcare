@@ -9,7 +9,6 @@ export class ConsultService {
 
   async createConsult(data: ConsultDto) {
     const consultDate = new Date(data.date)
-    console.log(data)
     return this.prisma.consult.create({
       data: {
         ...data,
