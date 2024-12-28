@@ -29,6 +29,11 @@ export class ConsultController {
     return this.consultService.deleteConsult(Number(id))
   }
 
+  @Get('/search-by-patient-dni/:ci')
+  serchConsultByPatientCI(@Param('ci') ci: string) {
+    return this.consultService.serchConsultByPatientCI(ci)
+  }
+
   @Put('/update/:id')
   updateConsult(@Param('id') id: string, @Body() data: ConsultDto) {
     return this.consultService.updateConsult(Number(id), data)

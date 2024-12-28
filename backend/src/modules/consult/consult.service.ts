@@ -77,6 +77,30 @@ export class ConsultService {
     }
   }
 
+  async serchConsultByPatientCI(CI: string) {
+    return this.prisma.consult.findMany({
+      where: {
+        patient: {
+          CI,
+        },
+      },
+      include: {
+        patient: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+      },
+    })
+  }
+
   async deleteConsult(id: number) {
     const consult = await this.getConsultById(id)
     if (!consult) throw new HttpException('Consulta médica no encontrada.', HttpStatus.NOT_FOUND)
