@@ -41,6 +41,16 @@ export class PatientController {
     return this.patientService.deletePatient(Number(id))
   }
 
+  @Get('/count-by-date')
+  async getPatientsCountByDate() {
+    return this.patientService.getPatientsCountByDate()
+  }
+
+  @Get('/count-by-gender')
+  async getPatientsCountByGender() {
+    return this.patientService.getPatientsCountByGender()
+  }
+
   @Get('/search-by-name')
   searchPatientByName(@Query() query: SearchPatientDto) {
     return this.patientService.searchPatientByName(query.name)

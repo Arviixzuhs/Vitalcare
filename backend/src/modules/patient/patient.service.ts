@@ -34,6 +34,32 @@ export class PatientService {
     })
   }
 
+  async getPatientsCountByDate() {
+    // Realizamos la consulta sin agrupar por fecha directamente
+    const patientsCount = await this.prisma.patient.findMany({
+      select: {
+        createdAt: true,
+      },
+    })
+
+    // Creamos un objeto para contar pacientes por fecha
+    const counts: { [key: string]: number } = {}
+
+    patientsCount.forEach((patient) => {
+      // Extraemos la fecha sin la parte de la hora
+      const date = patient.createdAt.toISOString().split('T')[0] // 'YYYY-MM-DD'
+
+      // Contamos los pacientes por fecha
+      counts[date] = (counts[date] || 0) + 1
+    })
+
+    // Convertimos el objeto counts a un arreglo de objetos
+    return Object.keys(counts).map((date) => ({
+      time: date,
+      value: counts[date],
+    }))
+  }
+
   async getPatientById(id: number): Promise<Patient> {
     return this.prisma.patient.findUnique({
       where: {
@@ -61,6 +87,20 @@ export class PatientService {
     } catch (error) {
       throw new BadRequestException('Error al actualizar al paciente')
     }
+  }
+
+  async getPatientsCountByGender() {
+    const patientsByGender = await this.prisma.patient.groupBy({
+      by: ['gender'],
+      _count: {
+        id: true,
+      },
+    })
+
+    return patientsByGender.map((entry) => ({
+      gender: entry.gender,
+      count: entry._count.id,
+    }))
   }
 
   async searchPatientByName(name: string) {
