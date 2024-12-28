@@ -2,6 +2,11 @@ import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import { ColorType, createChart } from 'lightweight-charts'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
+import {
+  reqGetPatientsCountByDate,
+  reqGetPatientsCountByGender,
+  reqGetClinicalStaffCountByDate,
+} from '@renderer/api/Requests'
 
 const ChartComponent = ({ data, colors }) => {
   const chartContainerRef: any = React.useRef()
@@ -50,50 +55,53 @@ const ChartComponent = ({ data, colors }) => {
 }
 
 export const GraphView = () => {
+  const [patientsCount, setPatientsCount] = React.useState([])
+  const [clinicalStaffsCount, setClinicalStaffsCount] = React.useState([])
+  const [patientsCountByGender, setPatientCountByGender] = React.useState([])
+
+  React.useEffect(() => {
+    reqGetPatientsCountByDate()
+      .then((res) => setPatientsCount(res.data))
+      .catch(() => setPatientsCount([]))
+
+    reqGetClinicalStaffCountByDate()
+      .then((res) => setClinicalStaffsCount(res.data))
+      .catch(() => setClinicalStaffsCount([]))
+
+    reqGetPatientsCountByGender()
+      .then((res) => {
+        const formattedData = res.data.map((item) => ({
+          title: `${item.gender === 'FEMALE' ? 'Mujeres' : 'Hombres'}: ${item.count}`, // Título con cantidad
+          value: item.count,
+          color: item.gender === 'FEMALE' ? 'rgba(160, 214, 255)' : 'rgba(0, 123, 255)',
+        }))
+        setPatientCountByGender(formattedData)
+      })
+      .catch(() => setPatientCountByGender([]))
+  }, [])
+
   const graphList = [
     {
       title: 'Frecuencia de pacientes',
       colors: {
         backgroundColor: 'transparent',
-        lineColor: '#007BFF', // Dark blue
+        lineColor: '#007BFF',
         textColor: '#71717a',
-        areaTopColor: '#007BFF', // Dark blue
-        areaBottomColor: 'rgba(0, 123, 255, 0.1)', // Light blue with opacity
+        areaTopColor: '#007BFF',
+        areaBottomColor: 'rgba(0, 123, 255, 0.1)',
       },
-      initialData: [
-        { time: '2018-12-22', value: 1 },
-        { time: '2018-12-23', value: 2 },
-        { time: '2018-12-24', value: 3 },
-        { time: '2018-12-25', value: 5 },
-        { time: '2018-12-26', value: 4 },
-        { time: '2018-12-27', value: 5 },
-        { time: '2018-12-28', value: 6 },
-        { time: '2018-12-29', value: 7 },
-        { time: '2018-12-30', value: 6 },
-        { time: '2018-12-31', value: 7 },
-      ],
+      initialData: patientsCount,
     },
     {
       title: 'Frecuencia de personal',
       colors: {
         backgroundColor: 'transparent',
-        lineColor: '#4C9EFF', // Turquoise
+        lineColor: '#4C9EFF',
         textColor: '#71717a',
-        areaTopColor: '#4C9EFF', // Turquoise
-        areaBottomColor: 'rgba(76, 159, 255, 0.1)', // Light turquoise with opacity
+        areaTopColor: '#4C9EFF',
+        areaBottomColor: 'rgba(76, 159, 255, 0.1)',
       },
-      initialData: [
-        { time: '2018-12-22', value: 1 },
-        { time: '2018-12-23', value: 2 },
-        { time: '2018-12-24', value: 3 },
-        { time: '2018-12-25', value: 5 },
-        { time: '2018-12-26', value: 5 },
-        { time: '2018-12-27', value: 3 },
-        { time: '2018-12-28', value: 7 },
-        { time: '2018-12-29', value: 7 },
-        { time: '2018-12-30', value: 9 },
-        { time: '2018-12-31', value: 8 },
-      ],
+      initialData: clinicalStaffsCount,
     },
   ]
 
@@ -104,14 +112,7 @@ export const GraphView = () => {
           <h3 className='font-medium'>Resumen de estadísticas</h3>
         </CardHeader>
         <CardBody className='flex items-center'>
-          <PieChart
-            style={{ maxWidth: '220px' }}
-            data={[
-              { title: 'One', value: 10, color: 'rgba(160, 214, 255)' },
-              { title: 'Two', value: 15, color: 'rgba(76, 159, 255, 0.28)' },
-              { title: 'Three', value: 20, color: 'rgba(0, 123, 255' },
-            ]}
-          />
+          <PieChart style={{ maxWidth: '220px' }} data={patientsCountByGender} />
         </CardBody>
       </Card>
       {graphList.map((item, index) => (
