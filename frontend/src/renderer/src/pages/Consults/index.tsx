@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Input,
   Table,
@@ -13,19 +14,47 @@ import toast from 'react-hot-toast'
 import { RootState } from '@renderer/store'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { newParseDate } from '@renderer/utils/newParseDate'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { EditConsultModal } from '@renderer/components/Modals/consult/editConsult'
-import { reqDeleteConsult } from '@renderer/api/Requests'
 import { CreateConsultModal } from '@renderer/components/Modals/consult'
 import { BiCommentCheck, BiCommentX } from 'react-icons/bi'
 import { MedicalConsultationCalendar } from '@renderer/components/Calendar'
-import { setCurrentConsultId, deleteConsult } from '@renderer/features/consultSlice'
+import { newParseDateWithTime, newParseDate } from '@renderer/utils/newParseDate'
+import { reqDeleteConsult, reqSearchConsultByPatientCI } from '@renderer/api/Requests'
+import {
+  setCurrentConsultId,
+  deleteConsult,
+  setConsults,
+  setCurrentConsultDate,
+} from '@renderer/features/consultSlice'
 
 export const Consults = () => {
   const dispatch = useDispatch()
   const consult = useSelector((state: RootState) => state.consult)
   const currentData = consult.currentConsultDate
+  const [searchValue, setSearchValue] = React.useState('')
+
+  React.useEffect(() => {
+    const searchConsults = async () => {
+      if (searchValue.trim() === '') return
+      if (searchValue.length < 3) return
+
+      const response = await reqSearchConsultByPatientCI(searchValue)
+      dispatch(setCurrentConsultId(-1))
+      dispatch(setConsults(response.data))
+      if (response.data.length > 0) {
+        const date = new Date(response.data[response.data.length - 1].date)
+        dispatch(
+          setCurrentConsultDate({
+            day: date.getDate(),
+            month: date.getMonth() + 1,
+            year: date.getFullYear(),
+          }),
+        )
+      }
+    }
+    searchConsults()
+  }, [searchValue])
 
   const filteredData = consult.data.filter((consult: any) => {
     const parsedConsultDate = newParseDate({ date: consult.date })
@@ -35,6 +64,10 @@ export const Consults = () => {
       parsedConsultDate.year === currentData?.year
     )
   })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setSearchValue(e.target.value)
+  }
 
   const columns = [
     {
@@ -76,10 +109,11 @@ export const Consults = () => {
         )
 
       case 'date':
-        const parsedDate = newParseDate({ date: cellValue })
+        const parsedDate = newParseDateWithTime({ date: cellValue })
+
         return (
           <td>
-            {parsedDate.day}/{parsedDate.month}/{parsedDate.year}
+            {parsedDate.date} a las {parsedDate.time}
           </td>
         )
 
@@ -124,7 +158,12 @@ export const Consults = () => {
       </div>
       <div className='w-full flex gap-4 flex-col'>
         <div className='flex gap-3'>
-          <Input isClearable className='w-full' placeholder='Buscar por nombre...' />
+          <Input
+            isClearable
+            className='w-full'
+            placeholder='Buscar por cédula de paciente...'
+            onChange={handleChange}
+          />
           <CreateConsultModal />
         </div>
         <Table aria-label='Example table with dynamic content'>
