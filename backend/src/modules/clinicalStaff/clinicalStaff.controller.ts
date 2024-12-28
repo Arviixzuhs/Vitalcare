@@ -4,15 +4,15 @@ import { EditClinicalStaffDto } from './dto/edit-clinical-staff.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { SearchClinicalStaffDto } from './dto/search-clinical-staff.dto'
 import {
-  Body,
-  Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
+  Body,
   Post,
-  Put,
+  Patch,
+  Param,
   Query,
+  Delete,
+  Controller,
+  ParseIntPipe,
 } from '@nestjs/common'
 
 @Controller('/clinicalstaff')
@@ -41,12 +41,17 @@ export class ClinicalStaffController {
     return this.clinicalStaffService.deleteClinicalStaff(Number(id))
   }
 
+  @Get('/count-by-date')
+  async getClinicalStaffByDate() {
+    return this.clinicalStaffService.getClinicalStaffCountByDate()
+  }
+
   @Get('/search-by-name')
   searchPatientByName(@Query() query: SearchClinicalStaffDto) {
     return this.clinicalStaffService.searchClinicalStaffByName(query.name)
   }
 
-  @Put('/update/:id')
+  @Patch('/update/:id')
   update(@Param('id', ParseIntPipe) id: number, @Body() data: EditClinicalStaffDto) {
     return this.clinicalStaffService.updateClinicalStaff(id, data)
   }

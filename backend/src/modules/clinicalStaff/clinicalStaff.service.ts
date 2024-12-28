@@ -66,7 +66,7 @@ export class ClinicalStaffService {
         },
         data,
       })
-      return 'Usuario del personal médico actualizdo correctamente.'
+      return 'Usuario del personal médico actualizado correctamente.'
     } catch (error) {
       throw new BadRequestException('Error al actualizar al usuario del personal médico.')
     }
@@ -99,6 +99,27 @@ export class ClinicalStaffService {
         createdAt: true,
       },
     })
+  }
+
+  async getClinicalStaffCountByDate() {
+    const clinicalStaffCount = await this.prisma.clinicalStaff.findMany({
+      select: {
+        createdAt: true,
+      },
+    })
+
+    const counts: { [key: string]: number } = {}
+
+    clinicalStaffCount.forEach((clinicalStaff) => {
+      const date = clinicalStaff.createdAt.toISOString().split('T')[0]
+
+      counts[date] = (counts[date] || 0) + 1
+    })
+
+    return Object.keys(counts).map((date) => ({
+      time: date,
+      value: counts[date],
+    }))
   }
 
   async deleteClinicalStaff(id: number) {
