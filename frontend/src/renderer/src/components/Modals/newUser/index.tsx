@@ -47,7 +47,7 @@ export const CreateNewUserModal = ({ modal }) => {
                   name={input.name}
                   type={input.type}
                   label={input.label}
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                 />
               ))}
             </div>
@@ -58,7 +58,7 @@ export const CreateNewUserModal = ({ modal }) => {
                   name={item.name}
                   label={item.label}
                   className='max-w-x default-text-color'
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                 >
                   {item.options.map((state) => (
                     <SelectItem
