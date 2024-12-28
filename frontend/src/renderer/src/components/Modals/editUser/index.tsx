@@ -68,7 +68,7 @@ export const EditUserProfileModal = ({ modal }) => {
                   type={input.type}
                   label={input.label}
                   required={true}
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   defaultValue={currentUserEdit && currentUserEdit[input.name]}
                 />
               ))}
@@ -79,7 +79,7 @@ export const EditUserProfileModal = ({ modal }) => {
                   key={index}
                   name={item.name}
                   label={item.label}
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   className='max-w-x default-text-color'
                   defaultSelectedKeys={[currentUserEdit && currentUserEdit[item.name]]}
                 >
