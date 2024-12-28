@@ -12,12 +12,11 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
-import { parseDate } from '@internationalized/date'
 import { RootState } from '@renderer/store'
 import { editConsult } from '@renderer/features/consultSlice'
-import { newParseDate } from '@renderer/utils/newParseDate'
 import { reqUpdateConsult } from '@renderer/api/Requests'
 import { setCurrentConsultId } from '@renderer/features/consultSlice'
+import { parseAbsoluteToLocal } from '@internationalized/date'
 
 export const EditConsultModal = () => {
   const dispatch = useDispatch()
@@ -27,8 +26,6 @@ export const EditConsultModal = () => {
   const currentConsultEdit = consult?.data.find(
     (item: { id: any }) => item.id == consult.currentConsultId,
   )
-
-  const parsedDate = newParseDate({ date: currentConsultEdit?.date, padStart: true })
 
   React.useEffect(() => {
     if (consult.currentConsultId !== -1) onOpen()
@@ -53,6 +50,7 @@ export const EditConsultModal = () => {
         id: consult.currentConsultId,
         data,
       }
+
       dispatch(editConsult(consultData))
 
       const response = await reqUpdateConsult(consultData)
@@ -82,16 +80,19 @@ export const EditConsultModal = () => {
             <div className='flex w-full flex-col gap-4'>
               <DatePicker
                 label='Fecha de la consulta'
+                hideTimeZone
+                showMonthAndYearPickers
                 onChange={(e) => {
-                  const consultDate = new Date(`${e.year}-${e.month}-${e.day}`)
+                  const consultDate = new Date(e.year, e.month - 1, e.day)
+                  consultDate.setHours(e.hour, e.minute, e.second, e.millisecond)
+
                   setData({
                     ...data,
                     ['date']: consultDate.toISOString(),
                   })
                 }}
                 defaultValue={
-                  currentConsultEdit &&
-                  parseDate(`${parsedDate?.year}-${parsedDate?.month}-${parsedDate?.day}`)
+                  currentConsultEdit && parseAbsoluteToLocal(String(currentConsultEdit.date))
                 }
               />
               <Textarea
