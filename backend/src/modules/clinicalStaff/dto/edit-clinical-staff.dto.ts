@@ -17,7 +17,8 @@ export class EditClinicalStaffDto {
   @ApiProperty({ description: 'Apellido del miembro del personal clínico', example: 'Doe' })
   @IsString()
   @MaxLength(30)
-  lastName: string
+  @IsOptional()
+  lastName?: string
 
   @ApiProperty({ description: 'CI del miembro del personal clínico', example: '123456789' })
   @IsString()
