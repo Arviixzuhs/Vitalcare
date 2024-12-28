@@ -53,8 +53,10 @@ export const AppTable = ({
 
     // Filtrado por nombre
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredUsers = filteredUsers.filter(
+        (user) =>
+          user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          user.CI?.toLowerCase().includes(filterValue.toLowerCase()),
       )
     }
 
