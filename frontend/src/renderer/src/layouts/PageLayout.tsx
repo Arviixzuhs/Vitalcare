@@ -23,10 +23,6 @@ export const PageLayout = () => {
       key: '/staff',
     },
     {
-      title: 'Habitaciones',
-      key: '/rooms',
-    },
-    {
       title: 'Consultas',
       key: '/consult',
     },
