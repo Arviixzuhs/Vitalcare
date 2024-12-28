@@ -16,6 +16,7 @@ import {
 import { addConsult } from '@renderer/features/consultSlice'
 import { reqCreateConsult } from '@renderer/api/Requests'
 import { SearchAutocomplete } from '@renderer/components/SearchAutocomplete'
+import { now, getLocalTimeZone } from '@internationalized/date'
 import { reqSearchPatientByName, reqSearchClinicalStaffByName } from '@renderer/api/Requests'
 
 export const CreateConsultModal = () => {
@@ -86,8 +87,14 @@ export const CreateConsultModal = () => {
               />
               <DatePicker
                 label='Fecha de la consulta'
+                hideTimeZone
+                showMonthAndYearPickers
+                defaultValue={now(getLocalTimeZone())}
                 onChange={(e) => {
-                  const consultDate = new Date(`${e.year}-${e.month}-${e.day + 1}`)
+                  const consultDate = new Date(e.year, e.month - 1, e.day)
+
+                  consultDate.setHours(e.hour, e.minute, e.second, e.millisecond)
+
                   setData({
                     ...data,
                     ['date']: consultDate.toISOString(),
