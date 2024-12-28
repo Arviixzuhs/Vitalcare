@@ -1,5 +1,4 @@
 import { ChangeTheme } from '../Theme'
-import { Notification } from '../Notification'
 import { GradientTitle } from '../GradientTitle'
 import { NavbarUserOptions } from './NavbarUserOptions'
 
@@ -9,7 +8,6 @@ export const NavbarMain = () => {
       <GradientTitle title={'VITALCARE'} />
       <div className='flex gap-4 items-center'>
         <ChangeTheme />
-        <Notification />
         <NavbarUserOptions />
       </div>
     </nav>
