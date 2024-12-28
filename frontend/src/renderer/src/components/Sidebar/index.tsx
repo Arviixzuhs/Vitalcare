@@ -3,7 +3,6 @@ import { logOut } from '@renderer/utils/logOut'
 import { useNavigate } from 'react-router-dom'
 import { Listbox, ListboxItem } from '@nextui-org/react'
 import {
-  FaBed,
   FaCode,
   FaCog,
   FaHome,
@@ -84,25 +83,13 @@ export const Sidebar = () => {
           Personal
         </ListboxItem>
         <ListboxItem
-          key='/rooms'
-          style={{ background: location.pathname == '/rooms' ? 'var(--cardBg)' : '' }}
-          endContent={<ItemCounter number={hospitalData.rooms} />}
-          startContent={
-            <IconWrapper>
-              <FaBed className='text-success' />
-            </IconWrapper>
-          }
-        >
-          Habitaciones
-        </ListboxItem>
-        <ListboxItem
           key='/consult'
           style={{ background: location.pathname == '/consult' ? 'var(--cardBg)' : '' }}
           endContent={<ItemCounter number={hospitalData.consults} />}
           showDivider
           startContent={
             <IconWrapper className='text-default-400'>
-              <FaCalendar />
+              <FaCalendar  className='text-success' />
             </IconWrapper>
           }
         >
@@ -110,19 +97,20 @@ export const Sidebar = () => {
         </ListboxItem>
         <ListboxItem
           key='contributors'
-          endContent={<ItemCounter number={3} />}
+          isReadOnly
           startContent={
             <IconWrapper className='text-default-400'>
               <FaCode />
             </IconWrapper>
           }
         >
-          Desarrolladores
+          Reportes
         </ListboxItem>
         <ListboxItem
           key='releases'
           className='group h-auto py-3'
           showDivider
+          isReadOnly
           startContent={
             <IconWrapper className='text-default-400'>
               <FaLightbulb />
@@ -131,7 +119,7 @@ export const Sidebar = () => {
           textValue='Versión'
         >
           <div className='flex flex-col gap-1'>
-            <div className='px-2 py-0.5 rounded-small bg-default-100 group-data-[hover=true]:bg-default-200'>
+            <div className='px-2 py-0.5 rounded-small bg-default-100 '>
               <span className='text-tiny text-default-600'>Vitalcare@0.0.1</span>
               <div className='flex gap-2 text-tiny'>
                 <span className='text-default-500'>07/06/2024</span>
@@ -141,6 +129,7 @@ export const Sidebar = () => {
           </div>
         </ListboxItem>
         <ListboxItem
+          isReadOnly
           key='watchers'
           startContent={
             <IconWrapper className='text-default-400'>
