@@ -65,7 +65,7 @@ export const SearchAutocomplete = <T extends { id: React.Key }>({
     >
       {(item) => (
         <AutocompleteItem key={String(item[itemKey])} textValue={String(item[itemLabel])}>
-          <h3 className='text-[var(--text)]'>{String(item[itemLabel])}</h3>
+          <h3 className='text-[var(--text)]'>{String(item[itemLabel])} {String(item['lastName'])}</h3>
         </AutocompleteItem>
       )}
     </Autocomplete>
