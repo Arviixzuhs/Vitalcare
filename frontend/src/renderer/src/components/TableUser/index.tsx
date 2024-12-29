@@ -1,8 +1,8 @@
 import React from 'react'
 import { RootState } from '@renderer/store'
-import { TopContent } from './TopContent'
-import { RenderCell } from './RenderCell'
-import { BottomContent } from './BottomContent'
+import { TopContent } from '@renderer/components/TableUser/components/TopContent'
+import { RenderCell } from '@renderer/components/TableUser/components/RenderCell'
+import { BottomContent } from './components/BottomContent'
 import { setCurrentEditUserId } from '../../features/usersSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -15,13 +15,14 @@ import {
   TableColumn,
   SortDescriptor,
 } from '@nextui-org/react'
+import { AppTableInterface } from './interfaces/TableProps'
 
 export const AppTable = ({
   columnsData,
   tableActions,
-  createNewUserModal,
-  editUserProfileModal,
-}) => {
+  addItemModal,
+  editItemModal,
+}: AppTableInterface) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
   const users = useSelector((state: RootState) => state.users.data)
@@ -42,9 +43,7 @@ export const AppTable = ({
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsData.columns
 
-    return columnsData.columns.filter((column: any) =>
-      Array.from(visibleColumns).includes(column.uid),
-    )
+    return columnsData.columns.filter((column) => Array.from(visibleColumns).includes(column.uid))
   }, [visibleColumns])
 
   const hasSearchFilter = Boolean(filterValue)
@@ -63,7 +62,7 @@ export const AppTable = ({
     // Si hay filtros activos (statusFilter o genderFilter)
     if (
       statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== columnsData.statusOptions.length
+      Array.from(statusFilter).length !== columnsData?.statusOptions?.length
     ) {
       const filterFields = ['status', 'gender'] // Puedes agregar aquí cualquier campo que desees filtrar
       filteredUsers = filteredUsers.filter((item) => {
@@ -93,8 +92,8 @@ export const AppTable = ({
     })
   }, [sortDescriptor, items])
 
-  const handleDeleteUser = async (id: any) => tableActions.delete(id)
-  const handleSetCurrentIdEdit = (id: any) => dispatch(setCurrentEditUserId(id))
+  const deleteAction = async (id: number) => tableActions.delete(id)
+  const editAction = (id: number) => dispatch(setCurrentEditUserId(id))
 
   return (
     <Table
@@ -130,8 +129,8 @@ export const AppTable = ({
           setFilterValue={setFilterValue}
           setStatusFilter={setStatusFilter}
           setVisibleColumns={setVisibleColumns}
-          createNewUserModal={createNewUserModal}
-          editUserProfileModal={editUserProfileModal}
+          addItemModal={addItemModal}
+          editItemModal={editItemModal}
         />
       }
       topContentPlacement='outside'
@@ -139,7 +138,7 @@ export const AppTable = ({
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
-        {(column: any) => (
+        {(column) => (
           <TableColumn
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
@@ -154,7 +153,12 @@ export const AppTable = ({
           <TableRow key={item.id}>
             {(columnKey) => (
               <TableCell className='default-text-color'>
-                {RenderCell(item, columnKey, handleDeleteUser, handleSetCurrentIdEdit)}
+                <RenderCell
+                  item={item}
+                  columnKey={columnKey}
+                  editAction={editAction}
+                  deleteAction={deleteAction}
+                />
               </TableCell>
             )}
           </TableRow>
