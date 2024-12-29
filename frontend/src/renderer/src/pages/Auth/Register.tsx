@@ -21,20 +21,22 @@ export const Register = () => {
     })
   }
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault()
-      await authRegister(data)
-      navigate('/login')
-    } catch (error: any) {
-      if (error.response.data.errors) {
-        toast.error(error.response.data.errors[0].messages[0])
-      }
+  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-      if (error.response.data.message) {
-        toast.error(error.response.data.message)
-      }
-    }
+    authRegister(data)
+      .then(() => {
+        navigate('/login')
+      })
+      .catch((error) => {
+        if (error.response?.data?.errors) {
+          toast.error(error.response.data.errors[0]?.messages[0])
+        }
+
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message)
+        }
+      })
   }
 
   const inputs = [
