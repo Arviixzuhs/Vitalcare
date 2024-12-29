@@ -10,8 +10,14 @@ export const MedicalConsultationCalendar = () => {
   const consults = useSelector((state: RootState) => state.consult)
   const defaultDate = `${consults.currentConsultDate?.year}-${consults.currentConsultDate?.month?.toString().padStart(2, '0')}-${consults.currentConsultDate?.day?.toString().padStart(2, '0')}`
 
-  const isDateUnavailable = (date: any) => {
-    return !consults.data.some((consult: any) => {
+  interface ConsultDate {
+    day: number
+    month: number
+    year: number
+  }
+
+  const isDateUnavailable = (date: ConsultDate): boolean => {
+    return !consults.data.some((consult) => {
       const parsedConsultDate = newParseDate({ date: consult.date })
       return (
         parsedConsultDate.day === date.day &&
