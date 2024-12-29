@@ -1,11 +1,22 @@
+import { Patient } from '@renderer/interfaces/patientModel'
 import { createSlice } from '@reduxjs/toolkit'
+import { ClinicalStaff } from '@renderer/interfaces/clinicalStaffModel'
+
+// Definir el tipo genérico para los usuarios, que puede ser ClinicalStaff o Patient
+export type TableItemModel = ClinicalStaff | Patient
+
+// Definir la estructura del estado inicial del slice
+export interface ManageUsersState {
+  data: TableItemModel[]
+  currentUserIdEdit: number
+}
 
 export const manageUsersSlice = createSlice({
   name: 'users',
   initialState: {
-    data: <any[]>[],
+    data: [],
     currentUserIdEdit: -1,
-  },
+  } as ManageUsersState,
   reducers: {
     setUsers: (state, action) => {
       state.data = action.payload
@@ -15,7 +26,7 @@ export const manageUsersSlice = createSlice({
     },
     editUser: (state, action) => {
       const { data, id } = action.payload
-      const userIndex = state.data.findIndex((item) => item.id == id)
+      const userIndex = state.data.findIndex((item) => item.id === id)
 
       if (userIndex !== -1) {
         Object.keys(data).forEach((key) => {
@@ -25,7 +36,7 @@ export const manageUsersSlice = createSlice({
     },
     deleteUser: (state, action) => {
       const id = action.payload
-      const userIndex = state.data.findIndex((item) => item.id == id)
+      const userIndex = state.data.findIndex((item) => item.id === id)
 
       if (userIndex !== -1) {
         state.data.splice(userIndex, 1)
