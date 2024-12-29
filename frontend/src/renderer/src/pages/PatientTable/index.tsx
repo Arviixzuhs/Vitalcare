@@ -26,35 +26,34 @@ export const PatientTable = () => {
   }, [])
 
   const tableActions = {
-    delete: async (id: any) => {
-      try {
-        dispatch(deleteUser(id))
-        await reqDeletePatient(id)
-        toast.success('Paciente eliminado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    create: async (data: any) => {
-      try {
-        const response = await reqAddPatient({ ...data, age: parseInt(data.age) })
-        dispatch(addUser(response.data))
-        toast.success('Paciente guardado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    edit: async (data: any, currentUserEdit: any) => {
-      try {
-        dispatch(editUser({ data, id: currentUserEdit?.id }))
-        await reqEditPatient({
-          data,
-          id: currentUserEdit?.id,
+    delete: (id: number) => {
+      dispatch(deleteUser(id))
+      reqDeletePatient(id)
+        .then(() => {
+          toast.success('Paciente eliminado correctamente')
         })
+        .catch((error) => {
+          toast.error(error.response.data.message)
+        })
+    },
+    create: async (data) => {
+      reqAddPatient({ ...data, age: parseInt(data.age) })
+        .then((res) => {
+          dispatch(addUser(res.data))
+          toast.success('Paciente guardado correctamente')
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message)
+        })
+    },
+    edit: (data, currentUserEdit) => {
+      dispatch(editUser({ data, id: currentUserEdit?.id }))
+      reqEditPatient({
+        data,
+        id: currentUserEdit?.id,
+      }).then(() => {
         toast.success('Paciente editado correctamente')
-      } catch (error) {
-        console.log(error)
-      }
+      })
     },
   }
 
@@ -75,8 +74,8 @@ export const PatientTable = () => {
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      createNewUserModal={<CreateNewUserModal modal={newUserModal} />}
-      editUserProfileModal={<EditUserProfileModal modal={editUserModal} />}
+      addItemModal={<CreateNewUserModal modal={newUserModal} />}
+      editItemModal={<EditUserProfileModal modal={editUserModal} />}
     />
   )
 }
