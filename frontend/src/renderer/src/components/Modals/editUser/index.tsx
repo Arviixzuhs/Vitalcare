@@ -12,10 +12,11 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
+import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
 import { setCurrentEditUserId } from '../../../features/usersSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
-export const EditUserProfileModal = ({ modal }) => {
+export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState({})
   const users = useSelector((state: RootState) => state.users.data)
@@ -28,9 +29,9 @@ export const EditUserProfileModal = ({ modal }) => {
   }, [currentUserIdEdit])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    let name = e.target.name
-    let value = e.target.value
-    let intValues = ['age']
+    const name = e.target.name
+    const value = e.target.value
+    const intValues = ['age']
 
     setData({
       ...data,
@@ -61,7 +62,7 @@ export const EditUserProfileModal = ({ modal }) => {
           </ModalHeader>
           <ModalBody>
             <div className='flex w-full flex-col gap-4'>
-              {modal.inputs.map((input, index) => (
+              {modal?.inputs?.map((input, index) => (
                 <Input
                   key={index}
                   name={input.name}
@@ -74,7 +75,7 @@ export const EditUserProfileModal = ({ modal }) => {
               ))}
             </div>
             <div className='flex w-full flex-col gap-4'>
-              {modal.selectInputs.map((item, index) => (
+              {modal?.selectInputs?.map((item, index) => (
                 <Select
                   key={index}
                   name={item.name}
