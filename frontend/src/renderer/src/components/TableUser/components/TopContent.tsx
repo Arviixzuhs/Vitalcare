@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Input,
   Button,
@@ -6,32 +7,48 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { RootState } from '@renderer/store'
-import { SearchIcon } from '../Icons/SearchIcon'
-import { capitalize } from './utils'
+import { RootState } from '@/store'
+import { Selection } from '@nextui-org/react'
+import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
+import { capitalize } from '../utils'
 import { useSelector } from 'react-redux'
-import { ChevronDownIcon } from '../Icons/ChevronDownIcon'
+import { ColumnsData } from '../interfaces/TableProps'
+import { ChevronDownIcon } from '@renderer/components/Icons/ChevronDownIcon'
 
-export const TopContent = ({
+interface TopContentProps {
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  columnsData: ColumnsData
+  filterValue: string
+  statusFilter: Selection
+  addItemModal: JSX.Element
+  editItemModal: JSX.Element
+  visibleColumns: Selection
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>
+  setFilterValue: React.Dispatch<React.SetStateAction<string>>
+  setStatusFilter: React.Dispatch<React.SetStateAction<Selection>>
+  setVisibleColumns: React.Dispatch<React.SetStateAction<Selection>>
+}
+
+export const TopContent: React.FC<TopContentProps> = ({
   setPage,
   columnsData,
   filterValue,
   statusFilter,
+  addItemModal,
+  editItemModal,
   visibleColumns,
   setRowsPerPage,
   setFilterValue,
   setStatusFilter,
   setVisibleColumns,
-  createNewUserModal,
-  editUserProfileModal,
 }) => {
-  const users = useSelector((state: RootState) => state.users.data)
-  const onRowsPerPageChange = (e: any) => {
+  const table = useSelector((state: RootState) => state.users.data)
+  const onRowsPerPageChange = (e) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)
   }
 
-  const onSearchChange = (value) => {
+  const onSearchChange = (value: string) => {
     if (value) {
       setFilterValue(value)
       setPage(1)
@@ -74,7 +91,7 @@ export const TopContent = ({
                   selectionMode='multiple'
                   onSelectionChange={setStatusFilter}
                 >
-                  {columnsData.statusOptions.map((status: any) => (
+                  {columnsData.statusOptions.map((status) => (
                     <DropdownItem key={status.uid} className='capitalize dropdownCheckboxIcon'>
                       <h3 className='default-text-color'>{capitalize(status.name)}</h3>
                     </DropdownItem>
@@ -105,11 +122,11 @@ export const TopContent = ({
                 </DropdownMenu>
               </Dropdown>
             )}
-            {createNewUserModal}
+            {addItemModal}
           </div>
         </div>
         <div className='flex justify-between items-center'>
-          <span className='text-default-400 text-small'>{users.length} pacientes en total</span>
+          <span className='text-default-400 text-small'>{table.length} pacientes en total</span>
           <label className='flex items-center text-default-400 text-small'>
             Resultados por página:
             <select
@@ -123,7 +140,7 @@ export const TopContent = ({
           </label>
         </div>
       </div>
-      {editUserProfileModal}
+      {editItemModal}
     </>
   )
 }

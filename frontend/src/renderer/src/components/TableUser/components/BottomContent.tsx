@@ -1,6 +1,21 @@
+import { Selection } from '@nextui-org/react'
 import { Button, Pagination } from '@nextui-org/react'
 
-export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItems }) => {
+interface BottomContentProps {
+  page: number
+  pages: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  selectedKeys: Selection
+  filteredItems: unknown[]
+}
+
+export const BottomContent: React.FC<BottomContentProps> = ({
+  page,
+  pages,
+  setPage,
+  selectedKeys,
+  filteredItems,
+}) => {
   const onNextPage = () => {
     if (page < pages) {
       setPage(page + 1)
