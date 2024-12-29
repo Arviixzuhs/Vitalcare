@@ -21,36 +21,38 @@ export const StaffTable = () => {
   }, [])
 
   const tableActions = {
-    delete: async (id: any) => {
-      try {
-        dispatch(deleteUser(id))
-        await reqDeleteStaff(id)
-        toast.success('Personal eliminado correctamente')
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    create: async (data: any) => {
-      try {
-        const response = await reqAddStaff({ ...data, age: parseInt(data.age) })
-        dispatch(addUser(response.data))
-        toast.success('Personal guardado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    edit: async (data: any, currentUserEdit: any) => {
-      try {
-        dispatch(editUser({ data, id: currentUserEdit?.id }))
-        console.log(data)
-        await reqEditStaff({
-          data,
-          id: currentUserEdit?.id,
+    delete: (id: number) => {
+      dispatch(deleteUser(id))
+      reqDeleteStaff(id)
+        .then(() => {
+          toast.success('Personal eliminado correctamente')
         })
-        toast.success('Personal editado correctamente')
-      } catch (error) {
-        console.log(error)
-      }
+        .catch((error) => {
+          toast.error(error.response.data.message)
+        })
+    },
+    create: (data) => {
+      reqAddStaff({ ...data, age: parseInt(data.age) })
+        .then((res) => {
+          dispatch(addUser(res.data))
+          toast.success('Personal guardado correctamente')
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message)
+        })
+    },
+    edit: (data, currentUserEdit) => {
+      dispatch(editUser({ data, id: currentUserEdit?.id }))
+      reqEditStaff({
+        data,
+        id: currentUserEdit?.id,
+      })
+        .then(() => {
+          toast.success('Personal editado correctamente')
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message)
+        })
     },
   }
 
@@ -71,8 +73,8 @@ export const StaffTable = () => {
     <AppTable
       tableActions={tableActions}
       columnsData={columnsData}
-      createNewUserModal={<CreateNewUserModal modal={newUserModal} />}
-      editUserProfileModal={<EditUserProfileModal modal={editUserModal} />}
+      addItemModal={<CreateNewUserModal modal={newUserModal} />}
+      editItemModal={<EditUserProfileModal modal={editUserModal} />}
     />
   )
 }
