@@ -10,7 +10,12 @@ import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon'
 import { EditDocumentIcon } from '../Icons/EditDocumentIcon'
 import { DeleteDocumentIcon } from '../Icons/DeleteDocumentIcon'
 
-export const ActionDropdown = ({ deleteAction, editAction }) => {
+interface ActionDropdownProps {
+  editAction: () => void
+  deleteAction: () => void
+}
+
+export const ActionDropdown: React.FC<ActionDropdownProps> = ({ editAction, deleteAction }) => {
   const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
 
   return (
