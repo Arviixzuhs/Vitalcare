@@ -1,7 +1,4 @@
-import { SVGProps } from 'react'
-type IconSvgProps = SVGProps<SVGSVGElement> & {
-  size?: number
-}
+import { IconSvgProps } from '@renderer/types/IconSvgProps'
 
 export const VerticalDotsIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
   <svg

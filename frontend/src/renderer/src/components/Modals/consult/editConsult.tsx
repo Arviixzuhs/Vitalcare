@@ -24,18 +24,18 @@ export const EditConsultModal = () => {
   const consult = useSelector((state: RootState) => state.consult)
 
   const currentConsultEdit = consult?.data.find(
-    (item: { id: any }) => item.id == consult.currentConsultId,
+    (item: { id: number }) => item.id == consult.currentConsultId,
   )
 
   React.useEffect(() => {
     if (consult.currentConsultId !== -1) onOpen()
   }, [consult.currentConsultId])
 
-  const [data, setData] = React.useState<any>({})
+  const [data, setData] = React.useState({})
 
-  const handleChange = (e: any) => {
-    let name = e.target.name
-    let value = e.target.value
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const name = e.target.name
+    const value = e.target.value
     setData({
       ...data,
       [name]: value,
@@ -45,22 +45,22 @@ export const EditConsultModal = () => {
   const handleResetCurrentConsultId = () => dispatch(setCurrentConsultId(-1))
 
   const handleEditConsult = async () => {
-    try {
-      let consultData = {
-        id: consult.currentConsultId,
-        data,
-      }
-
-      dispatch(editConsult(consultData))
-
-      const response = await reqUpdateConsult(consultData)
-      toast.success(response.data)
-
-      onClose()
-      handleResetCurrentConsultId()
-    } catch (error: any) {
-      toast.error(error.response.data.message)
+    const consultData = {
+      id: consult.currentConsultId,
+      data,
     }
+
+    dispatch(editConsult(consultData))
+
+    reqUpdateConsult(consultData)
+      .then((res) => {
+        toast.success(res.data)
+        onClose()
+        handleResetCurrentConsultId()
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+      })
   }
 
   return (

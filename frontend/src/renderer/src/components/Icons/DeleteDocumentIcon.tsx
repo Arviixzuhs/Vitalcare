@@ -1,4 +1,6 @@
-export const DeleteDocumentIcon = (props) => (
+import { IconSvgProps } from '@renderer/types/IconSvgProps'
+
+export const DeleteDocumentIcon = ({ ...props }: IconSvgProps) => (
   <svg
     aria-hidden='true'
     fill='none'

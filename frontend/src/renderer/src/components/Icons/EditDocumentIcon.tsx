@@ -1,4 +1,6 @@
-export const EditDocumentIcon = (props) => (
+import { IconSvgProps } from '@renderer/types/IconSvgProps'
+
+export const EditDocumentIcon = ({ ...props }: IconSvgProps) => (
   <svg
     aria-hidden='true'
     fill='none'

@@ -1,9 +1,6 @@
-import { SVGProps } from 'react'
-type IconSvgProps = SVGProps<SVGSVGElement> & {
-  size?: number
-}
+import { IconSvgProps } from '@renderer/types/IconSvgProps'
 
-export const SearchIcon = (props: IconSvgProps) => (
+export const SearchIcon = ({ ...props }: IconSvgProps) => (
   <svg
     aria-hidden='true'
     fill='none'
