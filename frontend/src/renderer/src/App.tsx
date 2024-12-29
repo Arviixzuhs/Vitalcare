@@ -2,7 +2,7 @@ import Router from './routes'
 import { NotificationToast } from './components/Notification'
 import './styles/theme.scss'
 import './styles/webkit.scss'
-import './styles/style.css'
+import './styles/global.css'
 
 function App(): JSX.Element {
   return (
