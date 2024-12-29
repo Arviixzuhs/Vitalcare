@@ -12,25 +12,31 @@ import {
 } from '@nextui-org/react'
 import toast from 'react-hot-toast'
 import { RootState } from '@renderer/store'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { EditConsultModal } from '@renderer/components/Modals/consult/editConsult'
 import { CreateConsultModal } from '@renderer/components/Modals/consult'
+import { useDispatch, useSelector } from 'react-redux'
 import { BiCommentCheck, BiCommentX } from 'react-icons/bi'
 import { MedicalConsultationCalendar } from '@renderer/components/Calendar'
 import { newParseDateWithTime, newParseDate } from '@renderer/utils/newParseDate'
 import { reqDeleteConsult, reqSearchConsultByPatientCI } from '@renderer/api/Requests'
 import {
-  setCurrentConsultId,
-  deleteConsult,
   setConsults,
+  deleteConsult,
+  setCurrentConsultId,
   setCurrentConsultDate,
 } from '@renderer/features/consultSlice'
+import { Consult } from '@renderer/interfaces/consultModel'
+
+interface ConsultState {
+  data: Consult[]
+  currentConsultDate: { day: number; month: number; year: number } | null
+  currentConsultId: number
+}
 
 export const Consults = () => {
   const dispatch = useDispatch()
-  const consult = useSelector((state: RootState) => state.consult)
+  const consult = useSelector((state: RootState) => state.consult) as ConsultState
   const currentData = consult.currentConsultDate
   const [searchValue, setSearchValue] = React.useState('')
 
@@ -56,7 +62,7 @@ export const Consults = () => {
     searchConsults()
   }, [searchValue])
 
-  const filteredData = consult.data.filter((consult: any) => {
+  const filteredData = consult.data.filter((consult) => {
     const parsedConsultDate = newParseDate({ date: consult.date })
     return (
       parsedConsultDate.day === currentData?.day &&
@@ -96,21 +102,20 @@ export const Consults = () => {
     },
   ]
 
-  const RenderCell = (item: any, columnKey: any) => {
-    const cellValue = item[columnKey]
+  const RenderCell = (item: Consult, columnKey: string) => {
+    const cellValue = item[columnKey as keyof Consult]
+    const parsedDate = newParseDateWithTime({ date: cellValue })
 
     switch (columnKey) {
       case 'doctor':
       case 'patient':
         return (
           <h3>
-            {cellValue?.name} {cellValue?.lastName}
+            {item[columnKey]?.name} {item[columnKey]?.lastName}
           </h3>
         )
 
       case 'date':
-        const parsedDate = newParseDateWithTime({ date: cellValue })
-
         return (
           <td>
             {parsedDate.date} a las {parsedDate.time}
@@ -135,19 +140,23 @@ export const Consults = () => {
         return (
           <ActionDropdown
             editAction={() => dispatch(setCurrentConsultId(item.id))}
-            deleteAction={async () => {
-              try {
-                dispatch(deleteConsult(item.id))
-                const response = await reqDeleteConsult(item.id)
-                toast.success(response.data)
-              } catch (error: any) {
-                toast.error(error.response.data.message)
-              }
+            deleteAction={() => {
+              dispatch(deleteConsult(item.id))
+
+              reqDeleteConsult(item.id)
+                .then((response) => {
+                  toast.success(response.data)
+                })
+                .catch((error) => {
+                  if (error.response?.data?.message) {
+                    toast.error(error.response.data.message)
+                  }
+                })
             }}
           />
         )
       default:
-        return cellValue
+        return cellValue?.toString()
     }
   }
 
@@ -171,11 +180,11 @@ export const Consults = () => {
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
           </TableHeader>
           <TableBody items={filteredData}>
-            {(item: any) => (
-              <TableRow key={item.data}>
+            {(item) => (
+              <TableRow key={item.id}>
                 {(columnKey) => (
                   <TableCell className='default-text-color'>
-                    {RenderCell(item, columnKey)}
+                    {RenderCell(item, columnKey as string)}
                   </TableCell>
                 )}
               </TableRow>
