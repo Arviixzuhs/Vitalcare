@@ -1,8 +1,20 @@
 import { Toaster } from 'react-hot-toast'
 import { Badge, Button } from '@nextui-org/react'
+import React from 'react'
+
+interface NotificationIconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number
+  height?: number
+  width?: number
+}
 
 export const Notification = () => {
-  const NotificationIcon = ({ size, height, width, ...props }: any) => {
+  const NotificationIcon: React.FC<NotificationIconProps> = ({
+    size,
+    height = 24,
+    width = 24,
+    ...props
+  }) => {
     return (
       <svg
         fill='none'
@@ -10,7 +22,7 @@ export const Notification = () => {
         viewBox='0 0 24 24'
         width={size || width || 24}
         xmlns='http://www.w3.org/2000/svg'
-        className='text-default-400 '
+        className='text-default-400'
         {...props}
       >
         <path
@@ -22,6 +34,7 @@ export const Notification = () => {
       </svg>
     )
   }
+
   return (
     <Badge content='9+' shape='circle' color='danger'>
       <Button radius='full' isIconOnly aria-label='more than 99 notifications' variant='light'>
@@ -31,7 +44,7 @@ export const Notification = () => {
   )
 }
 
-export const NotificationToast = () => {
+export const NotificationToast: React.FC = () => {
   return (
     <Toaster
       toastOptions={{
@@ -48,6 +61,6 @@ export const NotificationToast = () => {
           },
         },
       }}
-    ></Toaster>
+    />
   )
 }
