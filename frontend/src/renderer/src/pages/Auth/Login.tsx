@@ -19,26 +19,29 @@ export const Login = () => {
     })
   }
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault()
-      const token = localStorage.getItem('token')
-      const response = await authLogin(data)
-      const tokenRes = response.data
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-      if (!token) {
-        localStorage.setItem('token', tokenRes)
-        window.location.reload()
-      }
-    } catch (error: any) {
-      if (error.response.data.errors) {
-        toast.error(error.response.data.errors[0].messages[0])
-      }
+    const token = localStorage.getItem('token')
 
-      if (error.response.data.message) {
-        toast.error(error.response.data.message)
-      }
-    }
+    authLogin(data)
+      .then((response) => {
+        const tokenRes = response.data
+
+        if (!token) {
+          localStorage.setItem('token', tokenRes)
+          window.location.reload()
+        }
+      })
+      .catch((error) => {
+        if (error.response?.data?.errors) {
+          toast.error(error.response.data.errors[0]?.messages[0])
+        }
+
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message)
+        }
+      })
   }
 
   const inputs = [
