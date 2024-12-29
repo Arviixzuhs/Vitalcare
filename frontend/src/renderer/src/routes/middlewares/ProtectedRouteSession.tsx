@@ -11,17 +11,19 @@ const ProtectedRouteSession = () => {
   if (!token) return <Navigate to='/login' />
 
   React.useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        if (token) {
-          const response = await authLoadProfileByToken(token)
-          dispatch(setMyUser(response.data))
-        }
-      } catch (error) {
-        localStorage.removeItem('token')
-        window.location.reload()
+    const loadProfile = () => {
+      if (token) {
+        authLoadProfileByToken(token)
+          .then((response) => {
+            dispatch(setMyUser(response.data))
+          })
+          .catch(() => {
+            localStorage.removeItem('token')
+            window.location.reload()
+          })
       }
     }
+
     loadProfile()
   }, [token])
 
