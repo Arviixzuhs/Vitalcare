@@ -12,12 +12,13 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
+import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
 
-export const CreateNewUserModal = ({ modal }) => {
-  const [data, setData] = React.useState<any>({})
+export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
+  const [data, setData] = React.useState({})
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
