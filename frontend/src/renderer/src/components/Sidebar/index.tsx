@@ -1,3 +1,4 @@
+import React from 'react'
 import { Card } from '@nextui-org/react'
 import { logOut } from '@renderer/utils/logOut'
 import { useNavigate } from 'react-router-dom'
@@ -23,13 +24,19 @@ export const Sidebar = () => {
   const hospitalData = useSelector((state: RootState) => state.hospital)
   const handleNavigate = (path: string) => navigate(path)
 
-  const IconWrapper = ({ children, className = '' }) => (
+  const IconWrapper = ({
+    children,
+    className = '',
+  }: {
+    children: React.ReactNode
+    className?: string
+  }) => (
     <div className={`flex items-center rounded-small justify-center text-lg ${className}`}>
       {children}
     </div>
   )
 
-  const ItemCounter = ({ number }) => (
+  const ItemCounter = ({ number }: { number: number }) => (
     <div className='flex items-center gap-1 text-default-400'>
       <span className='text-small'>{number}</span>
       <FaChevronRight className='text-xs' />
@@ -40,7 +47,7 @@ export const Sidebar = () => {
     <Card className='overflow-visible min-w-[220px] h-full'>
       <Listbox
         aria-label='User Menu'
-        onAction={(key: any) => (key == 'logOut' ? logOut() : handleNavigate(key))}
+        onAction={(key) => (key == 'logOut' ? logOut() : handleNavigate(key as string))}
         className=''
         itemClasses={{
           base: 'px-3 last:rounded-b-medium gap-3 h-12',
@@ -89,7 +96,7 @@ export const Sidebar = () => {
           showDivider
           startContent={
             <IconWrapper className='text-default-400'>
-              <FaCalendar  className='text-success' />
+              <FaCalendar className='text-success' />
             </IconWrapper>
           }
         >
