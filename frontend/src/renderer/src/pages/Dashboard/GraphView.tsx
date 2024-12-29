@@ -9,13 +9,16 @@ import {
 } from '@renderer/api/Requests'
 
 const ChartComponent = ({ data, colors }) => {
-  const chartContainerRef: any = React.useRef()
+  const chartContainerRef = React.useRef<HTMLDivElement>(null)
   const theme = localStorage.getItem('theme')
 
   React.useEffect(() => {
     const handleResize = () => {
+      if (chartContainerRef.current === null) return
       chart.applyOptions({ width: chartContainerRef.current.clientWidth })
     }
+
+    if (chartContainerRef.current === null) return
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
