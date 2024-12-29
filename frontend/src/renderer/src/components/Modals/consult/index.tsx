@@ -23,26 +23,27 @@ export const CreateConsultModal = () => {
   const dispatch = useDispatch()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const [data, setData] = React.useState<any>({})
+  const [data, setData] = React.useState({})
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    let name = e.target.name
-    let value = e.target.value
+    const name = e.target.name
+    const value = e.target.value
     setData({
       ...data,
       [name]: value,
     })
   }
 
-  const handleAddCreateConsult = async () => {
-    try {
-      const response = await reqCreateConsult(data)
-      dispatch(addConsult(response.data))
-      toast.success('Consulta creada correctamente.')
-      onClose()
-    } catch (error: any) {
-      toast.error(error.response.data.message)
-    }
+  const handleAddCreateConsult = () => {
+    reqCreateConsult(data)
+      .then((res) => {
+        dispatch(addConsult(res.data))
+        toast.success('Consulta creada correctamente.')
+        onClose()
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+      })
   }
 
   return (
