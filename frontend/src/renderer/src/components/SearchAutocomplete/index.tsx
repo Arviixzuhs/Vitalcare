@@ -5,7 +5,9 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 interface SearchAutocompleteProps<T> {
   label: string
   itemKey: keyof T
+  isInvalid?: boolean
   itemLabel: keyof T
+  isRequired?: boolean
   placeholder?: string
   defaultItem?: T | null
   searchFunction: (query: string) => Promise<T[]>
@@ -15,7 +17,9 @@ interface SearchAutocompleteProps<T> {
 export const SearchAutocomplete = <T extends { id: React.Key }>({
   label,
   itemKey,
+  isInvalid = false,
   itemLabel,
+  isRequired = false,
   placeholder = 'Buscar...',
   defaultItem = null,
   searchFunction,
@@ -50,6 +54,8 @@ export const SearchAutocomplete = <T extends { id: React.Key }>({
     <Autocomplete
       items={itemsToDisplay}
       label={label}
+      isInvalid={isInvalid}
+      isRequired={isRequired}
       defaultSelectedKey={defaultItem ? String(defaultItem.id) : undefined}
       aria-label={label}
       isClearable={true}
