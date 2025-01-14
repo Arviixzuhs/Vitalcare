@@ -41,7 +41,11 @@ export const manageConsultsSlice = createSlice({
     },
     deleteConsult: (state, action) => {
       const id = action.payload
-      state.data = state.data.filter((item) => item.id !== id)
+      
+      const consultIndex = state.data.findIndex(item => item.id == id)
+      if (consultIndex == -1) return
+
+      state.data.splice(consultIndex, 1)
     },
     setCurrentConsultId: (state, action) => {
       state.currentConsultId = action.payload
