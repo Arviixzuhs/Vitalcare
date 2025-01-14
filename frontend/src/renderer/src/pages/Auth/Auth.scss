@@ -70,62 +70,6 @@
   }
 }
 
-.or {
-  top: 0px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  display: flex;
-  position: relative;
-  text-align: center;
-  background: #8a8a8a;
-  align-items: center;
-  justify-content: center;
-  span {
-    color: #8a8a8a;
-    width: 20px;
-    height: 10px;
-    padding: 2px;
-    padding: 0 5px;
-    display: flex;
-    position: absolute;
-    font-size: 20px;
-    align-items: center;
-    font-weight: 400;
-    line-height: 22px;
-    justify-content: center;
-    background-color: white;
-  }
-}
-
-/* Boton olvide contraceña */
-.forgetPassword {
-  display: flex;
-  justify-content: space-between;
-  a {
-    color: var(--academia-principales-gris, #8a8a8a);
-    text-align: right;
-    font-size: 12px;
-    font-weight: 400;
-    text-decoration: underline;
-  }
-}
-
-.rememberMe {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  input {
-    background-color: red;
-  }
-  span {
-    color: #2c2c2e;
-    font-size: 12px;
-    font-weight: 400;
-  }
-}
-
 .loginButton {
   display: flex;
   padding: 8px 10px;
@@ -170,19 +114,6 @@
   }
 }
 
-.authFormTermsAndConditions {
-  color: #8a8a8a;
-  font-size: 12px;
-  font-weight: 400;
-  text-align: left;
-  span {
-    color: #8a8a8a;
-    text-decoration: underline;
-    font-size: 12px;
-    font-weight: 400;
-  }
-}
-
 @media screen and (max-width: 1000px) {
   .authContainer {
     gap: 5px;
@@ -198,9 +129,6 @@
   }
   .authFormimageRight {
     display: none;
-  }
-  .or {
-    margin: 10px 0;
   }
 }
 

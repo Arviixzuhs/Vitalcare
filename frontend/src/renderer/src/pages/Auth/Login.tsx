@@ -1,8 +1,8 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import { Input } from '@nextui-org/react'
+import { NavLink } from 'react-router-dom'
 import { authLogin } from '@renderer/api/Requests'
-import { Link, NavLink } from 'react-router-dom'
 import BackgroundImage from '../../assets/img/background.gif'
 import './Auth.scss'
 
@@ -79,13 +79,6 @@ export const Login = () => {
                     placeholder={item.placeholder}
                   />
                 ))}
-                <div className='forgetPassword'>
-                  <div className='rememberMe'>
-                    <input type='checkbox' />
-                    <span>Recordarme</span>
-                  </div>
-                  <Link to='/password/reset'>¿Olvidó la contraseña?</Link>
-                </div>
               </div>
               <button className='loginButton' type='submit'>
                 Iniciar sesión

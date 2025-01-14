@@ -97,13 +97,6 @@ export const Register = () => {
                 </span>
               </p>
             </div>
-            <div className='or'>
-              <span>O</span>
-            </div>
-            <p className='authFormTermsAndConditions'>
-              Al registrarse aceptas nuestros &nbsp;
-              <span>Términos y condiciones</span> y la <span>Política de privacidad</span>.
-            </p>
           </div>
         </div>
         <div className='authFormimageRight'>
