@@ -16,7 +16,9 @@ import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps
 
 export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   const [data, setData] = React.useState({})
+  const [isSubmitted, setIsSubmitted] = React.useState(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [missingFields, setMissingFields] = React.useState<string[]>([])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
@@ -25,17 +27,43 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     })
   }
 
-  const handleAddNewUser = () => {
+  React.useEffect(() => {
+    setData({})
+    setIsSubmitted(false)
+    setMissingFields([])
+  }, [isOpen, onClose])
+
+  React.useEffect(() => {
+    const requiredInputs = modal.inputs?.filter((input) => input.isRequired)
+    const missing = requiredInputs?.reduce((acc, input) => {
+      if (!(input.name in data) || data[input.name]?.trim() === '') {
+        acc.push(input.name)
+      }
+      return acc
+    }, [] as string[])
+
+    setMissingFields(missing || [])
+  }, [data, modal.inputs])
+
+  const onSubmit = () => {
+    if (missingFields.length > 0) {
+      setIsSubmitted(true)
+      return
+    }
+
     modal.action(data)
     onClose()
+    setIsSubmitted(true)
   }
+
+  const isInvalid = (inputName: string): boolean => isSubmitted && missingFields.includes(inputName)
 
   return (
     <div className='flex flex-col gap-2'>
       <Button onPress={onOpen} color='primary' endContent={<PlusIcon />}>
         {modal.buttonTitle}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>{modal.title}</h3>
@@ -49,6 +77,9 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
                   type={input.type}
                   label={input.label}
                   onChange={handleChange}
+                  isInvalid={isInvalid(input.name)}
+                  isRequired={input.isRequired}
+                  placeholder={input.placeholder}
                 />
               ))}
             </div>
@@ -78,7 +109,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
             <Button color='danger' variant='light' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button color='primary' onPress={onSubmit}>
               Agregar
             </Button>
           </ModalFooter>
