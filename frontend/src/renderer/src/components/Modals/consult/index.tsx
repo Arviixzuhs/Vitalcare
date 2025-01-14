@@ -21,13 +21,27 @@ import { reqSearchPatientByName, reqSearchClinicalStaffByName } from '@renderer/
 
 export const CreateConsultModal = () => {
   const dispatch = useDispatch()
+  const [isSubmitted, setIsSubmitted] = React.useState(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [data, setData] = React.useState({
+    date: '',
+    reason: '',
+    doctorId: '',
+    patientId: '',
+  })
 
-  const [data, setData] = React.useState({})
+  React.useEffect(() => {
+    setIsSubmitted(false)
+    setData({
+      date: '',
+      reason: '',
+      doctorId: '',
+      patientId: '',
+    })
+  }, [onClose, isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const name = e.target.name
-    const value = e.target.value
+    const { name, value } = e.target
     setData({
       ...data,
       [name]: value,
@@ -35,11 +49,17 @@ export const CreateConsultModal = () => {
   }
 
   const handleAddCreateConsult = () => {
+    setIsSubmitted(true)
+
+    const missingFields = !data.patientId || !data.doctorId || !data.date || !data.reason
+    if (missingFields) return
+
     reqCreateConsult(data)
       .then((res) => {
         dispatch(addConsult(res.data))
         toast.success('Consulta creada correctamente.')
         onClose()
+        setIsSubmitted(false)
       })
       .catch((error) => {
         toast.error(error.response.data.message)
@@ -51,21 +71,24 @@ export const CreateConsultModal = () => {
       <Button onPress={onOpen} color='primary' endContent={<PlusIcon />}>
         Crear consulta
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className=' default-text-color'>Crea una nueva consulta</h3>
+            <h3 className='default-text-color'>Crea una nueva consulta</h3>
           </ModalHeader>
           <ModalBody>
             <div className='flex w-full flex-col gap-4'>
               <SearchAutocomplete
                 label='Paciente'
                 itemKey='id'
+                isRequired
+                isInvalid={isSubmitted && !data.patientId}
                 itemLabel='name'
+                placeholder='Buscar por nombre o cédula...'
                 setSelectedItem={(item) => {
                   setData((prevInfo) => ({
                     ...prevInfo,
-                    patientId: item?.id,
+                    patientId: item?.id || '',
                   }))
                 }}
                 searchFunction={(searchValue: string) =>
@@ -75,11 +98,14 @@ export const CreateConsultModal = () => {
               <SearchAutocomplete
                 label='Doctor'
                 itemKey='id'
+                isRequired
+                isInvalid={isSubmitted && !data.doctorId}
                 itemLabel='name'
+                placeholder='Buscar por nombre o cédula...'
                 setSelectedItem={(item) => {
                   setData((prevInfo) => ({
                     ...prevInfo,
-                    doctorId: item?.id,
+                    doctorId: item?.id || '',
                   }))
                 }}
                 searchFunction={(searchValue: string) =>
@@ -88,28 +114,34 @@ export const CreateConsultModal = () => {
               />
               <DatePicker
                 label='Fecha de la consulta'
+                isRequired
+                isInvalid={isSubmitted && !data.date}
                 hideTimeZone
                 showMonthAndYearPickers
                 defaultValue={now(getLocalTimeZone())}
                 onChange={(e) => {
                   const consultDate = new Date(e.year, e.month - 1, e.day)
-
                   consultDate.setHours(e.hour, e.minute, e.second, e.millisecond)
-
                   setData({
                     ...data,
-                    ['date']: consultDate.toISOString(),
+                    date: consultDate.toISOString(),
                   })
                 }}
               />
-              <Textarea name='reason' label='Razón de la consulta' onChange={handleChange} />
+              <Textarea
+                name='reason'
+                label='Razón de la consulta'
+                onChange={handleChange}
+                isInvalid={isSubmitted && !data.reason}
+                isRequired
+              />
             </div>
           </ModalBody>
           <ModalFooter>
             <Button color='danger' variant='light' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddCreateConsult()}>
+            <Button color='primary' onPress={handleAddCreateConsult}>
               Crear
             </Button>
           </ModalFooter>
