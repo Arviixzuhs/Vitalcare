@@ -33,7 +33,7 @@ export const MedicalConsultationCalendar = () => {
       onChange={(e) =>
         dispatch(setCurrentConsultDate({ day: e.day, month: e.month, year: e.year }))
       }
-      value={consults.currentConsultDate && parseDate(defaultDate)}
+      value={consults.currentConsultDate ? parseDate(defaultDate) : undefined}
       isDateUnavailable={isDateUnavailable}
     />
   )
