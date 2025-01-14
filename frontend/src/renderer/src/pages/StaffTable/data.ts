@@ -32,7 +32,7 @@ export const columnsData = {
     'phone',
     'actions',
     /*  'address',
-          'email',
+      'email',
       'cargoNominal',
       'dependencias',
       'tallaCamisas',
@@ -50,26 +50,31 @@ export const modalInputs = {
       type: 'text',
       name: 'name',
       label: 'Nombre',
+      isRequired: true,
     },
     {
       type: 'text',
       name: 'lastName',
       label: 'Apellido',
+      isRequired: true,
     },
     {
       type: 'email',
       name: 'email',
       label: 'Email',
+      isRequired: true,
     },
     {
       type: 'number',
       name: 'CI',
       label: 'Cédula',
+      isRequired: true,
     },
     {
       type: 'number',
       name: 'age',
       label: 'Edad',
+      isRequired: true,
     },
     {
       type: 'text',
@@ -79,12 +84,14 @@ export const modalInputs = {
     {
       type: 'phone',
       name: 'phone',
-      label: 'Telefono',
+      label: 'Teléfono',
+      isRequired: true,
     },
     {
       type: 'text',
       name: 'address',
       label: 'Dirección',
+      isRequired: true,
     },
     {
       type: 'text',
