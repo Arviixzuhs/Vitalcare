@@ -10,7 +10,7 @@ import { Get, Put, Post, Body, Param, Query, Delete, Controller } from '@nestjs/
 @ApiTags('Patient')
 @ApiBearerAuth()
 export class PatientController {
-  constructor(private readonly patientService: PatientService) { }
+  constructor(private readonly patientService: PatientService) {}
 
   @Post('/register')
   register(@Body() data: PatientDto): Promise<Patient> {

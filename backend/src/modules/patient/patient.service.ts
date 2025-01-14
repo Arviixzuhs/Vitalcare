@@ -99,18 +99,23 @@ export class PatientService {
     }))
   }
 
-  searchPatientByName(name: string): Promise<Patient[]> {
+  searchPatientByName(searchValue: string): Promise<Patient[]> {
     return this.prisma.patient.findMany({
       where: {
         OR: [
           {
             name: {
-              contains: name.toLowerCase(),
+              contains: searchValue.toLowerCase(),
             },
           },
           {
             lastName: {
-              contains: name.toLowerCase(),
+              contains: searchValue.toLowerCase(),
+            },
+          },
+          {
+            CI: {
+              contains: searchValue.toLowerCase(),
             },
           },
         ],
