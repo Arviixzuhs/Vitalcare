@@ -2,11 +2,12 @@ import React from 'react'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useDispatch } from 'react-redux'
 import { setHospitalStats } from '@renderer/features/hospitalSlice'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { authLoadProfileByToken, reqGetHospitalStats } from '@renderer/api/Requests'
 
 const ProtectedRouteSession = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
   const token = localStorage.getItem('token')
   if (!token) return <Navigate to='/login' />
 
@@ -33,7 +34,7 @@ const ProtectedRouteSession = () => {
       dispatch(setHospitalStats(response.data))
     }
     loadHospitalStats()
-  })
+  }, [location])
 
   return <Outlet />
 }
