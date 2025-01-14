@@ -8,7 +8,7 @@ import { HttpStatus, Injectable, HttpException, BadRequestException } from '@nes
 export class PatientService {
   constructor(private prisma: PrismaService) {}
 
-  async patientRegister(data: PatientDto) {
+  async patientRegister(data: PatientDto): Promise<Patient> {
     const patient = await this.prisma.patient.findUnique({
       where: {
         CI: data.CI,
@@ -17,7 +17,7 @@ export class PatientService {
 
     if (patient) throw new BadRequestException('Ese paciente ya está registrado')
 
-    return await this.prisma.patient.create({
+    return this.prisma.patient.create({
       data: {
         CI: data.CI,
         age: data.age,
@@ -34,7 +34,7 @@ export class PatientService {
     })
   }
 
-  async getPatientsCountByDate() {
+  async getPatientsCountByDate(): Promise<{ time: string; value: number }[]> {
     // Realizamos la consulta sin agrupar por fecha directamente
     const patientsCount = await this.prisma.patient.findMany({
       select: {
@@ -60,7 +60,7 @@ export class PatientService {
     }))
   }
 
-  async getPatientById(id: number): Promise<Patient> {
+  getPatientById(id: number): Promise<Patient> {
     return this.prisma.patient.findUnique({
       where: {
         id,
@@ -68,28 +68,24 @@ export class PatientService {
     })
   }
 
-  async getAllPatients(): Promise<Patient[]> {
-    return await this.prisma.patient.findMany()
+  getAllPatients(): Promise<Patient[]> {
+    return this.prisma.patient.findMany()
   }
 
-  async updatePatient(id: number, data: EditPatientDto) {
+  async updatePatient(id: number, data: EditPatientDto): Promise<Patient> {
     const patient = await this.getPatientById(id)
 
     if (!patient) throw new HttpException('Paciente no encontrado', HttpStatus.NOT_FOUND)
 
-    try {
-      return await this.prisma.patient.update({
-        where: {
-          id,
-        },
-        data,
-      })
-    } catch (error) {
-      throw new BadRequestException('Error al actualizar al paciente')
-    }
+    return this.prisma.patient.update({
+      where: {
+        id,
+      },
+      data,
+    })
   }
 
-  async getPatientsCountByGender() {
+  async getPatientsCountByGender(): Promise<{ gender: string; count: number }[]> {
     const patientsByGender = await this.prisma.patient.groupBy({
       by: ['gender'],
       _count: {
@@ -103,8 +99,8 @@ export class PatientService {
     }))
   }
 
-  async searchPatientByName(name: string) {
-    return await this.prisma.patient.findMany({
+  searchPatientByName(name: string): Promise<Patient[]> {
+    return this.prisma.patient.findMany({
       where: {
         OR: [
           {
@@ -119,38 +115,17 @@ export class PatientService {
           },
         ],
       },
-      select: {
-        id: true,
-        age: true,
-        name: true,
-        email: true,
-        gender: true,
-        avatar: true,
-        status: true,
-        lastName: true,
-        createdAt: true,
-        reasonEntry: true,
-        reasonDeath: true,
-        description: true,
-      },
     })
   }
 
-  async deletePatient(id: number) {
-    const user = await this.getPatientById(id)
+  async deletePatient(id: number): Promise<Patient> {
+    const patient = await this.getPatientById(id)
+    if (!patient) throw new HttpException('Paciente no encontrado', HttpStatus.NOT_FOUND)
 
-    if (!user) {
-      throw new HttpException('Paciente no encontrado', HttpStatus.NOT_FOUND)
-    }
-
-    try {
-      return await this.prisma.patient.delete({
-        where: {
-          id,
-        },
-      })
-    } catch (error) {
-      throw new BadRequestException('Error al borrar al paciente')
-    }
+    return this.prisma.patient.delete({
+      where: {
+        id,
+      },
+    })
   }
 }

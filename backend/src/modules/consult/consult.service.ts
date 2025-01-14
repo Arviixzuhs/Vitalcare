@@ -7,7 +7,7 @@ import { HttpStatus, Injectable, HttpException, BadRequestException } from '@nes
 export class ConsultService {
   constructor(private prisma: PrismaService) {}
 
-  async createConsult(data: ConsultDto) {
+  createConsult(data: ConsultDto): Promise<Consult> {
     const consultDate = new Date(data.date)
     return this.prisma.consult.create({
       data: {
@@ -33,7 +33,7 @@ export class ConsultService {
     })
   }
 
-  async getConsultById(id: number): Promise<Consult> {
+  getConsultById(id: number): Promise<Consult> {
     return this.prisma.consult.findUnique({
       where: {
         id,
@@ -41,7 +41,7 @@ export class ConsultService {
     })
   }
 
-  async getAllConsults(): Promise<Consult[]> {
+  getAllConsults(): Promise<Consult[]> {
     return this.prisma.consult.findMany({
       include: {
         patient: {
@@ -60,24 +60,19 @@ export class ConsultService {
     })
   }
 
-  async updateConsult(id: number, data: ConsultDto) {
+  async updateConsult(id: number, data: ConsultDto): Promise<Consult> {
     const consult = await this.getConsultById(id)
     if (!consult) throw new HttpException('Consulta médica no encontrada.', HttpStatus.NOT_FOUND)
 
-    try {
-      await this.prisma.consult.update({
-        where: {
-          id,
-        },
-        data,
-      })
-      return 'Consulta actualizada correctamente.'
-    } catch (error) {
-      throw new BadRequestException('Error al actualizar la consulta.')
-    }
+    return this.prisma.consult.update({
+      where: {
+        id,
+      },
+      data,
+    })
   }
 
-  async serchConsultByPatientCI(CI: string) {
+  searchConsultByPatientCI(CI: string): Promise<Consult[]> {
     return this.prisma.consult.findMany({
       where: {
         patient: {
@@ -101,18 +96,16 @@ export class ConsultService {
     })
   }
 
-  async deleteConsult(id: number) {
+  async deleteConsult(id: number): Promise<Consult> {
     const consult = await this.getConsultById(id)
     if (!consult) throw new HttpException('Consulta médica no encontrada.', HttpStatus.NOT_FOUND)
 
     try {
-      await this.prisma.consult.delete({
+      return this.prisma.consult.delete({
         where: {
           id,
         },
       })
-
-      return 'Consulta eliminada correctamente.'
     } catch (error) {
       throw new BadRequestException('Error al borrar la consulta médica.')
     }

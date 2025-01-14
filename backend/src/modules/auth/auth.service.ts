@@ -5,22 +5,21 @@ import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
+import { User } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
-  async findUserByEmail(email: string) {
-    const user = await this.prisma.user.findUnique({
+  findUserByEmail(email: string): Promise<User> {
+    return this.prisma.user.findUnique({
       where: {
         email,
       },
     })
-
-    return user
   }
 
-  async userRegister(data: RegisterDto) {
+  async userRegister(data: RegisterDto): Promise<User> {
     const isEmail = validator.isEmail(data.email)
     if (!isEmail) throw new HttpException('Debes colocar un correo válido', HttpStatus.BAD_REQUEST)
 
@@ -40,7 +39,7 @@ export class AuthService {
     })
   }
 
-  async userLogin(data: LoginDto) {
+  async userLogin(data: LoginDto): Promise<String> {
     const user = await this.findUserByEmail(data.email)
     if (!user) throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND)
 
@@ -52,7 +51,7 @@ export class AuthService {
     return token
   }
 
-  async loadUserByToken(token: string) {
+  loadUserByToken(token: string): Promise<User> {
     let id = -1
     let err = false
 

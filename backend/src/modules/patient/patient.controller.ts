@@ -3,17 +3,7 @@ import { PatientService } from './patient.service'
 import { EditPatientDto } from './dto/edit-patient.dto'
 import { SearchPatientDto } from './dto/search-patient.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common'
+import { Get, Put, Post, Body, Param, Query, Delete, Controller } from '@nestjs/common'
 
 @Controller('/patient')
 @ApiTags('Patient')
@@ -27,8 +17,8 @@ export class PatientController {
   }
 
   @Get('/get/:id')
-  getUserById(@Param('id') id: string) {
-    return this.patientService.getPatientById(Number(id))
+  getUserById(@Param('id') id: number) {
+    return this.patientService.getPatientById(id)
   }
 
   @Get('/get-all')
@@ -37,17 +27,17 @@ export class PatientController {
   }
 
   @Delete('/delete/:id')
-  deleteUser(@Param('id') id: string) {
-    return this.patientService.deletePatient(Number(id))
+  deleteUser(@Param('id') id: number) {
+    return this.patientService.deletePatient(id)
   }
 
   @Get('/count-by-date')
-  async getPatientsCountByDate() {
+  getPatientsCountByDate() {
     return this.patientService.getPatientsCountByDate()
   }
 
   @Get('/count-by-gender')
-  async getPatientsCountByGender() {
+  getPatientsCountByGender() {
     return this.patientService.getPatientsCountByGender()
   }
 
@@ -57,7 +47,7 @@ export class PatientController {
   }
 
   @Put('/update/:id')
-  updateUser(@Param('id', ParseIntPipe) id: number, @Body() data: EditPatientDto) {
+  updateUser(@Param('id') id: number, @Body() data: EditPatientDto) {
     return this.patientService.updatePatient(id, data)
   }
 }

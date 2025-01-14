@@ -9,7 +9,12 @@ export class HospitalController {
   constructor(private readonly hospitalService: HospitalService) {}
 
   @Get('/get-stats')
-  getAllUsers() {
+  getAllUsers(): Promise<{
+    rooms: number
+    consults: number
+    patients: number
+    clinicalStaffs: number
+  }> {
     return this.hospitalService.getInfo()
   }
 }

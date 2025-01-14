@@ -1,3 +1,4 @@
+import { ClinicalStaff } from '@prisma/client'
 import { ClinicalStaffDto } from './dto/clinical-staff.dto'
 import { ClinicalStaffService } from './clinicalStaff.service'
 import { EditClinicalStaffDto } from './dto/edit-clinical-staff.dto'
@@ -22,37 +23,40 @@ export class ClinicalStaffController {
   constructor(private readonly clinicalStaffService: ClinicalStaffService) {}
 
   @Post('/create')
-  register(@Body() data: ClinicalStaffDto) {
+  register(@Body() data: ClinicalStaffDto): Promise<ClinicalStaff> {
     return this.clinicalStaffService.createClinicalStaff(data)
   }
 
   @Get('/get/:id')
-  getById(@Param('id') id: string) {
+  getById(@Param('id') id: string): Promise<ClinicalStaff> {
     return this.clinicalStaffService.getClinicalStaffById(Number(id))
   }
 
   @Get('/get-all')
-  getAll() {
+  getAll(): Promise<ClinicalStaff[]> {
     return this.clinicalStaffService.getAllClinicalStaff()
   }
 
   @Delete('/delete/:id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: string): Promise<ClinicalStaff> {
     return this.clinicalStaffService.deleteClinicalStaff(Number(id))
   }
 
   @Get('/count-by-date')
-  async getClinicalStaffByDate() {
+  getClinicalStaffByDate(): Promise<{ time: string; value: number }[]> {
     return this.clinicalStaffService.getClinicalStaffCountByDate()
   }
 
   @Get('/search-by-name')
-  searchPatientByName(@Query() query: SearchClinicalStaffDto) {
+  searchPatientByName(@Query() query: SearchClinicalStaffDto): Promise<ClinicalStaff[]> {
     return this.clinicalStaffService.searchClinicalStaffByName(query.name)
   }
 
   @Patch('/update/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: EditClinicalStaffDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: EditClinicalStaffDto,
+  ): Promise<ClinicalStaff> {
     return this.clinicalStaffService.updateClinicalStaff(id, data)
   }
 }

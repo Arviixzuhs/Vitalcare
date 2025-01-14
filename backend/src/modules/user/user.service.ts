@@ -13,9 +13,7 @@ export class UserService {
       },
     })
 
-    if (!user) {
-      throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND)
-    }
+    if (!user) throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND)
 
     return `Hola ${user.name}`
   }

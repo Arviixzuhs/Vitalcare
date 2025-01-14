@@ -8,7 +8,7 @@ import { HttpStatus, Injectable, HttpException, BadRequestException } from '@nes
 export class ClinicalStaffService {
   constructor(private prisma: PrismaService) {}
 
-  async createClinicalStaff(data: ClinicalStaffDto) {
+  async createClinicalStaff(data: ClinicalStaffDto): Promise<ClinicalStaff> {
     const existingStaff = await this.prisma.clinicalStaff.findUnique({
       where: {
         CI: data.CI,
@@ -42,38 +42,37 @@ export class ClinicalStaffService {
     })
   }
 
-  async getClinicalStaffById(id: number): Promise<ClinicalStaff> {
-    return await this.prisma.clinicalStaff.findUnique({
+  getClinicalStaffById(id: number): Promise<ClinicalStaff> {
+    return this.prisma.clinicalStaff.findUnique({
       where: {
         id,
       },
     })
   }
 
-  async getAllClinicalStaff(): Promise<ClinicalStaff[]> {
+  getAllClinicalStaff(): Promise<ClinicalStaff[]> {
     return this.prisma.clinicalStaff.findMany()
   }
 
-  async updateClinicalStaff(id: number, data: EditClinicalStaffDto) {
+  async updateClinicalStaff(id: number, data: EditClinicalStaffDto): Promise<ClinicalStaff> {
     const clinicalStaff = await this.getClinicalStaffById(id)
     if (!clinicalStaff)
       throw new HttpException('Usuario del personal médico no encontrado.', HttpStatus.NOT_FOUND)
 
     try {
-      await this.prisma.clinicalStaff.update({
+      return this.prisma.clinicalStaff.update({
         where: {
           id,
         },
         data,
       })
-      return 'Usuario del personal médico actualizado correctamente.'
     } catch (error) {
       throw new BadRequestException('Error al actualizar al usuario del personal médico.')
     }
   }
 
-  async searchClinicalStaffByName(name: string) {
-    return await this.prisma.clinicalStaff.findMany({
+  searchClinicalStaffByName(name: string): Promise<ClinicalStaff[]> {
+    return this.prisma.clinicalStaff.findMany({
       where: {
         OR: [
           {
@@ -88,20 +87,10 @@ export class ClinicalStaffService {
           },
         ],
       },
-      select: {
-        id: true,
-        age: true,
-        name: true,
-        email: true,
-        gender: true,
-        avatar: true,
-        lastName: true,
-        createdAt: true,
-      },
     })
   }
 
-  async getClinicalStaffCountByDate() {
+  async getClinicalStaffCountByDate(): Promise<{ time: string; value: number }[]> {
     const clinicalStaffCount = await this.prisma.clinicalStaff.findMany({
       select: {
         createdAt: true,
@@ -122,19 +111,17 @@ export class ClinicalStaffService {
     }))
   }
 
-  async deleteClinicalStaff(id: number) {
+  async deleteClinicalStaff(id: number): Promise<ClinicalStaff> {
     const clinicalStaff = await this.getClinicalStaffById(id)
     if (!clinicalStaff)
       throw new HttpException('Usuario del personal médico no encontrado', HttpStatus.NOT_FOUND)
 
     try {
-      await this.prisma.clinicalStaff.delete({
+      return this.prisma.clinicalStaff.delete({
         where: {
           id,
         },
       })
-
-      return 'Usuario borrado del personal médico.'
     } catch (error) {
       throw new BadRequestException('Error al borrar la consulta.')
     }
