@@ -29,7 +29,7 @@ export const PageLayout = () => {
   ]
 
   return (
-    <div className='flex items-center content-center p-4 w-full h-screen'>
+    <div className='flex items-center content-center p-4 w-full h-screen overflow-x-hidden'>
       <main className='w-full h-full flex flex-col gap-2'>
         <NavbarMain />
         <div className='flex flex-col gap-3 w-full h-full'>

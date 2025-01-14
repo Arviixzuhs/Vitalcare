@@ -44,7 +44,7 @@ export const Sidebar = () => {
   )
 
   return (
-    <Card className='overflow-visible min-w-[220px] h-full'>
+    <Card className='hidden lg:block overflow-visible min-w-[220px] h-full'>
       <Listbox
         aria-label='User Menu'
         onAction={(key) => (key == 'logOut' ? logOut() : handleNavigate(key as string))}
