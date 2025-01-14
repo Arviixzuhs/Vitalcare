@@ -11,6 +11,7 @@ import {
   TableHeader,
 } from '@nextui-org/react'
 import toast from 'react-hot-toast'
+import { Consult } from '@renderer/interfaces/consultModel'
 import { RootState } from '@renderer/store'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { EditConsultModal } from '@renderer/components/Modals/consult/editConsult'
@@ -26,18 +27,11 @@ import {
   setCurrentConsultId,
   setCurrentConsultDate,
 } from '@renderer/features/consultSlice'
-import { Consult } from '@renderer/interfaces/consultModel'
-
-interface ConsultState {
-  data: Consult[]
-  currentConsultDate: { day: number; month: number; year: number } | null
-  currentConsultId: number
-}
 
 export const Consults = () => {
   const dispatch = useDispatch()
-  const consult = useSelector((state: RootState) => state.consult) as ConsultState
-  const currentData = consult.currentConsultDate
+  const consult = useSelector((state: RootState) => state.consult)
+  const currentData = consult?.currentConsultDate
   const [searchValue, setSearchValue] = React.useState('')
 
   React.useEffect(() => {
@@ -142,10 +136,13 @@ export const Consults = () => {
             editAction={() => dispatch(setCurrentConsultId(item.id))}
             deleteAction={() => {
               dispatch(deleteConsult(item.id))
+              if (consult.currentConsultId == item.id) {
+                dispatch(setCurrentConsultId(-1))
+              }
 
               reqDeleteConsult(item.id)
-                .then((response) => {
-                  toast.success(response.data)
+                .then(() => {
+                  toast.success('Consulta eliminada correctamente.')
                 })
                 .catch((error) => {
                   if (error.response?.data?.message) {
@@ -179,7 +176,7 @@ export const Consults = () => {
           <TableHeader columns={columns}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
           </TableHeader>
-          <TableBody items={filteredData}>
+          <TableBody items={filteredData} emptyContent='Sin registros seleccionados'>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => (
