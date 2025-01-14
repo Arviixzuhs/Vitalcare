@@ -49,7 +49,7 @@ model Patient {
   email       String    @unique @db.VarChar(30)
   status      Status    @default(ALIVE)
   gender      Gender    @default(MALE)
-  avatar      String    @db.VarChar(200)
+  avatar      String    @default("") @db.VarChar(200)
   lastName    String    @db.VarChar(30)
   createdAt   DateTime? @default(now())
   description String    @default("") @db.VarChar(30)
