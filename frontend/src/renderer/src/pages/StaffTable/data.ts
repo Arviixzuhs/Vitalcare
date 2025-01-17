@@ -77,11 +77,6 @@ export const modalInputs = {
       isRequired: true,
     },
     {
-      type: 'text',
-      name: 'avatar',
-      label: 'Avatar',
-    },
-    {
       type: 'phone',
       name: 'phone',
       label: 'Teléfono',
@@ -92,6 +87,11 @@ export const modalInputs = {
       name: 'address',
       label: 'Dirección',
       isRequired: true,
+    },
+    {
+      type: 'text',
+      name: 'avatar',
+      label: 'Avatar',
     },
     {
       type: 'text',
