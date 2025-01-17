@@ -1,16 +1,19 @@
-import React, { Key } from 'react'
+import React from 'react'
 import { Chip, User } from '@nextui-org/react'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { ShortCellValue } from './ShortCellValue'
 import { TableItemModel } from '@renderer/features/usersSlice'
+import { DropdownAction } from '@renderer/components/Dropdown/ActionDropdownPatient'
+import { DropdownItemInteface } from '../interfaces/ActionDropdown'
 
 type Status = 'ALIVE' | 'DEAD' | 'FEMALE' | 'MALE'
 
 interface RenderCellProps {
   item: TableItemModel
-  columnKey: Key
+  columnKey: React.Key
   editAction: (id: number) => void
   deleteAction: (id: number) => void
+  dropdownAction?: DropdownItemInteface[]
 }
 
 export const RenderCell = ({
@@ -18,6 +21,7 @@ export const RenderCell = ({
   columnKey,
   editAction,
   deleteAction,
+  dropdownAction,
 }: RenderCellProps): React.ReactNode => {
   const statusColorMap: Record<
     Status,
@@ -42,6 +46,9 @@ export const RenderCell = ({
   }
 
   const cellValue = item[columnKey as string]
+
+  if (columnKey === 'actions' && dropdownAction)
+    return <DropdownAction dropdownItems={dropdownAction} tableItemId={item.id} />
 
   switch (columnKey) {
     case 'name':
