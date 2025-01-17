@@ -3,7 +3,6 @@ import {
   Input,
   Table,
   Tooltip,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
@@ -27,6 +26,7 @@ import {
   setCurrentConsultId,
   setCurrentConsultDate,
 } from '@renderer/features/consultSlice'
+import { EmptyTableContent } from '@renderer/components/TableUser/components/EmptyContent'
 
 export const Consults = () => {
   const dispatch = useDispatch()
@@ -71,10 +71,6 @@ export const Consults = () => {
 
   const columns = [
     {
-      key: 'ended',
-      label: <Checkbox />,
-    },
-    {
       key: 'doctor',
       label: 'DOCTOR',
     },
@@ -116,9 +112,6 @@ export const Consults = () => {
           </td>
         )
 
-      case 'ended':
-        return <Checkbox defaultSelected />
-
       case 'reason':
         return item.reason ? (
           <Tooltip className='default-text-color' content={item.reason}>
@@ -158,7 +151,7 @@ export const Consults = () => {
   }
 
   return (
-    <div className='flex gap-4'>
+    <div className='flex gap-4 h-full'>
       <div>
         <MedicalConsultationCalendar />
       </div>
@@ -172,11 +165,21 @@ export const Consults = () => {
           />
           <CreateConsultModal />
         </div>
-        <Table aria-label='Example table with dynamic content'>
+        <Table
+          aria-label='Example table with dynamic content'
+          className='h-full'
+          isCompact
+          selectionMode='none'
+          classNames={{
+            th: 'text-default-500',
+            table: [`${filteredData.length === 0 && 'h-full'}`],
+            wrapper: [' h-full overflow-y-auto  hoverScrollbar '],
+          }}
+        >
           <TableHeader columns={columns}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
           </TableHeader>
-          <TableBody items={filteredData} emptyContent='Sin registros seleccionados'>
+          <TableBody items={filteredData} emptyContent={<EmptyTableContent />}>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => (
