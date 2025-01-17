@@ -44,7 +44,7 @@ export class PatientController {
 
   @Get('/search-by-name')
   searchPatientByName(@Query() query: SearchPatientDto): Promise<Patient[]> {
-    return this.patientService.searchPatientByName(query.name)
+    return this.patientService.searchPatientByName(query.name, query.startDate, query.endDate)
   }
 
   @Put('/update/:id')
