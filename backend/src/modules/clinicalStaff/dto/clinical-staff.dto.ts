@@ -1,6 +1,6 @@
-import { IsEmail, IsEnum, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Gender } from '@prisma/client'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsEmail, IsEnum, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
 
 export class ClinicalStaffDto {
   @ApiProperty({ description: 'Edad del miembro del personal clínico', example: 35 })
@@ -45,6 +45,7 @@ export class ClinicalStaffDto {
     enum: Gender,
     example: Gender.MALE,
   })
+  @IsOptional()
   @IsEnum(Gender)
   gender: Gender
 
@@ -79,19 +80,16 @@ export class ClinicalStaffDto {
   cargoNominal?: string
 
   @ApiPropertyOptional({ description: 'Teléfono', example: '+123456789' })
-  @IsOptional()
   @IsString()
   @MaxLength(30)
   phone?: string
 
   @ApiPropertyOptional({ description: 'Correo electrónico', example: 'doctor@example.com' })
-  @IsOptional()
   @IsEmail()
   @MaxLength(30)
   email?: string
 
   @ApiPropertyOptional({ description: 'Dirección', example: '123 Main St' })
-  @IsOptional()
   @IsString()
   @MaxLength(30)
   address?: string
