@@ -30,6 +30,11 @@ export class ConsultController {
     return this.consultService.deleteConsult(id)
   }
 
+  @Get('/get-all-by-patient-id/:id')
+  getAllConsultsByPatientId(@Param('id') id: number): Promise<Consult[]> {
+    return this.consultService.getAllConsultsByPatientId(id)
+  }
+
   @Get('/search-by-patient-dni/:ci')
   serchConsultByPatientCI(@Param('ci') ci: string): Promise<Consult[]> {
     return this.consultService.searchConsultByPatientCI(ci)

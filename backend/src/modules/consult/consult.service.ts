@@ -41,6 +41,28 @@ export class ConsultService {
     })
   }
 
+  getAllConsultsByPatientId(patientId: number): Promise<Consult[]> {
+    return this.prisma.consult.findMany({
+      where: {
+        patientId,
+      },
+      include: {
+        patient: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+      },
+    })
+  }
+
   getAllConsults(): Promise<Consult[]> {
     return this.prisma.consult.findMany({
       include: {
