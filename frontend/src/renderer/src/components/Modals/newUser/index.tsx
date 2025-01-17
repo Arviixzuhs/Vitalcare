@@ -5,6 +5,7 @@ import {
   Input,
   Button,
   Select,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
@@ -15,22 +16,40 @@ import {
 import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
 
 export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
-  const [data, setData] = React.useState({})
+  const [data, setData] = React.useState<Record<string, string>>({})
   const [isSubmitted, setIsSubmitted] = React.useState(false)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [missingFields, setMissingFields] = React.useState<string[]>([])
+  const [invalidEmails, setInvalidEmails] = React.useState<string[]>([])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value, type } = e.target
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+
+    if (type === 'email') {
+      validateEmail(name, value)
+    }
+  }
+
+  const validateEmail = (name: string, value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(value)) {
+      setInvalidEmails((prev) => [...prev.filter((email) => email !== name), name])
+    } else {
+      setInvalidEmails((prev) => prev.filter((email) => email !== name))
+    }
   }
 
   React.useEffect(() => {
     setData({})
     setIsSubmitted(false)
     setMissingFields([])
+    setInvalidEmails([])
   }, [isOpen, onClose])
 
   React.useEffect(() => {
@@ -46,7 +65,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   }, [data, modal.inputs])
 
   const onSubmit = () => {
-    if (missingFields.length > 0) {
+    if (missingFields.length > 0 || invalidEmails.length > 0) {
       setIsSubmitted(true)
       return
     }
@@ -56,7 +75,19 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     setIsSubmitted(true)
   }
 
-  const isInvalid = (inputName: string): boolean => isSubmitted && missingFields.includes(inputName)
+  const isInvalid = (inputName: string, inputType: string): boolean =>
+    (isSubmitted && missingFields.includes(inputName)) ||
+    (inputType === 'email' && invalidEmails.includes(inputName))
+
+  const getErrorMessage = (inputName: string, inputType: string): string => {
+    if (isSubmitted && missingFields.includes(inputName)) {
+      return 'Este campo es requerido'
+    }
+    if (inputType === 'email' && invalidEmails.includes(inputName)) {
+      return 'Por favor, ingrese un email válido'
+    }
+    return ''
+  }
 
   return (
     <div className='flex flex-col gap-2'>
@@ -72,12 +103,15 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
             <div className='flex w-full flex-col gap-4'>
               {modal?.inputs?.map((input, index) => (
                 <Input
+                  max={100}
+                  min={0}
                   key={index}
                   name={input.name}
                   type={input.type}
                   label={input.label}
                   onChange={handleChange}
-                  isInvalid={isInvalid(input.name)}
+                  isInvalid={isInvalid(input.name, input.type)}
+                  errorMessage={getErrorMessage(input.name, input.type)}
                   isRequired={input.isRequired}
                   placeholder={input.placeholder}
                 />
@@ -102,6 +136,22 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
                     </SelectItem>
                   ))}
                 </Select>
+              ))}
+            </div>
+            <div className='flex w-full flex-col gap-4'>
+              {modal?.textArea?.map((item, index: number) => (
+                <Textarea
+                  key={index}
+                  name={item.name}
+                  label={item.label}
+                  onChange={handleChange}
+                  className='default-text-color'
+                  labelPlacement='outside'
+                  isInvalid={isInvalid(item.name, 'textarea')}
+                  errorMessage={getErrorMessage(item.name, 'textarea')}
+                  isRequired={item.isRequired}
+                  placeholder={item.placeholder}
+                />
               ))}
             </div>
           </ModalBody>
