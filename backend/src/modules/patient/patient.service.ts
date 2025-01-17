@@ -120,6 +120,15 @@ export class PatientService {
                   contains: searchValue.toLowerCase(),
                 },
               },
+              {
+                diagnostic: {
+                  some: {
+                    condition: {
+                      contains: searchValue.toLowerCase(),
+                    },
+                  },
+                },
+              },
             ],
           },
           {
