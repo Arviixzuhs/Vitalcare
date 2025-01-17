@@ -9,7 +9,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 @ApiTags('Drive')
 @ApiBearerAuth()
 export class DriveController {
-  constructor(private readonly driveService: DriveService) { }
+  constructor(private readonly driveService: DriveService) {}
 
   @Post('/create-file')
   create(@Body() createFileDto: CreateFileDto): Promise<FileEntity> {

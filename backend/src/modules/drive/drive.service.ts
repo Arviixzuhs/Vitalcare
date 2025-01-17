@@ -6,7 +6,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 
 @Injectable()
 export class DriveService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   deleteMany(): Prisma.PrismaPromise<Prisma.BatchPayload> {
     return this.prisma.fileEntity.deleteMany()
