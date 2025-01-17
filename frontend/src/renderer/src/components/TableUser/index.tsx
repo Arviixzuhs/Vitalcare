@@ -16,12 +16,14 @@ import {
   SortDescriptor,
 } from '@nextui-org/react'
 import { AppTableInterface } from './interfaces/TableProps'
+import { EmptyTableContent } from './components/EmptyContent'
 
 export const AppTable = ({
   columnsData,
   tableActions,
   addItemModal,
   editItemModal,
+  dropdownAction,
 }: AppTableInterface) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
@@ -42,31 +44,25 @@ export const AppTable = ({
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsData.columns
-
     return columnsData.columns.filter((column) => Array.from(visibleColumns).includes(column.uid))
   }, [visibleColumns])
 
-  const hasSearchFilter = Boolean(filterValue)
+  React.useEffect(() => {
+    if (tableActions && tableActions.search) {
+      tableActions.search(filterValue)
+    }
+  }, [filterValue])
+
   const filteredItems = React.useMemo(() => {
     let filteredUsers = [...users]
 
-    // Filtrado por nombre
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter(
-        (user) =>
-          user.name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          user.CI?.toLowerCase().includes(filterValue.toLowerCase()),
-      )
-    }
-
-    // Si hay filtros activos (statusFilter o genderFilter)
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== columnsData?.statusOptions?.length
     ) {
-      const filterFields = ['status', 'gender'] // Puedes agregar aquí cualquier campo que desees filtrar
+      const filterFields = ['status', 'gender']
       filteredUsers = filteredUsers.filter((item) => {
-        return filterFields.some((field) => Array.from(statusFilter).includes(item[field]))
+        return filterFields.every((field) => Array.from(statusFilter).includes(item[field]))
       })
     }
 
@@ -99,7 +95,6 @@ export const AppTable = ({
     <Table
       aria-label='Example table with custom cells, pagination and sorting'
       isCompact
-      selectionMode='multiple'
       className='h-full'
       classNames={{
         th: 'text-default-500',
@@ -148,7 +143,7 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent='Sin registros' items={sortedItems}>
+      <TableBody emptyContent={<EmptyTableContent />} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
@@ -158,6 +153,7 @@ export const AppTable = ({
                   columnKey={columnKey}
                   editAction={editAction}
                   deleteAction={deleteAction}
+                  dropdownAction={dropdownAction}
                 />
               </TableCell>
             )}
