@@ -4,15 +4,17 @@ import {
   Modal,
   Button,
   Select,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
+import { useModal } from '@renderer/hooks/useModal'
 import { RootState } from '@renderer/store'
 import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
+import { modalTypes } from '@renderer/hooks/useModal'
 import { setCurrentEditUserId } from '../../../features/usersSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -20,13 +22,9 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState({})
   const users = useSelector((state: RootState) => state.users.data)
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const currentUserIdEdit = useSelector((state: RootState) => state.users.currentUserIdEdit)
   const currentUserEdit = users.find((item) => item.id == currentUserIdEdit)
-
-  React.useEffect(() => {
-    if (currentUserIdEdit !== -1) onOpen()
-  }, [currentUserIdEdit])
+  const [isOpen, toggleModal] = useModal(modalTypes.editItemTableModal)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const name = e.target.name
@@ -41,10 +39,10 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentEditUserId(-1))
 
-  const handleAddNewUser = async () => {
+  const onSubmit = async () => {
     modal.action(data, currentUserEdit)
     handleResetCurrentIdEdit()
-    onClose()
+    toggleModal()
   }
 
   return (
@@ -53,7 +51,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
         isOpen={isOpen}
         onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
       >
         <ModalContent>
@@ -96,6 +94,20 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
                 </Select>
               ))}
             </div>
+            <div className='flex w-full flex-col gap-4'>
+              {modal?.textArea?.map((item, index: number) => (
+                <Textarea
+                  key={index}
+                  name={item.name}
+                  label={item.label}
+                  onChange={handleChange}
+                  className='default-text-color'
+                  labelPlacement='outside'
+                  defaultValue={currentUserEdit && currentUserEdit[item.name]}
+                  placeholder={item.placeholder}
+                />
+              ))}
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button
@@ -103,12 +115,12 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
               variant='light'
               onPress={() => {
                 handleResetCurrentIdEdit()
-                onClose()
+                toggleModal()
               }}
             >
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button color='primary' onPress={() => onSubmit()}>
               Guardar
             </Button>
           </ModalFooter>
