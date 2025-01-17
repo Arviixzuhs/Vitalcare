@@ -19,26 +19,8 @@ export class ClinicalStaffService {
       throw new BadRequestException('Ese personal clínico ya está registrado')
     }
 
-    return await this.prisma.clinicalStaff.create({
-      data: {
-        CI: data.CI,
-        age: data.age,
-        area: data.area,
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        avatar: data.avatar,
-        gender: data.gender,
-        address: data.address,
-        lastName: data.lastName,
-        egresados: data.egresados,
-        jubilados: data.jubilados,
-        placaCarro: data.placaCarro,
-        numeroHijos: data.numeroHijos,
-        tallaCamisas: data.tallaCamisas,
-        dependencias: data.dependencias,
-        cargoNominal: data.cargoNominal,
-      },
+    return this.prisma.clinicalStaff.create({
+      data,
     })
   }
 
