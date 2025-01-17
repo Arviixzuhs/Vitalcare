@@ -1,16 +1,25 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/TableUser'
-import { setUsers } from '@renderer/features/usersSlice'
 import { useDispatch } from 'react-redux'
 import { CreateNewUserModal } from '@renderer/components/Modals/newUser'
 import { EditUserProfileModal } from '@renderer/components/Modals/editUser'
 import { columnsData, modalInputs } from './data'
 import { deleteUser, addUser, editUser } from '@renderer/features/usersSlice'
-import { reqAddStaff, reqEditStaff, reqDeleteStaff, reqLoadAllStaff } from '@renderer/api/Requests'
+import { setCurrentEditUserId, setUsers } from '@renderer/features/usersSlice'
+import {
+  reqAddStaff,
+  reqEditStaff,
+  reqDeleteStaff,
+  reqLoadAllStaff,
+  reqSearchClinicalStaffByName,
+} from '@renderer/api/Requests'
+import { DropdownItemInteface } from '@renderer/components/TableUser/interfaces/ActionDropdown'
+import { modalTypes, useModal } from '@renderer/hooks/useModal'
 
 export const StaffTable = () => {
   const dispatch = useDispatch()
+  const [_, toggleEditItemModal] = useModal(modalTypes.editItemTableModal)
 
   React.useEffect(() => {
     const handleLoadInfo = async () => {
@@ -54,10 +63,20 @@ export const StaffTable = () => {
           toast.error(error.response.data.message)
         })
     },
+    search: (value: string) => {
+      if (value.length === 0) {
+        reqLoadAllStaff()
+          .then((res) => dispatch(setUsers(res.data)))
+          .catch(console.log)
+      }
+      reqSearchClinicalStaffByName(value)
+        .then((res) => dispatch(setUsers(res.data)))
+        .catch(console.log)
+    },
   }
 
   const newUserModal = {
-    title: 'Agrega a un nuevo personal',
+    title: 'Agregar personal',
     buttonTitle: 'Agregar personal',
     ...modalInputs,
     action: tableActions.create,
@@ -69,10 +88,27 @@ export const StaffTable = () => {
     action: tableActions.edit,
   }
 
+  const dropdownAction: DropdownItemInteface[] = [
+    {
+      key: 'edit',
+      title: 'Editar',
+      onPress: async (id) => {
+        toggleEditItemModal()
+        dispatch(setCurrentEditUserId(id))
+      },
+    },
+    {
+      key: 'delete',
+      title: 'Borrar',
+      onPress: async (id) => tableActions.delete(id),
+    },
+  ]
+
   return (
     <AppTable
       tableActions={tableActions}
       columnsData={columnsData}
+      dropdownAction={dropdownAction}
       addItemModal={<CreateNewUserModal modal={newUserModal} />}
       editItemModal={<EditUserProfileModal modal={editUserModal} />}
     />
