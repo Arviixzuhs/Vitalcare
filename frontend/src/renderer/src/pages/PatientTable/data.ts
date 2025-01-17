@@ -57,6 +57,20 @@ export const modalInputs = {
       label: 'Avatar',
     },
   ],
+  textArea: [
+    {
+      type: 'text',
+      name: 'reasonEntry',
+      label: 'Razón de ingreso',
+      placeholder: 'Ingresa la razón de ingreso',
+    },
+    {
+      type: 'text',
+      name: 'reasonDeath',
+      label: 'Razón de fallecimiento',
+      placeholder: 'Ingresa la razón de fallecimiento',
+    },
+  ],
   selectInputs: [
     {
       name: 'status',
