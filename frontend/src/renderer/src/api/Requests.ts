@@ -1,5 +1,13 @@
 import { api } from './axios'
 
+/* Rutas para manejar archivos */
+export const reqFileUpload = (formData: FormData) =>
+  api.post('/file/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
 /* Rutas para manejar a los pacientes */
 export const reqAddPatient = (data) => api.post('/patient/register', data)
 export const reqEditPatient = ({ data, id }) => api.put('/patient/update/' + id, data)
@@ -23,6 +31,8 @@ export const reqUpdateConsult = async ({ data, id }) => api.put('/consult/update
 export const reqGetAllConsults = async () => api.get('/consult/get-all')
 export const reqSearchConsultByPatientCI = (ci: string) =>
   api.get(`/consult/search-by-patient-dni/${ci}`)
+export const reqGetAllConsultsByPatientId = (patientId: number) =>
+  api.get(`/consult/get-all-by-patient-id/${patientId}`)
 
 /* Rutas para manejar al personal medico */
 export const reqAddStaff = (data) => api.post('/clinicalstaff/create', data)
@@ -33,3 +43,28 @@ export const reqGetHospitalStats = () => api.get('/hospital/get-stats')
 export const reqSearchClinicalStaffByName = (name: string) =>
   api.get(`/clinicalstaff/search-by-name?name=${name}`)
 export const reqGetClinicalStaffCountByDate = () => api.get('/clinicalstaff/count-by-date')
+
+/* Rutas para manejar notas */
+export const reqCreateNote = (data) => api.post('/note', data)
+export const reqUpdateNote = ({ data, id }) => api.patch(`/note/${id}`, data)
+export const reqDeleteNote = (id) => api.delete(`/note/${id}`)
+export const reqFindNoteById = (id) => api.get(`/note/${id}`)
+export const reqFindAllNotesByPatientId = (patientId) => api.get(`/note/patient/${patientId}`)
+
+/* Rutas para manejar diagnósticos */
+export const reqCreateDiagnostic = (data) => api.post('/diagnostic', data)
+export const reqUpdateDiagnostic = ({ data, id }) => api.patch(`/diagnostic/${id}`, data)
+export const reqDeleteDiagnostic = (id) => api.delete(`/diagnostic/${id}`)
+export const reqFindDiagnosticById = (id) => api.get(`/diagnostic/${id}`)
+export const reqFindAllDiagnosticsByPatientId = (patientId) =>
+  api.get(`/diagnostic/patient/${patientId}`)
+
+/* Rutas para manejar archivos */
+export const reqCreateFile = (data) => api.post('/drive/create-file', data)
+export const reqRenameFile = ({ id, newName }) => api.put(`/drive/rename-file/${id}`, { newName })
+export const reqDeleteFile = (id) => api.delete(`/drive/delete-file/${id}`)
+export const reqDeleteManyFiles = () => api.delete('/drive/delete-many')
+export const reqFindFileById = (id) => api.get(`/drive/find-file-by-id${id}`)
+export const reqFindManyFiles = () => api.get('/drive/find-many')
+export const reqFindFilesByFolderPath = (path) =>
+  api.get(`/drive/find-files-by-folder-path?path=${path}`)
