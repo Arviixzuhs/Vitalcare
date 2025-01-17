@@ -12,22 +12,15 @@ import { EditDocumentIcon } from '@renderer/components/Icons/EditDocumentIcon'
 import { VerticalDotsIcon } from '../Icons/VerticalDotsIcon'
 import { DeleteDocumentIcon } from '@renderer/components/Icons/DeleteDocumentIcon'
 import { DropdownActionProps } from '../TableUser/interfaces/DropdownActionProps'
+import { DropdownItemInteface } from '../TableUser/interfaces/ActionDropdown'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
-
-// Tipo para los items del dropdown
-interface DropdownItemType {
-  key: string
-  title: string
-  startContent?: React.ReactNode
-  onPress?: (id: string | number) => void // Acción que se ejecuta con el ID de la tabla
-}
 
 export const DropdownAction: React.FC<DropdownActionProps> = ({ dropdownItems, tableItemId }) => {
   const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
   // Estado para el item seleccionado
-  const [selectedItem, setSelectedItem] = useState<DropdownItemType | null>(null)
+  const [selectedItem, setSelectedItem] = useState<DropdownItemInteface | null>(null)
 
   // Confirmar la acción del modal
   const confirmAction = () => {
@@ -38,7 +31,7 @@ export const DropdownAction: React.FC<DropdownActionProps> = ({ dropdownItems, t
   }
 
   // Manejo de la acción del dropdown
-  const handleDropdownItemPress = (item: DropdownItemType) => {
+  const handleDropdownItemPress = (item: DropdownItemInteface) => {
     if (item.key === 'delete') {
       setSelectedItem(item) // Guarda el item seleccionado para usarlo en el modal
       onOpen()
@@ -94,7 +87,7 @@ export const DropdownAction: React.FC<DropdownActionProps> = ({ dropdownItems, t
           </Button>
         </DropdownTrigger>
         <DropdownMenu variant='faded' aria-label='Dropdown menu with icons' items={dropdownItems}>
-          {(item: DropdownItemType) => (
+          {(item: DropdownItemInteface) => (
             <DropdownItem
               key={item.key}
               className='default-text-color'
