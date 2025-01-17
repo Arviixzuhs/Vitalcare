@@ -1,14 +1,14 @@
 import React from 'react'
+import { RootState } from '@/store'
 import {
   Input,
   Button,
   Dropdown,
+  Selection,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { RootState } from '@/store'
-import { Selection } from '@nextui-org/react'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { capitalize } from '../utils'
 import { useSelector } from 'react-redux'
@@ -77,7 +77,7 @@ export const TopContent: React.FC<TopContentProps> = ({
           />
           <div className='flex gap-3'>
             {columnsData.statusOptions && (
-              <Dropdown>
+              <Dropdown maxHeight={3}>
                 <DropdownTrigger className='sm:flex'>
                   <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
                     Filtrar
@@ -100,7 +100,11 @@ export const TopContent: React.FC<TopContentProps> = ({
               </Dropdown>
             )}
             {columnsData.columns && (
-              <Dropdown>
+              <Dropdown
+                classNames={{
+                  base: 'max-h-[350px] overflow-y-scroll',
+                }}
+              >
                 <DropdownTrigger className='sm:flex'>
                   <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
                     Columnas
