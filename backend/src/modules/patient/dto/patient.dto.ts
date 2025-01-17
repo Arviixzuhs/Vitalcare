@@ -23,11 +23,13 @@ export class PatientDto {
 
   @ApiProperty({ description: 'Estado del paciente', enum: Status, example: Status.ALIVE })
   @IsEnum(Status)
-  status: Status
+  @IsOptional()
+  status?: Status
 
   @ApiProperty({ description: 'Género del paciente', enum: Gender, example: Gender.FEMALE })
   @IsEnum(Gender)
-  gender: Gender
+  @IsOptional()
+  gender?: Gender
 
   @ApiPropertyOptional({
     description: 'Avatar del paciente',
