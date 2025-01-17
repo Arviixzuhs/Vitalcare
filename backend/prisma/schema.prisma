@@ -41,53 +41,92 @@ model User {
   createdAt DateTime? @default(now())
 }
 
-model Patient {
+model Note {
   id          Int       @id @default(autoincrement())
-  CI          String    @unique
-  age         Int       @default(0)
-  name        String    @db.VarChar(30)
-  email       String    @unique @db.VarChar(30)
-  status      Status    @default(ALIVE)
-  gender      Gender    @default(MALE)
-  avatar      String    @default("") @db.VarChar(200)
-  lastName    String    @db.VarChar(30)
+  title       String    @default("") @db.VarChar(280)
+  patient     Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
   createdAt   DateTime? @default(now())
-  description String    @default("") @db.VarChar(30)
-  reasonEntry String    @default("") @db.VarChar(300)
-  reasonDeath String    @default("") @db.VarChar(300)
-  Consult     Consult[]
+  updatedAt   DateTime  @updatedAt
+  patientId   Int
+  description String    @default("") @db.VarChar(280)
+}
+
+model Diagnostic {
+  id          Int            @id @default(autoincrement())
+  doctor      ClinicalStaff? @relation(fields: [doctorId], references: [id])
+  patient     Patient?       @relation(fields: [patientId], references: [id])
+  doctorId    Int?
+  patientId   Int?
+  createdAt   DateTime?      @default(now())
+  updatedAt   DateTime       @updatedAt
+  condition   String         @default("") @db.VarChar(280)
+  description String         @default("") @db.VarChar(280)
+}
+
+model FileEntity {
+  id          Int      @id @default(autoincrement())
+  name        String
+  path        String   @unique
+  size        Int?
+  fileURL     String?
+  isFolder    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  contentType String?
+}
+
+model Patient {
+  id          Int           @id @default(autoincrement())
+  CI          String        @unique
+  age         Int           @default(0)
+  name        String        @db.VarChar(30)
   Room        Room[]
+  note        Note[]
+  email       String        @unique @db.VarChar(30)
+  status      Status        @default(ALIVE)
+  gender      Gender        @default(MALE)
+  avatar      String        @default("") @db.VarChar(200)
+  consult     Consult[]
+  lastName    String        @db.VarChar(30)
+  createdAt   DateTime?     @default(now())
+  diagnostic  Diagnostic[]
+  description String        @default("") @db.VarChar(30)
+  reasonEntry String        @default("") @db.VarChar(300)
+  reasonDeath String        @default("") @db.VarChar(300)
 }
 
 model Consult {
   id        Int            @id @default(autoincrement())
   date      DateTime       @default(now())
-  patient   Patient?       @relation(fields: [patientId], references: [id])
-  patientId Int?
   doctor    ClinicalStaff? @relation(fields: [doctorId], references: [id])
-  doctorId  Int?
   reason    String         @default("") @db.VarChar(400)
+  patient   Patient?       @relation(fields: [patientId], references: [id])
+  doctorId  Int?
+  patientId Int?
 }
 
 model ClinicalStaff {
-  id           Int       @id @default(autoincrement())
-  age          Int
-  name         String    @default("") @db.VarChar(30)
-  lastName     String    @default("") @db.VarChar(30)
-  CI           String    @unique
-  placaCarro   String    @default("") @db.VarChar(30)
-  numeroHijos  String    @default("0")
-  area         String    @default("") @db.VarChar(30)
-  gender       Gender    @default(MALE)
-  createdAt    DateTime? @default(now())
-  jubilados    String    @default("") @db.VarChar(30)
-  egresados    String    @default("") @db.VarChar(30)
-  tallaCamisas String    @default("") @db.VarChar(30)
-  dependencias String    @default("") @db.VarChar(30)
-  cargoNominal String    @default("") @db.VarChar(30)
-  phone        String    @default("") @db.VarChar(30)
-  email        String    @default("") @db.VarChar(30)
-  address      String    @default("") @db.VarChar(30)
-  avatar       String    @default("") @db.VarChar(200)
-  Consult      Consult[]
+  id              Int          @id @default(autoincrement())
+  CI              String       @unique
+  age             Int
+  name            String?      @default("") @db.VarChar(30)
+  area            String?      @default("") @db.VarChar(30)
+  type            String?      @default("") @db.VarChar(80)
+  phone           String?      @default("") @db.VarChar(30)
+  email           String?      @default("") @db.VarChar(30)
+  gender          Gender       @default(MALE)
+  consult         Consult[]
+  avatar          String?      @default("") @db.VarChar(200)
+  address         String?      @default("") @db.VarChar(30)
+  lastName        String?      @default("") @db.VarChar(30)
+  createdAt       DateTime     @default(now())
+  jubilados       String?      @default("") @db.VarChar(30)
+  egresados       String?      @default("") @db.VarChar(30)
+  diagnostic      Diagnostic[]
+  placaCarro      String?      @default("") @db.VarChar(30)
+  numeroHijos     String?      @default("0")
+  tallaCamisas    String?      @default("") @db.VarChar(30)
+  dependencias    String?      @default("") @db.VarChar(30)
+  cargoNominal    String?      @default("") @db.VarChar(30)
+  ubicacionFiscal String?      @default("") @db.VarChar(80)
 }
