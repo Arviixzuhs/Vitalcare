@@ -1,7 +1,7 @@
 import React from 'react'
 import toast from 'react-hot-toast'
+import { MdPerson } from 'react-icons/md'
 import { AppTable } from '@renderer/components/TableUser'
-import { setUsers } from '@renderer/features/usersSlice'
 import { useDispatch } from 'react-redux'
 import {
   reqAddPatient,
@@ -9,13 +9,20 @@ import {
   reqDeletePatient,
   reqLoadAllPatients,
 } from '@renderer/api/Requests'
+import { PatientHistory } from '@renderer/components/Modals/history'
 import { CreateNewUserModal } from '@renderer/components/Modals/newUser'
 import { EditUserProfileModal } from '@renderer/components/Modals/editUser'
+import { DropdownItemInteface } from '@renderer/components/TableUser/interfaces/ActionDropdown'
+import { modalTypes, useModal } from '@renderer/hooks/useModal'
+import { reqSearchPatientByName } from '@renderer/api/Requests'
 import { columnsData, modalInputs } from './data'
 import { deleteUser, addUser, editUser } from '@renderer/features/usersSlice'
+import { setCurrentEditUserId, setUsers } from '@renderer/features/usersSlice'
 
 export const PatientTable = () => {
   const dispatch = useDispatch()
+  const [_, toggleEditItemModal] = useModal(modalTypes.editItemTableModal)
+  const [__, toggleViewPatientProfileModal] = useModal(modalTypes.viewPatientProfileModal)
 
   React.useEffect(() => {
     const handleLoadInfo = async () => {
@@ -55,10 +62,20 @@ export const PatientTable = () => {
         toast.success('Paciente editado correctamente')
       })
     },
+    search: (value: string) => {
+      if (value.length === 0) {
+        reqLoadAllPatients()
+          .then((res) => dispatch(setUsers(res.data)))
+          .catch(console.log)
+      }
+      reqSearchPatientByName(value)
+        .then((res) => dispatch(setUsers(res.data)))
+        .catch(console.log)
+    },
   }
 
   const newUserModal = {
-    title: 'Agrega a un nuevo paciente',
+    title: 'Agrega un nuevo paciente',
     buttonTitle: 'Agregar paciente',
     ...modalInputs,
     action: tableActions.create,
@@ -70,12 +87,41 @@ export const PatientTable = () => {
     action: tableActions.edit,
   }
 
+  const dropdownAction: DropdownItemInteface[] = [
+    {
+      key: 'profile',
+      title: 'Perfil',
+      onPress: async (id) => {
+        dispatch(setCurrentEditUserId(id))
+        toggleViewPatientProfileModal()
+      },
+      startContent: <MdPerson />,
+    },
+    {
+      key: 'edit',
+      title: 'Editar',
+      onPress: async (id) => {
+        toggleEditItemModal()
+        dispatch(setCurrentEditUserId(id))
+      },
+    },
+    {
+      key: 'delete',
+      title: 'Borrar',
+      onPress: async (id) => tableActions.delete(id),
+    },
+  ]
+
   return (
-    <AppTable
-      columnsData={columnsData}
-      tableActions={tableActions}
-      addItemModal={<CreateNewUserModal modal={newUserModal} />}
-      editItemModal={<EditUserProfileModal modal={editUserModal} />}
-    />
+    <>
+      <PatientHistory />
+      <AppTable
+        columnsData={columnsData}
+        tableActions={tableActions}
+        dropdownAction={dropdownAction}
+        addItemModal={<CreateNewUserModal modal={newUserModal} />}
+        editItemModal={<EditUserProfileModal modal={editUserModal} />}
+      />
+    </>
   )
 }
