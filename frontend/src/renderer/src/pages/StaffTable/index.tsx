@@ -75,9 +75,12 @@ export const StaffTable = () => {
         .then((res) => dispatch(setUsers(res.data)))
         .catch(console.log)
     },
-    load: async () => {
-      const response = await reqLoadAllStaff()
-      dispatch(setUsers(response.data))
+    load: () => {
+      reqLoadAllStaff()
+        .then((res) => {
+          dispatch(setUsers(res.data))
+        })
+        .catch(console.log)
     },
   }
 

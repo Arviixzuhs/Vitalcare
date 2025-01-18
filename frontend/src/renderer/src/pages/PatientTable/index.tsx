@@ -69,9 +69,12 @@ export const PatientTable = () => {
         .then((res) => dispatch(setUsers(res.data)))
         .catch(console.log)
     },
-    load: async () => {
-      const response = await reqLoadAllPatients()
-      dispatch(setUsers(response.data))
+    load: () => {
+      reqLoadAllPatients()
+        .then((res) => {
+          dispatch(setUsers(res.data))
+        })
+        .catch(console.log)
     },
   }
 
