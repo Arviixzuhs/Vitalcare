@@ -27,7 +27,8 @@ export const AppTable = ({
 }: AppTableInterface) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
-  const users = useSelector((state: RootState) => state.users.data)
+  const table = useSelector((state: RootState) => state.users)
+  const users = table.data
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')
@@ -48,8 +49,13 @@ export const AppTable = ({
   }, [visibleColumns])
 
   React.useEffect(() => {
+    if (filterValue.length === 0) {
+      tableActions.load()
+    }
     if (tableActions && tableActions.search) {
-      tableActions.search(filterValue)
+      if (filterValue.length > 2) {
+        tableActions.search(filterValue)
+      }
     }
   }, [filterValue])
 
