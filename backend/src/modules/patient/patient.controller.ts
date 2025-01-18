@@ -5,6 +5,7 @@ import { EditPatientDto } from './dto/edit-patient.dto'
 import { SearchPatientDto } from './dto/search-patient.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Get, Put, Post, Body, Param, Query, Delete, Controller } from '@nestjs/common'
+import { FindAllPatientsDto } from './dto/find-all-patients.dto'
 
 @Controller('/patient')
 @ApiTags('Patient')
@@ -23,8 +24,8 @@ export class PatientController {
   }
 
   @Get('/get-all')
-  getAllUsers(): Promise<Patient[]> {
-    return this.patientService.getAllPatients()
+  getAllUsers(@Query() query: FindAllPatientsDto): Promise<Patient[]> {
+    return this.patientService.getAllPatients(query.startDate, query.endDate)
   }
 
   @Delete('/delete/:id')

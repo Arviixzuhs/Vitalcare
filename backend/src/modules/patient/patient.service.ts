@@ -68,8 +68,25 @@ export class PatientService {
     })
   }
 
-  getAllPatients(): Promise<Patient[]> {
-    return this.prisma.patient.findMany()
+  getAllPatients(startDate?: string, endDate?: string): Promise<Patient[]> {
+    let dateFilter = {}
+
+    if (startDate && endDate) {
+      const gte = new Date(`${startDate}T00:00:00.000Z`)
+      const lte = new Date(`${endDate}T23:59:59.999Z`)
+      dateFilter = {
+        createdAt: {
+          gte,
+          lte,
+        },
+      }
+    }
+
+    return this.prisma.patient.findMany({
+      where: {
+        AND: [dateFilter],
+      },
+    })
   }
 
   async updatePatient(id: number, data: EditPatientDto): Promise<Patient> {
@@ -99,7 +116,24 @@ export class PatientService {
     }))
   }
 
-  searchPatientByName(searchValue: string, startDate: Date, endDate: Date): Promise<Patient[]> {
+  async searchPatientByName(
+    searchValue: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<Patient[]> {
+    let dateFilter = {}
+
+    if (startDate && endDate) {
+      const gte = new Date(`${startDate}T00:00:00.000Z`)
+      const lte = new Date(`${endDate}T23:59:59.999Z`)
+      dateFilter = {
+        createdAt: {
+          gte,
+          lte,
+        },
+      }
+    }
+
     return this.prisma.patient.findMany({
       where: {
         AND: [
@@ -131,13 +165,8 @@ export class PatientService {
               },
             ],
           },
-          {
-            createdAt: {
-              gte: startDate,
-              lte: endDate,
-            },
-          },
-        ],
+          dateFilter,
+        ].filter((condition) => Object.keys(condition).length > 0),
       },
     })
   }

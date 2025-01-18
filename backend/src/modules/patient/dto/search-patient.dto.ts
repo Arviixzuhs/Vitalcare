@@ -9,12 +9,12 @@ export class SearchPatientDto {
   name?: string
 
   @ApiProperty({ description: 'Fecha de inicio del rango de búsqueda', example: '2023-01-01' })
-  @IsDate()
+  @IsString()
   @IsOptional()
-  startDate?: Date
+  startDate?: string
 
   @ApiProperty({ description: 'Fecha de fin del rango de búsqueda', example: '2023-12-31' })
-  @IsDate()
+  @IsString()
   @IsOptional()
-  endDate?: Date
+  endDate?: string
 }
