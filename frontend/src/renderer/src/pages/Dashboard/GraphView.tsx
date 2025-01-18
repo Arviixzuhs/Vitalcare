@@ -1,13 +1,10 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
+import { RootState } from '@renderer/store'
+import { useSelector } from 'react-redux'
 import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 import { ColorType, createChart } from 'lightweight-charts'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
-import {
-  reqGetPatientsCountByDate,
-  reqGetPatientsCountByGender,
-  reqGetClinicalStaffCountByDate,
-} from '@renderer/api/Requests'
 
 const ChartComponent = ({ data, colors }) => {
   const chartContainerRef = React.useRef<HTMLDivElement>(null)
@@ -64,30 +61,12 @@ const ChartComponent = ({ data, colors }) => {
 }
 
 export const GraphView = () => {
-  const [patientsCount, setPatientsCount] = React.useState([])
-  const [clinicalStaffsCount, setClinicalStaffsCount] = React.useState([])
-  const [patientsCountByGender, setPatientCountByGender] = React.useState([])
-
-  React.useEffect(() => {
-    reqGetPatientsCountByDate()
-      .then((res) => setPatientsCount(res.data))
-      .catch(() => setPatientsCount([]))
-
-    reqGetClinicalStaffCountByDate()
-      .then((res) => setClinicalStaffsCount(res.data))
-      .catch(() => setClinicalStaffsCount([]))
-
-    reqGetPatientsCountByGender()
-      .then((res) => {
-        const formattedData = res.data.map((item) => ({
-          title: `${item.gender === 'FEMALE' ? 'Mujeres' : 'Hombres'}: ${item.count}`,
-          value: item.count,
-          color: item.gender === 'FEMALE' ? 'rgba(160, 214, 255)' : 'rgba(0, 123, 255)',
-        }))
-        setPatientCountByGender(formattedData)
-      })
-      .catch(() => setPatientCountByGender([]))
-  }, [])
+  const hospitalStats = useSelector((state: RootState) => state.hospital)
+  const PieChartData = hospitalStats.patientsCountByGender.map((item) => ({
+    title: `${item.gender === 'FEMALE' ? 'Mujeres' : 'Hombres'}: ${item.count}`,
+    value: item.count,
+    color: item.gender === 'FEMALE' ? 'rgba(160, 214, 255)' : 'rgba(0, 123, 255)',
+  }))
 
   const graphList = [
     {
@@ -99,7 +78,7 @@ export const GraphView = () => {
         areaTopColor: '#007BFF',
         areaBottomColor: 'rgba(0, 123, 255, 0.1)',
       },
-      initialData: patientsCount,
+      initialData: hospitalStats.patientsCount,
     },
     {
       title: 'Frecuencia de personal',
@@ -110,7 +89,7 @@ export const GraphView = () => {
         areaTopColor: '#4C9EFF',
         areaBottomColor: 'rgba(76, 159, 255, 0.1)',
       },
-      initialData: clinicalStaffsCount,
+      initialData: hospitalStats.clinicalStaffsCount,
     },
   ]
 
@@ -121,8 +100,8 @@ export const GraphView = () => {
           <h3 className='font-medium'>Resumen de estadísticas</h3>
         </CardHeader>
         <CardBody className='flex items-center justify-center'>
-          {patientsCountByGender.length > 0 ? (
-            <PieChart style={{ maxWidth: '220px' }} data={patientsCountByGender} />
+          {hospitalStats.patientsCountByGender.length > 0 ? (
+            <PieChart style={{ maxWidth: '220px' }} data={PieChartData} />
           ) : (
             <EmptyContent description='No hay datos de género disponibles' />
           )}
