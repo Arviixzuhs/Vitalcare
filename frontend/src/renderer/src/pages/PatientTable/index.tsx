@@ -2,7 +2,8 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { MdPerson } from 'react-icons/md'
 import { AppTable } from '@renderer/components/TableUser'
-import { useDispatch } from 'react-redux'
+import { RootState } from '@renderer/store'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   reqAddPatient,
   reqEditPatient,
@@ -21,16 +22,17 @@ import { setCurrentEditUserId, setUsers } from '@renderer/features/usersSlice'
 
 export const PatientTable = () => {
   const dispatch = useDispatch()
+  const table = useSelector((state: RootState) => state.users)
   const [_, toggleEditItemModal] = useModal(modalTypes.editItemTableModal)
   const [__, toggleViewPatientProfileModal] = useModal(modalTypes.viewPatientProfileModal)
 
   React.useEffect(() => {
     const handleLoadInfo = async () => {
-      const response = await reqLoadAllPatients()
+      const response = await reqLoadAllPatients(table.dateFilter.start, table.dateFilter.end)
       dispatch(setUsers(response.data))
     }
     handleLoadInfo()
-  }, [])
+  }, [table.dateFilter])
 
   const tableActions = {
     delete: (id: number) => {
@@ -63,14 +65,13 @@ export const PatientTable = () => {
       })
     },
     search: (value: string) => {
-      if (value.length === 0) {
-        reqLoadAllPatients()
-          .then((res) => dispatch(setUsers(res.data)))
-          .catch(console.log)
-      }
-      reqSearchPatientByName(value)
+      reqSearchPatientByName(value, table.dateFilter.start, table.dateFilter.end)
         .then((res) => dispatch(setUsers(res.data)))
         .catch(console.log)
+    },
+    load: async () => {
+      const response = await reqLoadAllPatients()
+      dispatch(setUsers(response.data))
     },
   }
 
@@ -118,9 +119,9 @@ export const PatientTable = () => {
       <AppTable
         columnsData={columnsData}
         tableActions={tableActions}
-        dropdownAction={dropdownAction}
         addItemModal={<CreateNewUserModal modal={newUserModal} />}
         editItemModal={<EditUserProfileModal modal={editUserModal} />}
+        dropdownAction={dropdownAction}
       />
     </>
   )
