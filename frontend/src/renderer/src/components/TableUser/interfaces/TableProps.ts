@@ -14,6 +14,7 @@ export interface ColumnsData {
 
 export interface TableActions {
   edit: (data: unknown, currentUserEdit: unknown) => void
+  load: () => void
   delete: (id: number) => void
   create: (data: unknown) => void
   search?: (value: string) => void
