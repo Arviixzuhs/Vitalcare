@@ -17,7 +17,7 @@ export interface TableActions {
   load: () => void
   delete: (id: number) => void
   create: (data: unknown) => void
-  search?: (value: string) => void
+  search: (value: string) => void
 }
 
 export interface ModalProps {
