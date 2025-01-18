@@ -14,6 +14,7 @@ import { capitalize } from '../utils'
 import { useSelector } from 'react-redux'
 import { ColumnsData } from '../interfaces/TableProps'
 import { ChevronDownIcon } from '@renderer/components/Icons/ChevronDownIcon'
+import { FilterByDatePicker } from './FilterByDate'
 
 interface TopContentProps {
   setPage: React.Dispatch<React.SetStateAction<number>>
@@ -43,7 +44,7 @@ export const TopContent: React.FC<TopContentProps> = ({
   setVisibleColumns,
 }) => {
   const table = useSelector((state: RootState) => state.users.data)
-  const onRowsPerPageChange = (e) => {
+  const onRowsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)
   }
@@ -76,6 +77,7 @@ export const TopContent: React.FC<TopContentProps> = ({
             onValueChange={onSearchChange}
           />
           <div className='flex gap-3'>
+            <FilterByDatePicker />
             {columnsData.statusOptions && (
               <Dropdown maxHeight={3}>
                 <DropdownTrigger className='sm:flex'>
