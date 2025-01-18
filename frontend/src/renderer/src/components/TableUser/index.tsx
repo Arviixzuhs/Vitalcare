@@ -16,7 +16,7 @@ import {
   SortDescriptor,
 } from '@nextui-org/react'
 import { AppTableInterface } from './interfaces/TableProps'
-import { EmptyTableContent } from './components/EmptyContent'
+import { EmptyContent } from './components/EmptyContent'
 
 export const AppTable = ({
   columnsData,
@@ -146,7 +146,7 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={<EmptyTableContent />} items={sortedItems}>
+      <TableBody emptyContent={<EmptyContent />} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

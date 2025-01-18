@@ -26,7 +26,7 @@ import {
   setCurrentConsultId,
   setCurrentConsultDate,
 } from '@renderer/features/consultSlice'
-import { EmptyTableContent } from '@renderer/components/TableUser/components/EmptyContent'
+import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 
 export const Consults = () => {
   const dispatch = useDispatch()
@@ -179,7 +179,7 @@ export const Consults = () => {
           <TableHeader columns={columns}>
             {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
           </TableHeader>
-          <TableBody items={filteredData} emptyContent={<EmptyTableContent />}>
+          <TableBody items={filteredData} emptyContent={<EmptyContent />}>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => (

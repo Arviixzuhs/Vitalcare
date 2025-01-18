@@ -3,7 +3,7 @@ import { NoteModel } from '@renderer/interfaces/noteModel'
 import { RootState } from '@renderer/store'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { DiagnosticModel } from '@renderer/interfaces/diagnosticModel'
-import { EmptyTableContent } from '@renderer/components/TableUser/components/EmptyContent'
+import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 import { modalTypes, useModal } from '@renderer/hooks/useModal'
 import { setCurrentEditItemId } from '@renderer/features/tablePerTabSlice'
 import { newParseDateWithTime } from '@renderer/utils/newParseDate'
@@ -90,7 +90,7 @@ export const TabTable: React.FC<TableProps> = ({ addItemModal, editItemModal, ta
             <TableColumn key={index}>{column.title}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody emptyContent={<EmptyTableContent />}>
+        <TableBody emptyContent={<EmptyContent />}>
           {table.data[table.currentTab]?.map((row, index) => (
             <TableRow key={index}>
               {table.columns.map((column, columnIndex) => (

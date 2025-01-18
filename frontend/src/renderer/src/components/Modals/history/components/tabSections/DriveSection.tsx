@@ -24,8 +24,8 @@ import {
   reqFindFilesByFolderPath,
 } from '@renderer/api/Requests'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
-import { EmptyTableContent } from '@renderer/components/TableUser/components/EmptyContent'
 import { RootState } from '@renderer/store'
+import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 import {
   Edit,
   Trash2,
@@ -344,7 +344,7 @@ export const DriveSection = () => {
             </div>
           ) : (
             <div className='flex justify-center items-center'>
-              <EmptyTableContent />
+              <EmptyContent />
             </div>
           )}
         </CardBody>
