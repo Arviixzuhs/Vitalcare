@@ -1,7 +1,6 @@
 import { Consult } from '@renderer/interfaces/consultModel'
 import { NoteModel } from '@renderer/interfaces/noteModel'
 import { RootState } from '@renderer/store'
-import { TableActions } from '@renderer/components/TableUser/interfaces/TableProps'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { DiagnosticModel } from '@renderer/interfaces/diagnosticModel'
 import { EmptyTableContent } from '@renderer/components/TableUser/components/EmptyContent'
@@ -10,6 +9,12 @@ import { setCurrentEditItemId } from '@renderer/features/tablePerTabSlice'
 import { newParseDateWithTime } from '@renderer/utils/newParseDate'
 import { useDispatch, useSelector } from 'react-redux'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
+
+interface TableActions {
+  edit: (data: unknown) => void
+  delete: (id: number) => void
+  create: (data: unknown) => void
+}
 
 interface TableProps {
   addItemModal?: React.ReactElement
