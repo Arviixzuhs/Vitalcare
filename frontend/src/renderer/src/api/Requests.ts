@@ -1,5 +1,5 @@
 import { api } from './axios'
-
+import { paramsConstructor } from '@renderer/utils/paramsConstructor'
 /* Rutas para manejar archivos */
 export const reqFileUpload = (formData: FormData) =>
   api.post('/file/upload', formData, {
@@ -12,9 +12,23 @@ export const reqFileUpload = (formData: FormData) =>
 export const reqAddPatient = (data) => api.post('/patient/register', data)
 export const reqEditPatient = ({ data, id }) => api.put('/patient/update/' + id, data)
 export const reqDeletePatient = (id) => api.delete('/patient/delete/' + id)
-export const reqLoadAllPatients = () => api.get('/patient/get-all')
-export const reqSearchPatientByName = (name: string) =>
-  api.get(`/patient/search-by-name?name=${name}`)
+export const reqLoadAllPatients = (startDate?: string, endDate?: string) => {
+  const params = paramsConstructor([
+    { name: 'startDate', value: startDate ?? null },
+    { name: 'endDate', value: endDate ?? null },
+  ])
+  return api.get(`/patient/get-all?${params.toString()}`)
+}
+
+export const reqSearchPatientByName = (name: string, startDate?: string, endDate?: string) => {
+  const params = paramsConstructor([
+    { name: 'name', value: name ?? null },
+    { name: 'startDate', value: startDate ?? null },
+    { name: 'endDate', value: endDate ?? null },
+  ])
+  return api.get(`/patient/search-by-name?${params.toString()}`)
+}
+
 export const reqGetPatientsCountByDate = () => api.get('/patient/count-by-date')
 export const reqGetPatientsCountByGender = () => api.get('/patient/count-by-gender')
 
@@ -38,7 +52,13 @@ export const reqGetAllConsultsByPatientId = (patientId: number) =>
 export const reqAddStaff = (data) => api.post('/clinicalstaff/create', data)
 export const reqEditStaff = ({ data, id }) => api.patch('/clinicalstaff/update/' + id, data)
 export const reqDeleteStaff = (id) => api.delete('/clinicalstaff/delete/' + id)
-export const reqLoadAllStaff = () => api.get('/clinicalstaff/get-all')
+export const reqLoadAllStaff = (startDate?: string, endDate?: string) => {
+  const params = paramsConstructor([
+    { name: 'startDate', value: startDate ?? null },
+    { name: 'endDate', value: endDate ?? null },
+  ])
+  return api.get(`/clinicalstaff/get-all?${params.toString()}`)
+}
 export const reqGetHospitalStats = () => api.get('/hospital/get-stats')
 export const reqSearchClinicalStaffByName = (name: string) =>
   api.get(`/clinicalstaff/search-by-name?name=${name}`)
