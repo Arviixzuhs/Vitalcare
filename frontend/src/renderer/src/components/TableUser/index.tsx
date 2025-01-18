@@ -51,11 +51,8 @@ export const AppTable = ({
   React.useEffect(() => {
     if (filterValue.length === 0) {
       tableActions.load()
-    }
-    if (tableActions && tableActions.search) {
-      if (filterValue.length > 2) {
-        tableActions.search(filterValue)
-      }
+    } else {
+      tableActions.search(filterValue)
     }
   }, [filterValue])
 
