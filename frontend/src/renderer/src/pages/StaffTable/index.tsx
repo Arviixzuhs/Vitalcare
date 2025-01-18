@@ -1,9 +1,12 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/TableUser'
-import { useDispatch } from 'react-redux'
+import { RootState } from '@renderer/store'
 import { CreateNewUserModal } from '@renderer/components/Modals/newUser'
 import { EditUserProfileModal } from '@renderer/components/Modals/editUser'
+import { modalTypes, useModal } from '@renderer/hooks/useModal'
+import { DropdownItemInteface } from '@renderer/components/TableUser/interfaces/ActionDropdown'
+import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { deleteUser, addUser, editUser } from '@renderer/features/usersSlice'
 import { setCurrentEditUserId, setUsers } from '@renderer/features/usersSlice'
@@ -14,20 +17,19 @@ import {
   reqLoadAllStaff,
   reqSearchClinicalStaffByName,
 } from '@renderer/api/Requests'
-import { DropdownItemInteface } from '@renderer/components/TableUser/interfaces/ActionDropdown'
-import { modalTypes, useModal } from '@renderer/hooks/useModal'
 
 export const StaffTable = () => {
   const dispatch = useDispatch()
+  const table = useSelector((state: RootState) => state.users)
   const [_, toggleEditItemModal] = useModal(modalTypes.editItemTableModal)
 
   React.useEffect(() => {
     const handleLoadInfo = async () => {
-      const response = await reqLoadAllStaff()
+      const response = await reqLoadAllStaff(table.dateFilter.start, table.dateFilter.end)
       dispatch(setUsers(response.data))
     }
     handleLoadInfo()
-  }, [])
+  }, [table.dateFilter])
 
   const tableActions = {
     delete: (id: number) => {
@@ -73,6 +75,10 @@ export const StaffTable = () => {
         .then((res) => dispatch(setUsers(res.data)))
         .catch(console.log)
     },
+    load: async () => {
+      const response = await reqLoadAllStaff()
+      dispatch(setUsers(response.data))
+    },
   }
 
   const newUserModal = {
@@ -106,11 +112,11 @@ export const StaffTable = () => {
 
   return (
     <AppTable
-      tableActions={tableActions}
       columnsData={columnsData}
-      dropdownAction={dropdownAction}
+      tableActions={tableActions}
       addItemModal={<CreateNewUserModal modal={newUserModal} />}
       editItemModal={<EditUserProfileModal modal={editUserModal} />}
+      dropdownAction={dropdownAction}
     />
   )
 }
