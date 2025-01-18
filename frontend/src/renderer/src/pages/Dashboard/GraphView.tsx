@@ -53,7 +53,7 @@ const ChartComponent = ({ data, colors }) => {
     }
   }, [data, colors, theme])
 
-  if (!data || data.length < 0) {
+  if (!data || data.length === 0) {
     return <EmptyContent description='Las métricas se verán aquí' />
   }
 
