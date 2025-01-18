@@ -32,8 +32,25 @@ export class ClinicalStaffService {
     })
   }
 
-  getAllClinicalStaff(): Promise<ClinicalStaff[]> {
-    return this.prisma.clinicalStaff.findMany()
+  getAllClinicalStaff(startDate?: string, endDate?: string): Promise<ClinicalStaff[]> {
+    let dateFilter = {}
+
+    if (startDate && endDate) {
+      const gte = new Date(`${startDate}T00:00:00.000Z`)
+      const lte = new Date(`${endDate}T23:59:59.999Z`)
+      dateFilter = {
+        createdAt: {
+          gte,
+          lte,
+        },
+      }
+    }
+
+    return this.prisma.clinicalStaff.findMany({
+      where: {
+        AND: [dateFilter],
+      },
+    })
   }
 
   async updateClinicalStaff(id: number, data: EditClinicalStaffDto): Promise<ClinicalStaff> {

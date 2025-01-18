@@ -15,6 +15,7 @@ import {
   Controller,
   ParseIntPipe,
 } from '@nestjs/common'
+import { FindAllClinicalStaffDto } from './dto/find-all-clinical-staff.dto'
 
 @Controller('/clinicalstaff')
 @ApiTags('Clinical staff')
@@ -33,8 +34,8 @@ export class ClinicalStaffController {
   }
 
   @Get('/get-all')
-  getAll(): Promise<ClinicalStaff[]> {
-    return this.clinicalStaffService.getAllClinicalStaff()
+  getAll(@Query() query: FindAllClinicalStaffDto): Promise<ClinicalStaff[]> {
+    return this.clinicalStaffService.getAllClinicalStaff(query.startDate, query.endDate)
   }
 
   @Delete('/delete/:id')
