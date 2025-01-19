@@ -28,8 +28,8 @@ export const SelectAvatar: React.FC<SelectAvatarProps> = ({ defaultAvatarURL }) 
   return (
     <div className='flex flex-col gap-2'>
       <h3 className='default-text-color text-sm'>Avatar</h3>
-      <label htmlFor='selectAvatar' className='default-text-color cursor-pointer'>
-        <div className='relative hover:opacity-75 transition overflow-hidden border rounded-2xl border-dashed w-28 h-28 justify-center flex items-center'>
+      <label htmlFor='selectAvatar' className='default-text-color w-28 h-28'>
+        <div className='relative  cursor-pointer hover:opacity-75 transition overflow-hidden border rounded-2xl border-dashed w-full h-full justify-center flex items-center'>
           <Camera className='default-text-color z-50 absolute' />
           {previewURL && (
             <img src={previewURL} alt='Avatar Preview' className='w-full h-full object-cover' />
