@@ -69,7 +69,8 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   }, [data, modal.inputs])
 
   const onSubmit = async () => {
-    let avatar = ''
+    let avatar = null
+    
     if (currentAvatarFile) {
       const formData = new FormData()
       formData.append('file', currentAvatarFile)
@@ -83,7 +84,9 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
       return
     }
 
-    modal.action({ ...data, avatar })
+    const dataToSend = avatar ? { ...data, avatar } : { ...data }
+
+    modal.action(dataToSend)
     setIsSubmitted(true)
     onClose()
   }

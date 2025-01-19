@@ -45,6 +45,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
 
   const onSubmit = async () => {
     let avatar = null
+    
     if (currentAvatarFile) {
       const formData = new FormData()
       formData.append('file', currentAvatarFile)
