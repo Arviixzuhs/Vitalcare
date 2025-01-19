@@ -14,6 +14,9 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
+import { SelectAvatar } from '@renderer/components/SelectAvatar'
+import { reqFileUpload } from '@renderer/api/Requests'
+import { useCurrentAvatarFile } from '@renderer/hooks/useCurrentAvatarFile'
 
 export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   const [data, setData] = React.useState<Record<string, string>>({})
@@ -21,6 +24,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [missingFields, setMissingFields] = React.useState<string[]>([])
   const [invalidEmails, setInvalidEmails] = React.useState<string[]>([])
+  const { currentAvatarFile } = useCurrentAvatarFile()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -50,7 +54,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     setIsSubmitted(false)
     setMissingFields([])
     setInvalidEmails([])
-  }, [isOpen, onClose])
+  }, [])
 
   React.useEffect(() => {
     const requiredInputs = modal.inputs?.filter((input) => input.isRequired)
@@ -64,13 +68,21 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     setMissingFields(missing || [])
   }, [data, modal.inputs])
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    let avatar = ''
+    if (currentAvatarFile) {
+      const formData = new FormData()
+      formData.append('file', currentAvatarFile)
+      const response = await reqFileUpload(formData)
+      avatar = response.data.fileUrl
+    }
+
     if (missingFields.length > 0 || invalidEmails.length > 0) {
       setIsSubmitted(true)
       return
     }
 
-    modal.action(data)
+    modal.action({ ...data, avatar })
     onClose()
     setIsSubmitted(true)
   }
@@ -100,6 +112,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
             <h3 className='default-text-color'>{modal.title}</h3>
           </ModalHeader>
           <ModalBody>
+            {modal.selectAvatar && <SelectAvatar />}
             <div className='flex w-full flex-col gap-4'>
               {modal?.inputs?.map((input, index) => (
                 <Input
