@@ -24,7 +24,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [missingFields, setMissingFields] = React.useState<string[]>([])
   const [invalidEmails, setInvalidEmails] = React.useState<string[]>([])
-  const { currentAvatarFile } = useCurrentAvatarFile()
+  const { currentAvatarFile, setCurrentAvatarFile } = useCurrentAvatarFile()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
@@ -75,6 +75,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
       formData.append('file', currentAvatarFile)
       const response = await reqFileUpload(formData)
       avatar = response.data.fileUrl
+      setCurrentAvatarFile(null)
     }
 
     if (missingFields.length > 0 || invalidEmails.length > 0) {
@@ -83,8 +84,8 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     }
 
     modal.action({ ...data, avatar })
-    onClose()
     setIsSubmitted(true)
+    onClose()
   }
 
   const isInvalid = (inputName: string, inputType: string): boolean =>

@@ -28,7 +28,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
   const currentUserIdEdit = useSelector((state: RootState) => state.users.currentUserIdEdit)
   const currentUserEdit = users.find((item) => item.id == currentUserIdEdit)
   const [isOpen, toggleModal] = useModal(modalTypes.editItemTableModal)
-  const { currentAvatarFile } = useCurrentAvatarFile()
+  const { currentAvatarFile, setCurrentAvatarFile } = useCurrentAvatarFile()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const name = e.target.name
@@ -50,6 +50,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
       formData.append('file', currentAvatarFile)
       const response = await reqFileUpload(formData)
       avatar = response.data.fileUrl
+      setCurrentAvatarFile(null)
     }
 
     const hasChanges =
