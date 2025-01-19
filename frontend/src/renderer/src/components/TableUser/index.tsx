@@ -34,7 +34,7 @@ export const AppTable = ({
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set([...columnsData.InitialVisibleColumns, 'actions']),
+    new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
