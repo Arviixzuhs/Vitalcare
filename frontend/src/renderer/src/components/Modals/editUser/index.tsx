@@ -15,7 +15,10 @@ import { useModal } from '@renderer/hooks/useModal'
 import { RootState } from '@renderer/store'
 import { ModalProps } from '@renderer/components/TableUser/interfaces/TableProps'
 import { modalTypes } from '@renderer/hooks/useModal'
+import { SelectAvatar } from '@renderer/components/SelectAvatar'
+import { reqFileUpload } from '@renderer/api/Requests'
 import { setCurrentEditUserId } from '../../../features/usersSlice'
+import { useCurrentAvatarFile } from '@renderer/hooks/useCurrentAvatarFile'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
@@ -25,6 +28,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
   const currentUserIdEdit = useSelector((state: RootState) => state.users.currentUserIdEdit)
   const currentUserEdit = users.find((item) => item.id == currentUserIdEdit)
   const [isOpen, toggleModal] = useModal(modalTypes.editItemTableModal)
+  const { currentAvatarFile } = useCurrentAvatarFile()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const name = e.target.name
@@ -40,7 +44,22 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentEditUserId(-1))
 
   const onSubmit = async () => {
-    modal.action(data, currentUserEdit)
+    let avatar = null
+    if (currentAvatarFile) {
+      const formData = new FormData()
+      formData.append('file', currentAvatarFile)
+      const response = await reqFileUpload(formData)
+      avatar = response.data.fileUrl
+    }
+
+    const hasChanges =
+      avatar || Object.keys(data).some((key) => data[key] !== currentUserEdit?.[key])
+
+    if (!hasChanges) return
+
+    const dataToSend = avatar ? { ...data, avatar } : { ...data }
+
+    modal.action(dataToSend, currentUserEdit)
     handleResetCurrentIdEdit()
     toggleModal()
   }
@@ -59,6 +78,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
             <h3 className='default-text-color'>{modal.title}</h3>
           </ModalHeader>
           <ModalBody>
+            {modal.selectAvatar && <SelectAvatar defaultAvatarURL={currentUserEdit?.avatar} />}
             <div className='flex w-full flex-col gap-4'>
               {modal?.inputs?.map((input, index) => (
                 <Input
