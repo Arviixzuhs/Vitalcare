@@ -49,9 +49,9 @@ export const TabTable: React.FC<TableProps> = ({ addItemModal, editItemModal, ta
       case 'createdAt':
       case 'date':
         return (
-          <td>
+          <span>
             {parsedDate.date} a las {parsedDate.time}
-          </td>
+          </span>
         )
 
       case 'actions':
