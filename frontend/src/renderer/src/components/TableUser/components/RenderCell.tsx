@@ -1,9 +1,9 @@
 import React from 'react'
-import { Chip, User } from '@nextui-org/react'
+import { Avatar, Chip } from '@nextui-org/react'
 import { ActionDropdown } from '@renderer/components/Dropdown'
-import { ShortCellValue } from './ShortCellValue'
-import { TableItemModel } from '@renderer/features/usersSlice'
 import { DropdownAction } from '@renderer/components/Dropdown/ActionDropdownPatient'
+import { TableItemModel } from '@renderer/features/usersSlice'
+import { ShortCellValue } from './ShortCellValue'
 import { DropdownItemInteface } from '../interfaces/ActionDropdown'
 
 type Status = 'ALIVE' | 'DEAD' | 'FEMALE' | 'MALE'
@@ -53,11 +53,17 @@ export const RenderCell = ({
   switch (columnKey) {
     case 'name':
       return (
-        <User
-          avatarProps={{ src: item.avatar }}
-          description={<ShortCellValue cellValue={item.email} />}
-          name={<ShortCellValue cellValue={cellValue as string} />}
-        />
+        <div className='flex gap-4'>
+          {item.avatar ? (
+            <img src={item.avatar} alt='' className='w-10 h-10 object-contain rounded-full' />
+          ) : (
+            <Avatar />
+          )}
+          <div>
+            <h3>{item.name}</h3>
+            <p className='text-tiny text-foreground-400'>{item.email}</p>
+          </div>
+        </div>
       )
     case 'gender':
     case 'status':
