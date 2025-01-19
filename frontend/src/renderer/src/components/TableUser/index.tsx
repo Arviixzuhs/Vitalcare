@@ -102,7 +102,7 @@ export const AppTable = ({
       classNames={{
         th: 'text-default-500',
         table: [`${items.length === 0 && 'h-full'}`],
-        wrapper: [' h-full overflow-y-auto  hoverScrollbar '],
+        wrapper: [' h-full overflow-y-auto hoverScrollbar'],
       }}
       bottomContent={
         <BottomContent
