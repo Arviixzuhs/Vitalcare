@@ -10,9 +10,9 @@ export class HospitalController {
 
   @Get('/get-stats')
   getAllUsers(): Promise<{
-    rooms: number
     consults: number
     patients: number
+    consultsToDay: number
     clinicalStaffs: number
   }> {
     return this.hospitalService.getInfo()
