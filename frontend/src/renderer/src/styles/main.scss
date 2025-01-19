@@ -10,6 +10,16 @@ body {
   height: 100vh;
 }
 
+.maxWidthLayout {
+  width: calc(100% - 236px);
+}
+
+@media (max-width: 1024px) {
+  .maxWidthLayout {
+    width: 100%;
+  }
+}
+
 .iconSVG {
   width: 20px;
   height: 20px;

@@ -64,55 +64,53 @@ export const EditConsultModal = () => {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        scrollBehavior={'inside'}
-        backdrop='blur'
-        onClose={handleResetCurrentConsultId}
-      >
-        <ModalContent>
-          <ModalHeader className='flex flex-col gap-1'>
-            <h3 className=' default-text-color'>Editar Consulta</h3>
-          </ModalHeader>
-          <ModalBody>
-            <div className='flex w-full flex-col gap-4'>
-              <DatePicker
-                label='Fecha de la consulta'
-                hideTimeZone
-                showMonthAndYearPickers
-                onChange={(e) => {
-                  const consultDate = new Date(e.year, e.month - 1, e.day)
-                  consultDate.setHours(e.hour, e.minute, e.second, e.millisecond)
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      scrollBehavior={'inside'}
+      backdrop='blur'
+      onClose={handleResetCurrentConsultId}
+    >
+      <ModalContent>
+        <ModalHeader className='flex flex-col gap-1'>
+          <h3 className=' default-text-color'>Editar Consulta</h3>
+        </ModalHeader>
+        <ModalBody>
+          <div className='flex w-full flex-col gap-4'>
+            <DatePicker
+              label='Fecha de la consulta'
+              hideTimeZone
+              showMonthAndYearPickers
+              onChange={(e) => {
+                const consultDate = new Date(e.year, e.month - 1, e.day)
+                consultDate.setHours(e.hour, e.minute, e.second, e.millisecond)
 
-                  setData({
-                    ...data,
-                    ['date']: consultDate.toISOString(),
-                  })
-                }}
-                defaultValue={
-                  currentConsultEdit && parseAbsoluteToLocal(String(currentConsultEdit.date))
-                }
-              />
-              <Textarea
-                name='reason'
-                label='Razón de la consulta'
-                onChange={handleChange}
-                defaultValue={currentConsultEdit?.reason}
-              />
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
-              Cerrar
-            </Button>
-            <Button color='primary' onPress={() => handleEditConsult()}>
-              Guardar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </div>
+                setData({
+                  ...data,
+                  ['date']: consultDate.toISOString(),
+                })
+              }}
+              defaultValue={
+                currentConsultEdit && parseAbsoluteToLocal(String(currentConsultEdit.date))
+              }
+            />
+            <Textarea
+              name='reason'
+              label='Razón de la consulta'
+              onChange={handleChange}
+              defaultValue={currentConsultEdit?.reason}
+            />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button color='danger' variant='light' onPress={onClose}>
+            Cerrar
+          </Button>
+          <Button color='primary' onPress={() => handleEditConsult()}>
+            Guardar
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   )
 }

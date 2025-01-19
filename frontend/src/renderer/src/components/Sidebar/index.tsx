@@ -13,9 +13,9 @@ import {
   FaChevronRight,
 } from 'react-icons/fa'
 import { RootState } from '@renderer/store'
+import { ShortValue } from '../ShortValue'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { ShortValue } from '../ShortValue'
 
 export const Sidebar = () => {
   const navigate = useNavigate()
