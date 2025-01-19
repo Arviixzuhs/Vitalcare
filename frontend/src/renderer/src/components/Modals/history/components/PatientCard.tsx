@@ -76,7 +76,7 @@ export const PatientCard = () => {
                 </div>
               )}
               <p className='text-tiny text-foreground-400'>
-                Ingrso: {parsedDate.date} a las {parsedDate.time}
+                Ingreso: {parsedDate.date} a las {parsedDate.time}
               </p>
             </div>
           </div>
