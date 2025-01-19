@@ -20,6 +20,7 @@ export const columnsData = {
 }
 
 export const modalInputs = {
+  selectAvatar: true,
   inputs: [
     {
       type: 'text',
@@ -50,11 +51,6 @@ export const modalInputs = {
       name: 'age',
       label: 'Edad',
       isRequired: true,
-    },
-    {
-      type: 'text',
-      name: 'avatar',
-      label: 'Avatar',
     },
   ],
   textArea: [

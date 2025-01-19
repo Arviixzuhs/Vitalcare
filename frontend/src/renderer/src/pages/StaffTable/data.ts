@@ -45,6 +45,7 @@ export const columnsData = {
 
 /* Datos de los inputs del modal para crear usuarios */
 export const modalInputs = {
+  selectAvatar: true,
   inputs: [
     {
       type: 'text',
@@ -87,11 +88,6 @@ export const modalInputs = {
       name: 'address',
       label: 'Dirección',
       isRequired: true,
-    },
-    {
-      type: 'text',
-      name: 'avatar',
-      label: 'Avatar',
     },
     {
       type: 'text',
