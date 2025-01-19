@@ -1,5 +1,6 @@
 import { api } from './axios'
 import { paramsConstructor } from '@renderer/utils/paramsConstructor'
+
 /* Rutas para manejar archivos */
 export const reqFileUpload = (formData: FormData) =>
   api.post('/file/upload', formData, {
@@ -43,10 +44,11 @@ export const reqCreateConsult = async (data) => api.post('/consult/create', data
 export const reqDeleteConsult = async (id) => api.delete('/consult/delete/' + id)
 export const reqUpdateConsult = async ({ data, id }) => api.put('/consult/update/' + id, data)
 export const reqGetAllConsults = async () => api.get('/consult/get-all')
-export const reqSearchConsultByPatientCI = (ci: string) =>
-  api.get(`/consult/search-by-patient-dni/${ci}`)
+export const reqSearchConsultByPatient = (searchValue: string) =>
+  api.get(`/consult/search-by-patient/${searchValue}`)
 export const reqGetAllConsultsByPatientId = (patientId: number) =>
   api.get(`/consult/get-all-by-patient-id/${patientId}`)
+export const reqFindAllConsultsToDay = () => api.get('/consult/find-all-to-day')
 
 /* Rutas para manejar al personal medico */
 export const reqAddStaff = (data) => api.post('/clinicalstaff/create', data)
