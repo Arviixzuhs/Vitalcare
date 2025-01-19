@@ -140,23 +140,31 @@ export class ConsultService {
     })
   }
 
-  searchConsultByPatient(searchValue: string): Promise<Consult[]> {
+  async searchConsultByPatient(searchValue: string): Promise<Consult[]> {
+    const searchTerms = searchValue.trim().toLowerCase().split(' ')
+
     return this.prisma.consult.findMany({
       where: {
         OR: [
-          {
+          ...searchTerms.map((term) => ({
             patient: {
-              CI: searchValue.toLowerCase(),
+              name: {
+                contains: term,
+              },
             },
-          },
-          {
+          })),
+          ...searchTerms.map((term) => ({
             patient: {
-              name: searchValue.toLowerCase(),
+              lastName: {
+                contains: term,
+              },
             },
-          },
+          })),
           {
             patient: {
-              lastName: searchValue.toLowerCase(),
+              CI: {
+                contains: searchValue.toLowerCase(),
+              },
             },
           },
         ],

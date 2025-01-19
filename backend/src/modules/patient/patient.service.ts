@@ -134,21 +134,23 @@ export class PatientService {
       }
     }
 
+    const searchTerms = searchValue.trim().toLowerCase().split(' ')
+
     return this.prisma.patient.findMany({
       where: {
         AND: [
           {
             OR: [
-              {
+              ...searchTerms.map((term) => ({
                 name: {
-                  contains: searchValue.toLowerCase(),
+                  contains: term,
                 },
-              },
-              {
+              })),
+              ...searchTerms.map((term) => ({
                 lastName: {
-                  contains: searchValue.toLowerCase(),
+                  contains: term,
                 },
-              },
+              })),
               {
                 CI: {
                   contains: searchValue.toLowerCase(),

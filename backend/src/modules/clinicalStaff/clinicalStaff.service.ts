@@ -70,20 +70,22 @@ export class ClinicalStaffService {
     }
   }
 
-  searchClinicalStaffByName(searchValue: string): Promise<ClinicalStaff[]> {
+  async searchClinicalStaffByName(searchValue: string): Promise<ClinicalStaff[]> {
+    const searchTerms = searchValue.trim().toLowerCase().split(' ')
+
     return this.prisma.clinicalStaff.findMany({
       where: {
         OR: [
-          {
+          ...searchTerms.map((term) => ({
             name: {
-              contains: searchValue.toLowerCase(),
+              contains: term,
             },
-          },
-          {
+          })),
+          ...searchTerms.map((term) => ({
             lastName: {
-              contains: searchValue.toLowerCase(),
+              contains: term,
             },
-          },
+          })),
           {
             CI: {
               contains: searchValue.toLowerCase(),
