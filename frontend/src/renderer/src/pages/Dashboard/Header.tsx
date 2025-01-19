@@ -25,7 +25,7 @@ export const DashboardHeader = () => {
       icon: <FaUserShield />,
     },
     {
-      title: 'Consultas de hoy',
+      title: 'Consultas para hoy',
       value: hospitalData?.consultsToDay,
       onPress: () => {
         if (hospitalData.consultsToDay === 0) {
