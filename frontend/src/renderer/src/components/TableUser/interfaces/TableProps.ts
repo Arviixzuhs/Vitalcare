@@ -26,6 +26,7 @@ export interface ModalProps {
   inputs?: FormField[]
   textArea?: TextAreaField[]
   buttonTitle?: string
+  selectAvatar?: boolean
   selectInputs?: SelectField[]
 }
 
