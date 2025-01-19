@@ -1,9 +1,9 @@
 import { Consult } from '@renderer/interfaces/consultModel'
 import { NoteModel } from '@renderer/interfaces/noteModel'
 import { RootState } from '@renderer/store'
+import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 import { ActionDropdown } from '@renderer/components/Dropdown'
 import { DiagnosticModel } from '@renderer/interfaces/diagnosticModel'
-import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
 import { modalTypes, useModal } from '@renderer/hooks/useModal'
 import { setCurrentEditItemId } from '@renderer/features/tablePerTabSlice'
 import { newParseDateWithTime } from '@renderer/utils/newParseDate'
@@ -38,6 +38,7 @@ export const TabTable: React.FC<TableProps> = ({ addItemModal, editItemModal, ta
     const parsedDate = newParseDateWithTime({ date: cellValue })
 
     switch (column) {
+      case 'patient':
       case 'doctor':
         return (
           <h3>
