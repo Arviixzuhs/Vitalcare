@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
 import validator from 'validator'
@@ -5,7 +6,6 @@ import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
-import { User } from '@prisma/client'
 
 @Injectable()
 export class AuthService {
