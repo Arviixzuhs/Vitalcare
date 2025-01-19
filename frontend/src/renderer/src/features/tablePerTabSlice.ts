@@ -6,6 +6,7 @@ export interface TabData {
   files: []
   consults: []
   diagnostics: []
+  consultsToDay: []
 }
 
 export interface Column {
@@ -29,6 +30,7 @@ export const manageItemsSlice = createSlice({
       files: [],
       consults: [],
       diagnostics: [],
+      consultsToDay: [],
     },
     columns: [],
     currentTab: 'notes',
