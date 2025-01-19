@@ -1,33 +1,45 @@
-import { FaBed } from 'react-icons/fa'
-import { FaUsers } from 'react-icons/fa'
+import toast from 'react-hot-toast'
 import { RootState } from '@renderer/store'
-import { FaCalendar } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
-import { FaUserShield } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardBody } from '@nextui-org/react'
+import { useModal, modalTypes } from '@renderer/hooks/useModal'
+import { FaUserShield, FaCalendar, FaUsers, FaCalendarDay } from 'react-icons/fa'
 
 export const DashboardHeader = () => {
+  const navigate = useNavigate()
   const hospitalData = useSelector((state: RootState) => state.hospital)
+  const [_, toggleViewConsultsToDay] = useModal(modalTypes.viewConsultsToDay)
 
   const cards = [
     {
       title: 'Pacientes',
       value: hospitalData?.patients,
+      onPress: () => navigate('/patient'),
       icon: <FaUsers />,
     },
     {
       title: 'Personal',
       value: hospitalData?.clinicalStaffs,
+      onPress: () => navigate('/staff'),
       icon: <FaUserShield />,
     },
     {
-      title: 'Habitaciones',
-      value: hospitalData?.rooms,
-      icon: <FaBed />,
+      title: 'Consultas de hoy',
+      value: hospitalData?.consultsToDay,
+      onPress: () => {
+        if (hospitalData.consultsToDay === 0) {
+          toast.error('No hay consultas para hoy')
+          return
+        }
+        toggleViewConsultsToDay()
+      },
+      icon: <FaCalendarDay />,
     },
     {
       title: 'Consultas',
       value: hospitalData?.consults,
+      onPress: () => navigate('/consult'),
       icon: <FaCalendar />,
     },
   ]
@@ -35,17 +47,19 @@ export const DashboardHeader = () => {
   return (
     <div className='flex gap-4'>
       {cards.map((item, index) => (
-        <Card className='w-full' key={index}>
-          <CardBody>
-            <span className='w-fit text-[#006fee] p-[10px] text-[30px] rounded-md bg-[var(--cardBg)]'>
-              {item.icon}
-            </span>
-            <div className='flex flex-col '>
-              <h3 className='font-medium'>{item.title}</h3>
-              <span className='text-small text-default-500'>{item.value}</span>
-            </div>
-          </CardBody>
-        </Card>
+        <div onClick={() => item.onPress()} key={index} className='w-full cursor-pointer'>
+          <Card className='w-full'>
+            <CardBody>
+              <span className='w-fit text-[#006fee] p-[10px] text-[30px] rounded-md bg-[var(--cardBg)]'>
+                {item.icon}
+              </span>
+              <div className='flex flex-col'>
+                <h3 className='font-medium'>{item.title}</h3>
+                <span className='text-small text-default-500'>{item.value}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
       ))}
     </div>
   )
