@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BiCommentCheck, BiCommentX } from 'react-icons/bi'
 import { MedicalConsultationCalendar } from '@renderer/components/Calendar'
 import { newParseDateWithTime, newParseDate } from '@renderer/utils/newParseDate'
-import { reqDeleteConsult, reqSearchConsultByPatientCI } from '@renderer/api/Requests'
+import { reqDeleteConsult, reqSearchConsultByPatient } from '@renderer/api/Requests'
 import {
   setConsults,
   deleteConsult,
@@ -39,7 +39,7 @@ export const Consults = () => {
       if (searchValue.trim() === '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchConsultByPatientCI(searchValue)
+      const response = await reqSearchConsultByPatient(searchValue)
       dispatch(setCurrentConsultId(-1))
       dispatch(setConsults(response.data))
       if (response.data.length > 0) {
@@ -160,7 +160,7 @@ export const Consults = () => {
           <Input
             isClearable
             className='w-full'
-            placeholder='Buscar por cédula de paciente...'
+            placeholder='Buscar por paciente...'
             onChange={handleChange}
           />
           <CreateConsultModal />
