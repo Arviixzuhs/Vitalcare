@@ -14,6 +14,7 @@ export interface HospitalStats {
   rooms: number
   patients: number
   consults: number
+  consultsToDay: number
   clinicalStaffs: number
   patientsCount: CountItem[]
   clinicalStaffsCount: CountItem[]
@@ -26,6 +27,7 @@ export const manageHospitalDataSlice = createSlice({
     rooms: 0,
     patients: 0,
     consults: 0,
+    consultsToDay: 0,
     patientsCount: [],
     clinicalStaffs: 0,
     clinicalStaffsCount: [],
