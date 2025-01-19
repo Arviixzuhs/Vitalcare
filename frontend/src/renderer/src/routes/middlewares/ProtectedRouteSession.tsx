@@ -1,4 +1,5 @@
 import React from 'react'
+import { logOut } from '@renderer/utils/logOut'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useDispatch } from 'react-redux'
 import { setHospitalStats } from '@renderer/features/hospitalSlice'
@@ -19,8 +20,7 @@ const ProtectedRouteSession = () => {
             dispatch(setMyUser(response.data))
           })
           .catch(() => {
-            localStorage.removeItem('token')
-            window.location.reload()
+            logOut()
           })
       }
     }
