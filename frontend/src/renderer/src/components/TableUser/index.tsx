@@ -15,8 +15,8 @@ import {
   TableColumn,
   SortDescriptor,
 } from '@nextui-org/react'
-import { AppTableInterface } from './interfaces/TableProps'
 import { EmptyContent } from './components/EmptyContent'
+import { AppTableInterface } from './interfaces/TableProps'
 
 export const AppTable = ({
   columnsData,
@@ -34,7 +34,7 @@ export const AppTable = ({
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set(columnsData.InitialVisibleColumns),
+    new Set([...columnsData.InitialVisibleColumns, 'actions']),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
   const [rowsPerPage, setRowsPerPage] = React.useState(5)

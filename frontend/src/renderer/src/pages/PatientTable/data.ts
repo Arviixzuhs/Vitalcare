@@ -16,7 +16,7 @@ export const columnsData = {
     { name: 'Masculino', uid: 'MALE' },
     { name: 'Femenino', uid: 'FEMALE' },
   ],
-  InitialVisibleColumns: ['CI', 'age', 'role', 'name', 'gender', 'status', 'actions', 'lastName'],
+  InitialVisibleColumns: ['name', 'lastName', 'CI', 'age', 'gender', 'status', 'actions',],
 }
 
 export const modalInputs = {
