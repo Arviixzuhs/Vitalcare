@@ -132,7 +132,7 @@ export const TopContent: React.FC<TopContentProps> = ({
           </div>
         </div>
         <div className='flex justify-between items-center'>
-          <span className='text-default-400 text-small'>{table.length} pacientes en total</span>
+          <span className='text-default-400 text-small'>{table.length} resultados en total</span>
           <label className='flex items-center text-default-400 text-small'>
             Resultados por página:
             <select
