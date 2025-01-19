@@ -1,11 +1,57 @@
-import { Consult } from '@prisma/client'
 import { ConsultDto } from './dto/consult.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { Consult, PrismaPromise } from '@prisma/client'
 import { HttpStatus, Injectable, HttpException, BadRequestException } from '@nestjs/common'
 
 @Injectable()
 export class ConsultService {
   constructor(private prisma: PrismaService) {}
+
+  findAllConsultsToDayCount(): PrismaPromise<number> {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const tomorrow = new Date(today)
+    tomorrow.setDate(today.getDate() + 1)
+
+    return this.prisma.consult.count({
+      where: {
+        date: {
+          gte: today.toISOString(),
+          lt: tomorrow.toISOString(),
+        },
+      },
+    })
+  }
+
+  findAllConsultsToDay(): Promise<Consult[]> {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const tomorrow = new Date(today)
+    tomorrow.setDate(today.getDate() + 1)
+
+    return this.prisma.consult.findMany({
+      where: {
+        date: {
+          gte: today.toISOString(),
+          lt: tomorrow.toISOString(),
+        },
+      },
+      include: {
+        patient: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            lastName: true,
+          },
+        },
+      },
+    })
+  }
 
   createConsult(data: ConsultDto): Promise<Consult> {
     const consultDate = new Date(data.date)
@@ -94,12 +140,26 @@ export class ConsultService {
     })
   }
 
-  searchConsultByPatientCI(CI: string): Promise<Consult[]> {
+  searchConsultByPatient(searchValue: string): Promise<Consult[]> {
     return this.prisma.consult.findMany({
       where: {
-        patient: {
-          CI,
-        },
+        OR: [
+          {
+            patient: {
+              CI: searchValue.toLowerCase(),
+            },
+          },
+          {
+            patient: {
+              name: searchValue.toLowerCase(),
+            },
+          },
+          {
+            patient: {
+              lastName: searchValue.toLowerCase(),
+            },
+          },
+        ],
       },
       include: {
         patient: {

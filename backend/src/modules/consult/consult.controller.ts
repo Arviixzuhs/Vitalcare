@@ -10,6 +10,11 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 export class ConsultController {
   constructor(private readonly consultService: ConsultService) {}
 
+  @Get('/find-all-to-day')
+  getAllConsultsToDay(): Promise<Consult[]> {
+    return this.consultService.findAllConsultsToDay()
+  }
+
   @Post('/create')
   createConsult(@Body() data: ConsultDto): Promise<Consult> {
     return this.consultService.createConsult(data)
@@ -35,9 +40,9 @@ export class ConsultController {
     return this.consultService.getAllConsultsByPatientId(id)
   }
 
-  @Get('/search-by-patient-dni/:ci')
-  serchConsultByPatientCI(@Param('ci') ci: string): Promise<Consult[]> {
-    return this.consultService.searchConsultByPatientCI(ci)
+  @Get('/search-by-patient/:searchValue')
+  serchConsultByPatientCI(@Param('searchValue') searchValue: string): Promise<Consult[]> {
+    return this.consultService.searchConsultByPatient(searchValue)
   }
 
   @Put('/update/:id')
