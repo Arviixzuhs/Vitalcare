@@ -22,7 +22,6 @@ export const ConsultSection = () => {
     reqGetAllConsultsByPatientId(currentPatientId)
       .then((res) => {
         const data = res.data
-        console.log(data)
         dispatch(setTabData({ tab, data }))
       })
       .catch(console.log)
