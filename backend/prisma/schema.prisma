@@ -110,7 +110,7 @@ model ClinicalStaff {
   CI              String       @unique
   age             Int
   name            String?      @default("") @db.VarChar(30)
-  area            String?      @default("") @db.VarChar(30)
+  area            String?      @default("") @db.VarChar(80)
   type            String?      @default("") @db.VarChar(80)
   phone           String?      @default("") @db.VarChar(30)
   email           String?      @default("") @db.VarChar(254)
@@ -126,7 +126,7 @@ model ClinicalStaff {
   placaCarro      String?      @default("") @db.VarChar(30)
   numeroHijos     String?      @default("0")
   tallaCamisas    String?      @default("") @db.VarChar(30)
-  dependencias    String?      @default("") @db.VarChar(30)
+  dependencias    String?      @default("") @db.VarChar(180)
   cargoNominal    String?      @default("") @db.VarChar(30)
   ubicacionFiscal String?      @default("") @db.VarChar(180)
 }

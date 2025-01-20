@@ -9,6 +9,8 @@ export const columnsData = {
     { name: 'EMAIL', uid: 'email' },
     { name: 'TELEFONO', uid: 'phone' },
     { name: 'DIRECCION', uid: 'address' },
+    { name: 'AREA', uid: 'area' },
+    { name: 'Ubicación fiscal', uid: 'ubicacionFiscal' },
     { name: 'CARGO NOMINAL', uid: 'cargoNominal' },
     { name: 'DEPENDENCIAS', uid: 'dependencias' },
     { name: 'TALLA CAMISAS', uid: 'tallaCamisas' },
@@ -90,6 +92,12 @@ export const modalInputs = {
     },
     {
       type: 'text',
+      name: 'area',
+      label: 'Area',
+      maxLength: 80,
+    },
+    {
+      type: 'text',
       name: 'address',
       label: 'Dirección',
       maxLength: 180,
@@ -105,7 +113,7 @@ export const modalInputs = {
       type: 'text',
       name: 'dependencias',
       label: 'Dependencias',
-      maxLength: 30,
+      maxLength: 180,
     },
     {
       type: 'text',
@@ -120,7 +128,7 @@ export const modalInputs = {
       maxLength: 30,
     },
     {
-      type: 'text',
+      type: 'number',
       name: 'numeroHijos',
       label: 'Numero de hijos',
     },
@@ -135,6 +143,12 @@ export const modalInputs = {
       name: 'jubilados',
       label: 'Jubilados',
       maxLength: 30,
+    },
+    {
+      type: 'text',
+      name: 'ubicacionFiscal',
+      label: 'Ubicación fiscal',
+      maxLength: 180,
     },
   ],
   selectInputs: [
