@@ -69,7 +69,7 @@ export const modalInputs = {
       type: 'text',
       name: 'reasonDeath',
       label: 'Razón de fallecimiento',
-      maxLength: 5,
+      maxLength: 300,
       placeholder: 'Ingresa la razón de fallecimiento',
     },
   ],
