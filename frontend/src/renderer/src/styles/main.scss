@@ -53,18 +53,19 @@ body {
     background: transparent;
   }
 
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+  }
+
   &:hover {
     overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 3px;
-      height: 3px;
-      background: transparent;
-    }
 
     &::-webkit-scrollbar-thumb {
       background: var(--scrollBg);
       border-radius: 10px;
+      background: transparent;
     }
 
     &::-webkit-scrollbar-thumb:hover {

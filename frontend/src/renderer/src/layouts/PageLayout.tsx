@@ -35,7 +35,7 @@ export const PageLayout = () => {
         <div className='flex flex-col gap-3 w-full h-full overflow-y-auto'>
           <div className='flex gap-4 h-full'>
             <Sidebar />
-            <div className='flex w-full h-full flex-col select-none gap-4'>
+            <div className='flex w-full h-full flex-col select-none gap-4 overflow-hidden'>
               <Tabs
                 aria-label='Options'
                 color='primary'
