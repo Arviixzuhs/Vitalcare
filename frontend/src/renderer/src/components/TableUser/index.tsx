@@ -98,11 +98,12 @@ export const AppTable = ({
     <Table
       aria-label='Example table with custom cells, pagination and sorting'
       isCompact
-      className='h-full'
+      isHeaderSticky
+      className='h-full overflow-hidden'
       classNames={{
-        th: 'text-default-500',
+        base: ['overflow-y-auto'],
         table: [`${items.length === 0 && 'h-full'}`],
-        wrapper: [' h-full overflow-y-auto hoverScrollbar'],
+        wrapper: [' h-full overflow-y-auto  '],
       }}
       bottomContent={
         <BottomContent

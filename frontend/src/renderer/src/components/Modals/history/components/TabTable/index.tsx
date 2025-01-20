@@ -77,7 +77,6 @@ export const TabTable: React.FC<TableProps> = ({ addItemModal, editItemModal, ta
   return (
     <>
       <Table
-        isHeaderSticky
         shadow='none'
         className='border rounded-2xl border-[#4444444d]'
         aria-label='Dynamic table'
@@ -85,6 +84,7 @@ export const TabTable: React.FC<TableProps> = ({ addItemModal, editItemModal, ta
         classNames={{
           base: 'max-h-[420px] overflow-y-auto',
         }}
+        isHeaderSticky
       >
         <TableHeader>
           {table.columns.map((column, index) => (

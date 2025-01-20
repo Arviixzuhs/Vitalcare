@@ -151,11 +151,11 @@ export const Consults = () => {
   }
 
   return (
-    <div className='flex gap-4 h-full'>
+    <div className='flex gap-4 h-full overflow-hidden'>
       <div>
         <MedicalConsultationCalendar />
       </div>
-      <div className='w-full flex gap-4 flex-col'>
+      <div className='w-full flex gap-4 flex-col '>
         <div className='flex gap-3'>
           <Input
             isClearable
@@ -167,13 +167,14 @@ export const Consults = () => {
         </div>
         <Table
           aria-label='Example table with dynamic content'
-          className='h-full'
           isCompact
           selectionMode='none'
+          isHeaderSticky
+          className='h-full overflow-hidden'
           classNames={{
-            th: 'text-default-500',
+            base: ['overflow-y-auto'],
             table: [`${filteredData.length === 0 && 'h-full'}`],
-            wrapper: [' h-full overflow-y-auto  hoverScrollbar '],
+            wrapper: [' h-full overflow-y-auto  '],
           }}
         >
           <TableHeader columns={columns}>

@@ -30,12 +30,12 @@ export const PageLayout = () => {
 
   return (
     <div className='flex items-center content-center p-4 w-full h-screen overflow-x-hidden'>
-      <main className='w-full h-full flex flex-col gap-2'>
+      <main className='w-full h-full flex-col flex'>
         <NavbarMain />
-        <div className='flex flex-col gap-3 w-full h-full'>
+        <div className='flex flex-col gap-3 w-full h-full overflow-y-auto'>
           <div className='flex gap-4 h-full'>
             <Sidebar />
-            <div className='flex maxWidthLayout h-full flex-col select-none gap-4'>
+            <div className='flex w-full h-full flex-col select-none gap-4'>
               <Tabs
                 aria-label='Options'
                 color='primary'
