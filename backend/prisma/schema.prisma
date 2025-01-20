@@ -34,7 +34,7 @@ model Room {
 model User {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(30)
-  email     String    @unique @db.VarChar(30)
+  email     String    @unique @db.VarChar(254)
   avatar    String    @default("") @db.VarChar(200)
   lastName  String    @db.VarChar(30)
   password  String    @db.VarChar(200)
@@ -82,7 +82,7 @@ model Patient {
   name        String        @db.VarChar(30)
   Room        Room[]
   note        Note[]
-  email       String        @unique @db.VarChar(30)
+  email       String        @unique @db.VarChar(254)
   status      Status        @default(ALIVE)
   gender      Gender        @default(MALE)
   avatar      String        @default("") @db.VarChar(200)
@@ -113,11 +113,11 @@ model ClinicalStaff {
   area            String?      @default("") @db.VarChar(30)
   type            String?      @default("") @db.VarChar(80)
   phone           String?      @default("") @db.VarChar(30)
-  email           String?      @default("") @db.VarChar(30)
+  email           String?      @default("") @db.VarChar(254)
   gender          Gender       @default(MALE)
   consult         Consult[]
   avatar          String?      @default("") @db.VarChar(200)
-  address         String?      @default("") @db.VarChar(30)
+  address         String?      @default("") @db.VarChar(180)
   lastName        String?      @default("") @db.VarChar(30)
   createdAt       DateTime     @default(now())
   jubilados       String?      @default("") @db.VarChar(30)
@@ -128,5 +128,5 @@ model ClinicalStaff {
   tallaCamisas    String?      @default("") @db.VarChar(30)
   dependencias    String?      @default("") @db.VarChar(30)
   cargoNominal    String?      @default("") @db.VarChar(30)
-  ubicacionFiscal String?      @default("") @db.VarChar(80)
+  ubicacionFiscal String?      @default("") @db.VarChar(180)
 }
