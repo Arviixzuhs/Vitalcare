@@ -70,6 +70,7 @@ export const EditItemModal = ({ modal }: { modal: ModalProps }) => {
                   label={input.label}
                   required={true}
                   onChange={handleChange}
+                  maxLength={input.maxLength}
                   defaultValue={currentItemEdit && currentItemEdit[input.name]}
                 />
               ))}
@@ -104,6 +105,7 @@ export const EditItemModal = ({ modal }: { modal: ModalProps }) => {
                   label={item.label}
                   onChange={handleChange}
                   className='default-text-color'
+                  maxLength={item.maxLength}
                   labelPlacement='outside'
                   defaultValue={currentItemEdit && currentItemEdit[item.name]}
                   placeholder={item.placeholder}

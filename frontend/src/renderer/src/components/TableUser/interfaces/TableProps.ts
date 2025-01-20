@@ -33,6 +33,7 @@ export interface ModalProps {
 interface BaseField {
   name: string
   label?: string
+  maxLength?: number
   isRequired?: boolean
   placeholder?: string
 }

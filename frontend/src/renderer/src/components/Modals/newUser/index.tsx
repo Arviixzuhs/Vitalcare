@@ -127,6 +127,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
                   type={input.type}
                   label={input.label}
                   onChange={handleChange}
+                  maxLength={input.maxLength}
                   isInvalid={isInvalid(input.name, input.type)}
                   errorMessage={getErrorMessage(input.name, input.type)}
                   isRequired={input.isRequired}
@@ -162,6 +163,7 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
                   name={item.name}
                   label={item.label}
                   onChange={handleChange}
+                  maxLength={item.maxLength}
                   className='default-text-color'
                   labelPlacement='outside'
                   isInvalid={isInvalid(item.name, 'textarea')}
