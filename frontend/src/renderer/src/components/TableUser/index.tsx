@@ -95,75 +95,75 @@ export const AppTable = ({
   const editAction = (id: number) => dispatch(setCurrentEditUserId(id))
 
   return (
-    <Table
-      aria-label='Example table with custom cells, pagination and sorting'
-      isCompact
-      isHeaderSticky
-      className='h-full overflow-hidden '
-      classNames={{
-        base: ['overflow-y-auto'],
-        table: [`${items.length === 0 && 'h-full'}`],
-        wrapper: [' h-full overflow-y-auto'],
-      }}
-      bottomContent={
-        <BottomContent
-          page={page}
-          pages={pages}
-          setPage={setPage}
-          selectedKeys={selectedKeys}
-          filteredItems={filteredItems}
-        />
-      }
-      bottomContentPlacement='outside'
-      selectedKeys={selectedKeys}
-      sortDescriptor={sortDescriptor}
-      topContent={
-        <TopContent
-          setPage={setPage}
-          columnsData={columnsData}
-          filterValue={filterValue}
-          statusFilter={statusFilter}
-          visibleColumns={visibleColumns}
-          setRowsPerPage={setRowsPerPage}
-          setFilterValue={setFilterValue}
-          setStatusFilter={setStatusFilter}
-          setVisibleColumns={setVisibleColumns}
-          addItemModal={addItemModal}
-          editItemModal={editItemModal}
-        />
-      }
-      topContentPlacement='outside'
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === 'actions' ? 'center' : 'start'}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={<EmptyContent />} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell className='default-text-color'>
-                <RenderCell
-                  item={item}
-                  columnKey={columnKey}
-                  editAction={editAction}
-                  deleteAction={deleteAction}
-                  dropdownAction={dropdownAction}
-                />
-              </TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <TopContent
+        setPage={setPage}
+        columnsData={columnsData}
+        filterValue={filterValue}
+        statusFilter={statusFilter}
+        visibleColumns={visibleColumns}
+        setRowsPerPage={setRowsPerPage}
+        setFilterValue={setFilterValue}
+        setStatusFilter={setStatusFilter}
+        setVisibleColumns={setVisibleColumns}
+        addItemModal={addItemModal}
+        editItemModal={editItemModal}
+      />
+      <Table
+        aria-label='Example table with custom cells, pagination and sorting'
+        isCompact
+        isHeaderSticky
+        className='h-full overflow-hidden'
+        classNames={{
+          base: ['overflow-y-auto'],
+          table: [`${items.length === 0 && 'h-full'}`],
+          wrapper: [' h-full overflow-y-auto'],
+        }}
+        bottomContent={
+          <BottomContent
+            page={page}
+            pages={pages}
+            setPage={setPage}
+            selectedKeys={selectedKeys}
+            filteredItems={filteredItems}
+          />
+        }
+        bottomContentPlacement='outside'
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        topContentPlacement='outside'
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === 'actions' ? 'center' : 'start'}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={<EmptyContent />} items={[...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,]}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell className='default-text-color'>
+                  <RenderCell
+                    item={item}
+                    columnKey={columnKey}
+                    editAction={editAction}
+                    deleteAction={deleteAction}
+                    dropdownAction={dropdownAction}
+                  />
+                </TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   )
 }

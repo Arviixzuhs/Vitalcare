@@ -59,7 +59,7 @@ export const reqLoadAllStaff = (startDate?: string, endDate?: string) => {
     { name: 'startDate', value: startDate ?? null },
     { name: 'endDate', value: endDate ?? null },
   ])
-  return api.get(`/clinicalstaff/get-all?${params.toString()}`)
+  return api.get(`/clinicalstaff/get-all?${params}`)
 }
 export const reqGetHospitalStats = () => api.get('/hospital/get-stats')
 export const reqSearchClinicalStaffByName = (name: string) =>

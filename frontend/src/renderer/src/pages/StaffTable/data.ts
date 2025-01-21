@@ -93,7 +93,7 @@ export const modalInputs = {
     {
       type: 'text',
       name: 'area',
-      label: 'Area',
+      label: 'Área',
       maxLength: 80,
     },
     {
