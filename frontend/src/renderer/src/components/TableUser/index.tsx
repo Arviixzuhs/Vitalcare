@@ -146,7 +146,7 @@ export const AppTable = ({
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={<EmptyContent />} items={[...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,...sortedItems,]}>
+        <TableBody emptyContent={<EmptyContent />} items={sortedItems}>
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
