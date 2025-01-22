@@ -44,7 +44,7 @@ export const Sidebar = () => {
   )
 
   return (
-    <Card className='hidden lg:block overflow-visible min-w-[220px] h-full'>
+    <Card className='hidden lg:block overflow-visible min-w-[220px] h-full' shadow='none'>
       <div className='flex flex-col justify-between h-full'>
         <Listbox
           aria-label='User Menu'

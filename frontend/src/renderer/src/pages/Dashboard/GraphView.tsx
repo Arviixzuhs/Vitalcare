@@ -95,22 +95,20 @@ export const GraphView = () => {
 
   return (
     <div className='flex flex-col md:flex-row gap-4 h-full'>
-      <Card className='w-full md:w-1/3 min-h-96'>
+      <Card className='w-full md:w-1/3 min-h-96 md:min-h-max' shadow='none'>
         <CardHeader>
           <h3 className='font-medium'>Resumen de estadísticas</h3>
         </CardHeader>
         <CardBody className='flex items-center justify-center'>
-          <div>
-            {hospitalStats.patientsCountByGender.length > 0 ? (
-              <PieChart style={{ maxWidth: '220px' }} data={PieChartData} />
-            ) : (
-              <EmptyContent description='No hay datos de género disponibles' />
-            )}
-          </div>
+          {hospitalStats.patientsCountByGender.length > 0 ? (
+            <PieChart style={{ maxWidth: '220px' }} data={PieChartData} />
+          ) : (
+            <EmptyContent description='No hay datos de género disponibles' />
+          )}
         </CardBody>
       </Card>
       {graphList.map((item, index) => (
-        <Card className='w-full md:w-1/3 min-h-96' key={index}>
+        <Card className='w-full md:w-1/3 min-h-96 md:min-h-max' key={index} shadow='none'>
           <CardHeader>
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>

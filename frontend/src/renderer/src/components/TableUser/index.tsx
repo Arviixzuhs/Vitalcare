@@ -112,6 +112,7 @@ export const AppTable = ({
       <Table
         aria-label='Example table with custom cells, pagination and sorting'
         isCompact
+        shadow='none'
         isHeaderSticky
         className='h-full overflow-hidden'
         classNames={{

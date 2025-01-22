@@ -4,7 +4,7 @@ import { NavbarUserOptions } from './NavbarUserOptions'
 
 export const NavbarMain = () => {
   return (
-    <nav className='w-full flex items-center justify-between'>
+    <nav className='w-full flex items-center justify-between pr-2'>
       <GradientTitle title={'VITALCARE'} />
       <div className='flex gap-4 items-center'>
         <ChangeTheme />

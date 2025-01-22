@@ -29,13 +29,13 @@ export const PageLayout = () => {
   ]
 
   return (
-    <div className='flex items-center content-center p-4 w-full h-screen overflow-x-hidden'>
+    <div className='flex items-center content-center pt-4 pl-4 pb-4 pr-2 w-full h-screen overflow-x-hidden'>
       <main className='w-full h-full flex-col flex'>
         <NavbarMain />
         <div className='flex flex-col gap-3 w-full h-full overflow-y-auto'>
-          <div className='flex gap-4 h-full'>
+          <div className='flex gap-2 h-full'>
             <Sidebar />
-            <div className='flex w-full h-full flex-col select-none gap-4 overflow-hidden'>
+            <div className='flex w-full h-full flex-col select-none overflow-hidden'>
               <Tabs
                 aria-label='Options'
                 color='primary'
@@ -47,7 +47,9 @@ export const PageLayout = () => {
                   <Tab key={item.key} title={item.title} className='pb-0' />
                 ))}
               </Tabs>
-              <Outlet />
+              <div className='flex w-full h-full flex-col select-none gap-4 overflow-y-auto pt-2 pr-2 pl-2'>
+                <Outlet />
+              </div>
             </div>
           </div>
         </div>
