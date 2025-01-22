@@ -29,7 +29,7 @@ export const BottomContent: React.FC<BottomContentProps> = ({
   }
 
   return (
-    <div className='flex justify-between items-center'>
+    <div className='flex justify-between items-center select-none'>
       <span className='w-[30%] text-small text-default-400'>
         {selectedKeys === 'all'
           ? 'Todos están seleccionados'

@@ -37,6 +37,7 @@ export const HistoryTabs = () => {
       <Tabs
         aria-label='Dynamic tabs'
         items={tabs}
+        className='select-none'
         onSelectionChange={(tab) => dispatch(setCurrentTab(tab))}
       >
         {(item) => (

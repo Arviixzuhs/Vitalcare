@@ -4,7 +4,7 @@ import { ConsultsToDayModal } from './Modals/ConsultsToDayModal'
 
 export const Dashboard = () => {
   return (
-    <div className='flex flex-col gap-4 h-full'>
+    <div className='flex flex-col gap-4 h-full select-none'>
       <DashboardHeader />
       <GraphView />
       <ConsultsToDayModal />

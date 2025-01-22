@@ -28,7 +28,7 @@ export const MedicalConsultationCalendar = () => {
   }
 
   return (
-    <div className='hidden md:block'>
+    <div className='hidden md:block select-none'>
       <Calendar
         aria-label='Date (Controlled Focused Value)'
         onChange={(e) =>

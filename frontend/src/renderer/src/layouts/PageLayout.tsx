@@ -35,11 +35,12 @@ export const PageLayout = () => {
         <div className='flex flex-col gap-3 w-full h-full overflow-y-auto'>
           <div className='flex gap-2 h-full'>
             <Sidebar />
-            <div className='flex w-full h-full flex-col select-none overflow-hidden'>
+            <div className='flex w-full h-full flex-col overflow-hidden'>
               <Tabs
                 aria-label='Options'
                 color='primary'
                 variant='underlined'
+                className='select-none'
                 selectedKey={location.pathname}
                 onSelectionChange={(e) => handleNavigate(`${e}`)}
               >
@@ -47,7 +48,7 @@ export const PageLayout = () => {
                   <Tab key={item.key} title={item.title} className='pb-0' />
                 ))}
               </Tabs>
-              <div className='flex w-full h-full flex-col select-none gap-4 overflow-y-auto pt-2 pr-2 pl-2'>
+              <div className='flex w-full h-full flex-col gap-4 overflow-y-auto pt-2 pr-2 pl-2'>
                 <Outlet />
               </div>
             </div>

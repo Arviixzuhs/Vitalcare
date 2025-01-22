@@ -65,7 +65,7 @@ export const TopContent: React.FC<TopContentProps> = ({
 
   return (
     <>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 select-none'>
         <div className='flex flex-col gap-3 sm:flex-row sm:justify-between items-start sm:items-end'>
           <Input
             isClearable
