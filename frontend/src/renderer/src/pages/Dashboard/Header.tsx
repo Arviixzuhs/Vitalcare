@@ -45,7 +45,7 @@ export const DashboardHeader = () => {
   ]
 
   return (
-    <div className='flex gap-4'>
+    <div className='flex flex-col sm:flex-row gap-4'>
       {cards.map((item, index) => (
         <div onClick={() => item.onPress()} key={index} className='w-full cursor-pointer'>
           <Card className='w-full'>
@@ -54,7 +54,7 @@ export const DashboardHeader = () => {
                 {item.icon}
               </span>
               <div className='flex flex-col'>
-                <h3 className='font-medium'>{item.title}</h3>
+                <h3 className='font-medium text-nowrap'>{item.title}</h3>
                 <span className='text-small text-default-500'>{item.value}</span>
               </div>
             </CardBody>

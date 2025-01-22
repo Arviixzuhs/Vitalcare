@@ -28,13 +28,15 @@ export const MedicalConsultationCalendar = () => {
   }
 
   return (
-    <Calendar
-      aria-label='Date (Controlled Focused Value)'
-      onChange={(e) =>
-        dispatch(setCurrentConsultDate({ day: e.day, month: e.month, year: e.year }))
-      }
-      value={consults.currentConsultDate ? parseDate(defaultDate) : undefined}
-      isDateUnavailable={isDateUnavailable}
-    />
+    <div className='hidden md:block'>
+      <Calendar
+        aria-label='Date (Controlled Focused Value)'
+        onChange={(e) =>
+          dispatch(setCurrentConsultDate({ day: e.day, month: e.month, year: e.year }))
+        }
+        value={consults.currentConsultDate ? parseDate(defaultDate) : undefined}
+        isDateUnavailable={isDateUnavailable}
+      />
+    </div>
   )
 }

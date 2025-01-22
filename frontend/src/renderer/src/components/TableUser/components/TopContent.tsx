@@ -66,7 +66,7 @@ export const TopContent: React.FC<TopContentProps> = ({
   return (
     <>
       <div className='flex flex-col gap-4'>
-        <div className='flex justify-between gap-3 items-end'>
+        <div className='flex flex-col gap-3 sm:flex-row sm:justify-between items-start sm:items-end'>
           <Input
             isClearable
             className='w-full sm:max-w-[44%]'
@@ -76,12 +76,16 @@ export const TopContent: React.FC<TopContentProps> = ({
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <div className='flex gap-3'>
+          <div className='flex flex-col sm:flex-row gap-3 w-full sm:w-auto'>
             <FilterByDatePicker />
             {columnsData.statusOptions && (
               <Dropdown maxHeight={3}>
-                <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
+                <DropdownTrigger>
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='flat'
+                    className='w-full sm:w-auto'
+                  >
                     Filtrar
                   </Button>
                 </DropdownTrigger>
@@ -102,13 +106,13 @@ export const TopContent: React.FC<TopContentProps> = ({
               </Dropdown>
             )}
             {columnsData.columns && (
-              <Dropdown
-                classNames={{
-                  base: 'max-h-[350px] overflow-y-scroll',
-                }}
-              >
-                <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
+              <Dropdown classNames={{ base: 'max-h-[350px] overflow-y-scroll' }}>
+                <DropdownTrigger>
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='flat'
+                    className='w-full sm:w-auto'
+                  >
                     Columnas
                   </Button>
                 </DropdownTrigger>
@@ -131,12 +135,12 @@ export const TopContent: React.FC<TopContentProps> = ({
             {addItemModal}
           </div>
         </div>
-        <div className='flex justify-between items-center'>
+        <div className='hidden lg:flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2'>
           <span className='text-default-400 text-small'>{table.length} resultados en total</span>
           <label className='flex items-center text-default-400 text-small'>
             Resultados por página:
             <select
-              className='bg-transparent outline-none text-default-400 text-small'
+              className='bg-transparent outline-none text-default-400 text-small ml-1'
               onChange={onRowsPerPageChange}
             >
               <option value='5'>5</option>

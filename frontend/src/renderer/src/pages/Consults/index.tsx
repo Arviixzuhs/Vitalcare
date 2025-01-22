@@ -152,9 +152,8 @@ export const Consults = () => {
 
   return (
     <div className='flex gap-4 h-full overflow-hidden'>
-      <div>
-        <MedicalConsultationCalendar />
-      </div>
+      <MedicalConsultationCalendar />
+
       <div className='w-full flex gap-4 flex-col '>
         <div className='flex gap-3'>
           <Input
