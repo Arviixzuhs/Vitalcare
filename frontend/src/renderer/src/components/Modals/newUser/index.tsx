@@ -110,7 +110,13 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
       <Button onPress={onOpen} color='primary' endContent={<PlusIcon />}>
         {modal.buttonTitle}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        backdrop='blur'
+        placement='center'
+        onOpenChange={onOpenChange}
+        scrollBehavior='inside'
+      >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>{modal.title}</h3>

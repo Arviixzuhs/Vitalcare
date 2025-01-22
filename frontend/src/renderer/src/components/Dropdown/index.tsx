@@ -32,7 +32,13 @@ export const ActionDropdown: React.FC<ActionDropdownProps> = ({ editAction, dele
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        backdrop='blur'
+        placement='center'
+        onOpenChange={onOpenChange}
+        scrollBehavior='inside'
+      >
         <ModalContent>
           {(onClose) => (
             <>

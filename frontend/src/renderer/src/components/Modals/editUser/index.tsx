@@ -72,8 +72,9 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
         isOpen={isOpen}
         onClose={handleResetCurrentIdEdit}
         backdrop='blur'
+        placement='center'
         onOpenChange={toggleModal}
-        scrollBehavior={'inside'}
+        scrollBehavior='inside'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>

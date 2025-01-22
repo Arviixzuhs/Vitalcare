@@ -58,7 +58,13 @@ export const DropdownAction: React.FC<DropdownActionProps> = ({ dropdownItems, t
   return (
     <>
       {/* Modal de Confirmación */}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        backdrop='blur'
+        placement='center'
+        onOpenChange={onOpenChange}
+        scrollBehavior='inside'
+      >
         <ModalContent>
           {(onClose) => (
             <>

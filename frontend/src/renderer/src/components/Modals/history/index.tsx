@@ -8,11 +8,11 @@ export const PatientHistory = () => {
 
   return (
     <Modal
-      isOpen={isOpen}
-      onOpenChange={toggleModal}
       size='full'
+      isOpen={isOpen}
       backdrop='blur'
       placement='center'
+      onOpenChange={toggleModal}
     >
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1 default-text-color'>

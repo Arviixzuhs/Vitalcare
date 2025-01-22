@@ -71,7 +71,13 @@ export const CreateConsultModal = () => {
       <Button onPress={onOpen} color='primary' endContent={<PlusIcon />}>
         Crear consulta
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior='inside' backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        backdrop='blur'
+        placement='center'
+        onOpenChange={onOpenChange}
+        scrollBehavior='inside'
+      >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>Crea una nueva consulta</h3>

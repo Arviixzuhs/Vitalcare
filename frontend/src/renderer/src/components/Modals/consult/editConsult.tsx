@@ -66,10 +66,11 @@ export const EditConsultModal = () => {
   return (
     <Modal
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      scrollBehavior={'inside'}
-      backdrop='blur'
       onClose={handleResetCurrentConsultId}
+      backdrop='blur'
+      placement='center'
+      onOpenChange={onOpenChange}
+      scrollBehavior='inside'
     >
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1'>

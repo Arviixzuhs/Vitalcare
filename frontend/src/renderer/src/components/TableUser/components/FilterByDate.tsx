@@ -72,7 +72,7 @@ export const FilterByDatePicker = () => {
           />
         </Button>
       </Badge>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop='blur' placement='center'>
+      <Modal isOpen={isOpen} backdrop='blur' placement='center' onOpenChange={onOpenChange}>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1 default-text-color'>
             Filtrar por fecha
