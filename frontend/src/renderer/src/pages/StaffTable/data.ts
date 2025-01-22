@@ -10,7 +10,7 @@ export const columnsData = {
     { name: 'TELEFONO', uid: 'phone' },
     { name: 'DIRECCION', uid: 'address' },
     { name: 'AREA', uid: 'area' },
-    { name: 'Ubicación fiscal', uid: 'ubicacionFiscal' },
+    { name: 'UICACIÓN FISCAL', uid: 'ubicacionFiscal' },
     { name: 'CARGO NOMINAL', uid: 'cargoNominal' },
     { name: 'DEPENDENCIAS', uid: 'dependencias' },
     { name: 'TALLA CAMISAS', uid: 'tallaCamisas' },
@@ -147,7 +147,7 @@ export const modalInputs = {
     {
       type: 'text',
       name: 'ubicacionFiscal',
-      label: 'UBICACIÓN FISCAL',
+      label: 'Ubicación fiscal',
       maxLength: 180,
     },
   ],
