@@ -147,7 +147,7 @@ export const modalInputs = {
     {
       type: 'text',
       name: 'ubicacionFiscal',
-      label: 'Ubicación fiscal',
+      label: 'UBICACIÓN FISCAL',
       maxLength: 180,
     },
   ],
