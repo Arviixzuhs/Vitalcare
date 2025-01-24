@@ -23,14 +23,6 @@ enum Gender {
   FEMALE
 }
 
-model Room {
-  id               Int      @id @default(autoincrement())
-  piso             Int
-  patient          Patient? @relation(fields: [patientId], references: [id])
-  patientId        Int?
-  numeroHabitacion Int
-}
-
 model User {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(30)
@@ -76,23 +68,22 @@ model FileEntity {
 }
 
 model Patient {
-  id          Int           @id @default(autoincrement())
-  CI          String        @unique
-  age         Int           @default(0)
-  name        String        @db.VarChar(30)
-  Room        Room[]
+  id          Int          @id @default(autoincrement())
+  CI          String       @unique
+  age         Int          @default(0)
+  name        String       @db.VarChar(30)
   note        Note[]
-  email       String        @unique @db.VarChar(254)
-  status      Status        @default(ALIVE)
-  gender      Gender        @default(MALE)
-  avatar      String        @default("") @db.VarChar(200)
+  email       String       @unique @db.VarChar(254)
+  status      Status       @default(ALIVE)
+  gender      Gender       @default(MALE)
+  avatar      String       @default("") @db.VarChar(200)
   consult     Consult[]
-  lastName    String        @db.VarChar(30)
-  createdAt   DateTime?     @default(now())
+  lastName    String       @db.VarChar(30)
+  createdAt   DateTime?    @default(now())
   diagnostic  Diagnostic[]
-  description String        @default("") @db.VarChar(30)
-  reasonEntry String        @default("") @db.VarChar(300)
-  reasonDeath String        @default("") @db.VarChar(300)
+  description String       @default("") @db.VarChar(30)
+  reasonEntry String       @default("") @db.VarChar(300)
+  reasonDeath String       @default("") @db.VarChar(300)
 }
 
 model Consult {
