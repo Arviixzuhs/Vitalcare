@@ -95,7 +95,7 @@ export const PatientTable = () => {
     {
       key: 'profile',
       title: 'Perfil',
-      onPress: async (id) => {
+      onPress: (id) => {
         dispatch(setCurrentEditUserId(id))
         toggleViewPatientProfileModal()
       },
@@ -104,7 +104,7 @@ export const PatientTable = () => {
     {
       key: 'edit',
       title: 'Editar',
-      onPress: async (id) => {
+      onPress: (id) => {
         toggleEditItemModal()
         dispatch(setCurrentEditUserId(id))
       },
@@ -112,7 +112,7 @@ export const PatientTable = () => {
     {
       key: 'delete',
       title: 'Borrar',
-      onPress: async (id) => tableActions.delete(id),
+      onPress: (id) => tableActions.delete(id),
     },
   ]
 

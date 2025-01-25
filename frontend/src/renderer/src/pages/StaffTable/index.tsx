@@ -101,7 +101,7 @@ export const StaffTable = () => {
     {
       key: 'edit',
       title: 'Editar',
-      onPress: async (id) => {
+      onPress: (id) => {
         toggleEditItemModal()
         dispatch(setCurrentEditUserId(id))
       },
@@ -109,7 +109,7 @@ export const StaffTable = () => {
     {
       key: 'delete',
       title: 'Borrar',
-      onPress: async (id) => tableActions.delete(id),
+      onPress: (id) => tableActions.delete(id),
     },
   ]
 
