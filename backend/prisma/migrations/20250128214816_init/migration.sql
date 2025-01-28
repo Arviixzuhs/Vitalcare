@@ -1,14 +1,4 @@
 -- CreateTable
-CREATE TABLE `Room` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `piso` INTEGER NOT NULL,
-    `patientId` INTEGER NULL,
-    `numeroHabitacion` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(30) NOT NULL,
@@ -69,6 +59,7 @@ CREATE TABLE `Patient` (
     `CI` VARCHAR(191) NOT NULL,
     `age` INTEGER NOT NULL DEFAULT 0,
     `name` VARCHAR(30) NOT NULL,
+    `phone` VARCHAR(30) NULL DEFAULT '',
     `email` VARCHAR(254) NOT NULL,
     `status` ENUM('ALIVE', 'DEAD') NOT NULL DEFAULT 'ALIVE',
     `gender` ENUM('MALE', 'FEMALE') NOT NULL DEFAULT 'MALE',
@@ -122,9 +113,6 @@ CREATE TABLE `ClinicalStaff` (
     UNIQUE INDEX `ClinicalStaff_CI_key`(`CI`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Room` ADD CONSTRAINT `Room_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `Patient`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Note` ADD CONSTRAINT `Note_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `Patient`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

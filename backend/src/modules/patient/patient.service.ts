@@ -22,6 +22,7 @@ export class PatientService {
         CI: data.CI,
         age: data.age,
         name: data.name,
+        phone: data.phone,
         email: data.email,
         status: data.status,
         gender: data.gender,

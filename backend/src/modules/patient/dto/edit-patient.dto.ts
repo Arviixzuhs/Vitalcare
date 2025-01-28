@@ -20,6 +20,12 @@ export class EditPatientDto {
   @IsOptional()
   name?: string
 
+  @ApiProperty({ description: 'Teléfono del paciente', example: '+58 412-8553212' })
+  @IsString()
+  @MaxLength(30)
+  @IsOptional()
+  phone?: string
+
   @ApiProperty({ description: 'Correo electrónico del paciente', example: 'jane@example.com' })
   @IsEmail()
   @IsOptional()

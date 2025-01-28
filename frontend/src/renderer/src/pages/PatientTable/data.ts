@@ -44,6 +44,12 @@ export const modalInputs = {
       isRequired: true,
     },
     {
+      type: 'phone',
+      name: 'phone',
+      label: 'Teléfono',
+      isRequired: true,
+    },
+    {
       type: 'number',
       name: 'CI',
       label: 'Cédula',

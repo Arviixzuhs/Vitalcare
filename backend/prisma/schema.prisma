@@ -73,6 +73,7 @@ model Patient {
   age         Int          @default(0)
   name        String       @db.VarChar(30)
   note        Note[]
+  phone       String?      @default("") @db.VarChar(30)
   email       String       @unique @db.VarChar(254)
   status      Status       @default(ALIVE)
   gender      Gender       @default(MALE)
