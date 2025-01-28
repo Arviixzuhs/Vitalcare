@@ -51,7 +51,7 @@ export class AuthService {
     return token
   }
 
-  loadUserByToken(token: string): Promise<User> {
+  async loadUserByToken(token: string): Promise<User> {
     let id = -1
     let err = false
 
@@ -64,11 +64,17 @@ export class AuthService {
     })
 
     if (id != -1 && !err) {
-      return this.prisma.user.findUnique({
+      const user = await this.prisma.user.findUnique({
         where: {
           id,
         },
       })
+
+      if (!user) {
+        throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND)
+      }
+
+      return user
     } else {
       throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED)
     }
