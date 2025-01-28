@@ -4,6 +4,7 @@ export const columnsData = {
     { name: 'APELLIDO', uid: 'lastName' },
     { name: 'ID', uid: 'id' },
     { name: 'CEDULA', uid: 'CI' },
+    { name: 'TELÉFONO', uid: 'phone' },
     { name: 'GÉNERO', uid: 'gender' },
     { name: 'EDAD', uid: 'age', sortable: true },
     { name: 'EMAIL', uid: 'email' },
@@ -16,7 +17,7 @@ export const columnsData = {
     { name: 'Masculino', uid: 'MALE' },
     { name: 'Femenino', uid: 'FEMALE' },
   ],
-  InitialVisibleColumns: ['name', 'lastName', 'CI', 'age', 'gender', 'status', 'actions'],
+  InitialVisibleColumns: ['name', 'lastName', 'CI', 'phone', 'age', 'gender', 'status', 'actions'],
 }
 
 export const modalInputs = {
