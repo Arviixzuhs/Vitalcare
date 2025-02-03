@@ -12,6 +12,7 @@ export class PatientService {
     const patient = await this.prisma.patient.findUnique({
       where: {
         CI: data.CI,
+        email: data.email,
       },
     })
 
@@ -135,38 +136,47 @@ export class PatientService {
       }
     }
 
-    const searchTerms = searchValue.trim().toLowerCase().split(' ')
+    const searchTerms = searchValue.trim().toLowerCase().split(/\s+/)
 
     return this.prisma.patient.findMany({
       where: {
         AND: [
           {
             OR: [
-              ...searchTerms.map((term) => ({
-                name: {
-                  contains: term,
-                },
-              })),
-              ...searchTerms.map((term) => ({
-                lastName: {
-                  contains: term,
-                },
-              })),
-              {
-                CI: {
-                  contains: searchValue.toLowerCase(),
-                },
-              },
+              // Si hay más de una palabra, asegurarse de que todos los términos estén en nombre o apellido
+              searchTerms.length > 1
+                ? {
+                    AND: searchTerms.map((term) => ({
+                      OR: [{ name: { contains: term } }, { lastName: { contains: term } }],
+                    })),
+                  }
+                : {},
+
+              // Coincidencia parcial si solo hay un término
+              searchTerms.length === 1
+                ? {
+                    OR: [
+                      { name: { contains: searchValue } },
+                      { lastName: { contains: searchValue } },
+                    ],
+                  }
+                : {},
+
+              // Búsqueda exacta por CI
+              { CI: searchValue },
+
+              // Búsqueda exacta por correo
+              { email: searchValue },
+
+              // Diagnóstico más exacto
               {
                 diagnostic: {
                   some: {
-                    condition: {
-                      contains: searchValue.toLowerCase(),
-                    },
+                    condition: { contains: searchValue },
                   },
                 },
               },
-            ],
+            ].filter((c) => Object.keys(c).length > 0),
           },
           dateFilter,
         ].filter((condition) => Object.keys(condition).length > 0),
