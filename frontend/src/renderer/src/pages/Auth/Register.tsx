@@ -3,15 +3,17 @@ import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import { Input } from '@nextui-org/react'
 import { useNavigate } from 'react-router-dom'
-import { authRegister } from '@renderer/api/Requests'
+import { reqAuthRegister } from '@renderer/api/Requests'
 import BackgroundImage from '../../assets/img/background.gif'
 import './Auth.scss'
 
 export const Register = () => {
   const navigate = useNavigate()
   const [data, setData] = React.useState({
+    name: '',
     email: '',
     password: '',
+    lastName: '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +26,7 @@ export const Register = () => {
   const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    authRegister(data)
+    reqAuthRegister(data)
       .then(() => {
         navigate('/login')
       })

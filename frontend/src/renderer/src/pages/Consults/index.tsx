@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BiCommentCheck, BiCommentX } from 'react-icons/bi'
 import { MedicalConsultationCalendar } from '@renderer/components/Calendar'
 import { newParseDateWithTime, newParseDate } from '@renderer/utils/newParseDate'
-import { reqDeleteConsult, reqSearchConsultByPatient } from '@renderer/api/Requests'
+import { reqDeleteConsult, reqSearchConsult } from '@renderer/api/Requests'
 import {
   setConsults,
   deleteConsult,
@@ -27,19 +27,37 @@ import {
   setCurrentConsultDate,
 } from '@renderer/features/consultSlice'
 import { EmptyContent } from '@renderer/components/TableUser/components/EmptyContent'
+import { FilterByDatePicker } from '@renderer/components/TableUser/components/FilterByDate'
 
 export const Consults = () => {
   const dispatch = useDispatch()
   const consult = useSelector((state: RootState) => state.consult)
+  const table = useSelector((state: RootState) => state.users)
   const currentData = consult?.currentConsultDate
   const [searchValue, setSearchValue] = React.useState('')
+
+  React.useEffect(() => {
+    const searchConsults = async () => {
+      const response = await reqSearchConsult({
+        endDate: table.dateFilter.end,
+        startDate: table.dateFilter.start,
+      })
+      dispatch(setCurrentConsultId(-1))
+      dispatch(setConsults(response.data))
+    }
+    searchConsults()
+  }, [table.dateFilter])
 
   React.useEffect(() => {
     const searchConsults = async () => {
       if (searchValue.trim() === '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchConsultByPatient(searchValue)
+      const response = await reqSearchConsult({
+        endDate: table.dateFilter.end,
+        startDate: table.dateFilter.start,
+        searchValue,
+      })
       dispatch(setCurrentConsultId(-1))
       dispatch(setConsults(response.data))
       if (response.data.length > 0) {
@@ -54,7 +72,7 @@ export const Consults = () => {
       }
     }
     searchConsults()
-  }, [searchValue])
+  }, [searchValue, table.dateFilter])
 
   const filteredData = consult.data.filter((consult) => {
     const parsedConsultDate = newParseDate({ date: consult.date })
@@ -107,9 +125,9 @@ export const Consults = () => {
 
       case 'date':
         return (
-          <td>
+          <>
             {parsedDate.date} a las {parsedDate.time}
-          </td>
+          </>
         )
 
       case 'reason':
@@ -151,16 +169,17 @@ export const Consults = () => {
   }
 
   return (
-    <div className='flex gap-4 h-full overflow-hidden'>
+    <div className='flex gap-4 h-full'>
       <MedicalConsultationCalendar />
       <div className='w-full flex gap-4 flex-col '>
         <div className='flex gap-3 select-none'>
           <Input
             isClearable
             className='w-full'
-            placeholder='Buscar por paciente...'
+            placeholder='Buscar por paciente o doctor...'
             onChange={handleChange}
           />
+          <FilterByDatePicker />
           <CreateConsultModal />
         </div>
         <Table

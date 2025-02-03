@@ -1,4 +1,5 @@
 import { DropdownItemInteface } from './ActionDropdown'
+import { TableItemModel } from '@renderer/features/usersSlice'
 
 export interface ColumnData {
   uid: string
@@ -13,16 +14,16 @@ export interface ColumnsData {
 }
 
 export interface TableActions {
-  edit: (data: unknown, currentUserEdit: unknown) => void
+  edit: (data: Partial<TableItemModel>) => void
   load: () => void
   delete: (id: number) => void
-  create: (data: unknown) => void
+  create: (data: Partial<TableItemModel>) => void
   search: (value: string) => void
 }
 
 export interface ModalProps {
   title: string
-  action: (...data: unknown[]) => void
+  action: TableActions['create'] | TableActions['edit']
   inputs?: FormField[]
   textArea?: TextAreaField[]
   buttonTitle?: string

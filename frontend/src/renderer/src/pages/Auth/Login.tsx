@@ -2,7 +2,7 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { Input } from '@nextui-org/react'
 import { NavLink } from 'react-router-dom'
-import { authLogin } from '@renderer/api/Requests'
+import { reqAuthLogin } from '@renderer/api/Requests'
 import BackgroundImage from '../../assets/img/background.gif'
 import './Auth.scss'
 
@@ -24,7 +24,7 @@ export const Login = () => {
 
     const token = localStorage.getItem('token')
 
-    authLogin(data)
+    reqAuthLogin(data)
       .then((response) => {
         const tokenRes = response.data
 

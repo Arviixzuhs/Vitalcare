@@ -2,6 +2,7 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/TableUser'
 import { RootState } from '@renderer/store'
+import { TableActions } from '@renderer/components/TableUser/interfaces/TableProps'
 import { CreateNewUserModal } from '@renderer/components/Modals/newUser'
 import { EditUserProfileModal } from '@renderer/components/Modals/editUser'
 import { modalTypes, useModal } from '@renderer/hooks/useModal'
@@ -22,6 +23,8 @@ export const StaffTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: RootState) => state.users)
   const [_, toggleEditItemModal] = useModal(modalTypes.editItemTableModal)
+  const currentUserIdEdit = useSelector((state: RootState) => state.users.currentUserIdEdit)
+  const currentUserEdit = table.data.find((item) => item.id == currentUserIdEdit)
 
   React.useEffect(() => {
     const handleLoadInfo = async () => {
@@ -31,7 +34,7 @@ export const StaffTable = () => {
     handleLoadInfo()
   }, [table.dateFilter])
 
-  const tableActions = {
+  const tableActions: TableActions = {
     delete: (id: number) => {
       dispatch(deleteUser(id))
       reqDeleteStaff(id)
@@ -39,20 +42,22 @@ export const StaffTable = () => {
           toast.success('Personal eliminado correctamente')
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(error.response.data.message || error.response.data.errors[0]?.messages[0])
         })
     },
     create: (data) => {
-      reqAddStaff({ ...data, age: parseInt(data.age) })
+      reqAddStaff({ ...data, age: Number(data.age) })
         .then((res) => {
           dispatch(addUser(res.data))
           toast.success('Personal guardado correctamente')
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(
+            error.response.data.message || error.response.data.errors[0]?.messages[0].messages[0],
+          )
         })
     },
-    edit: (data, currentUserEdit) => {
+    edit: (data) => {
       dispatch(editUser({ data, id: currentUserEdit?.id }))
       reqEditStaff({
         data,
@@ -62,10 +67,12 @@ export const StaffTable = () => {
           toast.success('Personal editado correctamente')
         })
         .catch((error) => {
-          toast.error(error.response.data.message)
+          toast.error(
+            error.response.data.message || error.response.data.errors[0]?.messages[0].messages[0],
+          )
         })
     },
-    search: (value: string) => {
+    search: (value) => {
       if (value.length === 0) {
         reqLoadAllStaff()
           .then((res) => dispatch(setUsers(res.data)))

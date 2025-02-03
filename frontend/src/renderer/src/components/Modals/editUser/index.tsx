@@ -61,7 +61,7 @@ export const EditUserProfileModal = ({ modal }: { modal: ModalProps }) => {
 
     const dataToSend = avatar ? { ...data, avatar } : { ...data }
 
-    modal.action(dataToSend, currentUserEdit)
+    modal.action(dataToSend)
     handleResetCurrentIdEdit()
     toggleModal()
   }

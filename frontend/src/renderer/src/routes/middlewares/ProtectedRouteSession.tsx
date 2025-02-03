@@ -4,7 +4,7 @@ import { setMyUser } from '@renderer/features/userSlice'
 import { useDispatch } from 'react-redux'
 import { setHospitalStats } from '@renderer/features/hospitalSlice'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { authLoadProfileByToken, reqGetHospitalStats } from '@renderer/api/Requests'
+import { reqAuthLoadProfileByToken, reqGetHospitalStats } from '@renderer/api/Requests'
 
 const ProtectedRouteSession = () => {
   const dispatch = useDispatch()
@@ -15,7 +15,7 @@ const ProtectedRouteSession = () => {
   React.useEffect(() => {
     const loadProfile = () => {
       if (token) {
-        authLoadProfileByToken(token)
+        reqAuthLoadProfileByToken(token)
           .then((response) => {
             dispatch(setMyUser(response.data))
           })

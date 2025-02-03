@@ -1,5 +1,5 @@
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class ConsultDto {
   @ApiPropertyOptional({ description: 'Fecha de la consulta', example: '2024-11-23T10:00:00.000Z' })

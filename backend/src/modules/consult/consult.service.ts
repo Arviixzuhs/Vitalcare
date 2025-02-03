@@ -1,6 +1,8 @@
 import { ConsultDto } from './dto/consult.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { SearchConsultDto } from './dto/search-consult.dto'
 import { Consult, PrismaPromise } from '@prisma/client'
+import { FindAllConsultByMonthAndYearDto } from './dto/find-all-consults-by-month-and-year.dto'
 import { HttpStatus, Injectable, HttpException, BadRequestException } from '@nestjs/common'
 
 @Injectable()
@@ -128,46 +130,19 @@ export class ConsultService {
     })
   }
 
-  async updateConsult(id: number, data: ConsultDto): Promise<Consult> {
-    const consult = await this.getConsultById(id)
-    if (!consult) throw new HttpException('Consulta médica no encontrada.', HttpStatus.NOT_FOUND)
+  findAllConsultsByMonthAndYear(query: FindAllConsultByMonthAndYearDto): Promise<Consult[]> {
+    const month = Number(query.month)
+    const year = Number(query.year)
 
-    return this.prisma.consult.update({
-      where: {
-        id,
-      },
-      data,
-    })
-  }
-
-  async searchConsultByPatient(searchValue: string): Promise<Consult[]> {
-    const searchTerms = searchValue.trim().toLowerCase().split(' ')
+    const startDate = new Date(year, month - 1, 1) // Primer día del mes
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999) // Último día del mes
 
     return this.prisma.consult.findMany({
       where: {
-        OR: [
-          ...searchTerms.map((term) => ({
-            patient: {
-              name: {
-                contains: term,
-              },
-            },
-          })),
-          ...searchTerms.map((term) => ({
-            patient: {
-              lastName: {
-                contains: term,
-              },
-            },
-          })),
-          {
-            patient: {
-              CI: {
-                contains: searchValue.toLowerCase(),
-              },
-            },
-          },
-        ],
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
       },
       include: {
         patient: {
@@ -180,6 +155,111 @@ export class ConsultService {
           select: {
             name: true,
             lastName: true,
+          },
+        },
+      },
+    })
+  }
+
+  async updateConsult(id: number, data: ConsultDto): Promise<Consult> {
+    const consult = await this.getConsultById(id)
+    if (!consult) throw new HttpException('Consulta médica no encontrada.', HttpStatus.NOT_FOUND)
+
+    return this.prisma.consult.update({
+      where: {
+        id,
+      },
+      data,
+    })
+  }
+
+  async searchConsultByPatient(query: SearchConsultDto): Promise<Consult[]> {
+    const { searchValue, startDate, endDate } = query
+
+    const searchTerms = searchValue ? searchValue.trim().toLowerCase().split(' ') : []
+
+    // Construcción de filtros de búsqueda por paciente y doctor
+    const searchFilters =
+      searchTerms.length > 0
+        ? [
+            {
+              OR: [
+                // Búsqueda por nombre del paciente
+                ...searchTerms.map((term) => ({
+                  patient: {
+                    name: {
+                      contains: term,
+                    },
+                  },
+                })),
+                // Búsqueda por apellido del paciente
+                ...searchTerms.map((term) => ({
+                  patient: {
+                    lastName: {
+                      contains: term,
+                    },
+                  },
+                })),
+                // Búsqueda por CI del paciente
+                {
+                  patient: {
+                    CI: {
+                      contains: searchValue?.toLowerCase(),
+                    },
+                  },
+                },
+                // Búsqueda por nombre del doctor
+                ...searchTerms.map((term) => ({
+                  doctor: {
+                    name: {
+                      contains: term,
+                    },
+                  },
+                })),
+                // Búsqueda por apellido del doctor
+                ...searchTerms.map((term) => ({
+                  doctor: {
+                    lastName: {
+                      contains: term,
+                    },
+                  },
+                })),
+                // Búsqueda por CI del doctor
+                {
+                  doctor: {
+                    CI: {
+                      contains: searchValue?.toLowerCase(),
+                    },
+                  },
+                },
+              ],
+            },
+          ]
+        : []
+
+    // Construcción de filtros por fecha de la consulta
+    const dateFilters = [
+      ...(startDate ? [{ date: { gte: new Date(startDate) } }] : []),
+      ...(endDate ? [{ date: { lte: new Date(endDate) } }] : []),
+    ]
+
+    return this.prisma.consult.findMany({
+      where: {
+        AND: [...searchFilters, ...dateFilters],
+      },
+      include: {
+        patient: {
+          select: {
+            name: true,
+            lastName: true,
+            CI: true,
+          },
+        },
+        doctor: {
+          select: {
+            name: true,
+            lastName: true,
+            CI: true,
           },
         },
       },

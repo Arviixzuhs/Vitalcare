@@ -84,7 +84,7 @@ export const modalInputs = {
       isRequired: true,
     },
     {
-      type: 'phone',
+      type: 'tel',
       name: 'phone',
       label: 'Teléfono',
       maxLength: 30,

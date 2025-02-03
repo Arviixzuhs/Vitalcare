@@ -42,7 +42,7 @@ export const EditItemModal = ({ modal }: { modal: ModalProps }) => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentEditItemId(-1))
 
   const onSubmit = async () => {
-    modal.action(data, currentItemEdit)
+    modal.action(data)
     handleResetCurrentIdEdit()
     toggleModal()
   }

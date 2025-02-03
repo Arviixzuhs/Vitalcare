@@ -1,8 +1,10 @@
 import { Consult } from '@prisma/client'
 import { ConsultDto } from './dto/consult.dto'
 import { ConsultService } from './consult.service'
+import { SearchConsultDto } from './dto/search-consult.dto'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { FindAllConsultByMonthAndYearDto } from './dto/find-all-consults-by-month-and-year.dto'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 
 @Controller('/consult')
 @ApiTags('Consult')
@@ -13,6 +15,11 @@ export class ConsultController {
   @Get('/find-all-to-day')
   getAllConsultsToDay(): Promise<Consult[]> {
     return this.consultService.findAllConsultsToDay()
+  }
+
+  @Get('/find-all-by-month-and-year')
+  findAllConsultsByMonthAndYear(@Query() query: FindAllConsultByMonthAndYearDto) {
+    return this.consultService.findAllConsultsByMonthAndYear(query)
   }
 
   @Post('/create')
@@ -40,9 +47,9 @@ export class ConsultController {
     return this.consultService.getAllConsultsByPatientId(id)
   }
 
-  @Get('/search-by-patient/:searchValue')
-  serchConsultByPatientCI(@Param('searchValue') searchValue: string): Promise<Consult[]> {
-    return this.consultService.searchConsultByPatient(searchValue)
+  @Get('/search/')
+  serchConsultByPatientCI(@Query() query: SearchConsultDto): Promise<Consult[]> {
+    return this.consultService.searchConsultByPatient(query)
   }
 
   @Put('/update/:id')

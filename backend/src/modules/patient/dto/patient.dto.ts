@@ -1,6 +1,14 @@
 import { Gender, Status } from '@prisma/client'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsEmail, IsEnum, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
+import {
+  IsEmail,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  MaxLength,
+} from 'class-validator'
 
 export class PatientDto {
   @ApiProperty({ description: 'CI del paciente', example: '123456789' })
@@ -18,8 +26,8 @@ export class PatientDto {
   name: string
 
   @ApiProperty({ description: 'Teléfono del paciente', example: '+58 412-8553212' })
-  @IsString()
   @MaxLength(30)
+  @IsPhoneNumber('VE', { message: 'Número de teléfono inválido' })
   phone: string
 
   @ApiProperty({ description: 'Correo electrónico del paciente', example: 'jane@example.com' })
