@@ -153,7 +153,7 @@ export const Consults = () => {
 
               reqDeleteConsult(item.id)
                 .then(() => {
-                  toast.success('Consulta eliminada correctamente.')
+                  toast.success('Consulta eliminada correctamente')
                 })
                 .catch((error) => {
                   if (error.response?.data?.message) {

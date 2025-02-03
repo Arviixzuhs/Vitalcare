@@ -54,7 +54,7 @@ export const EditConsultModal = () => {
 
     reqUpdateConsult(consultData)
       .then(() => {
-        toast.success('Consulta editada correctamente.')
+        toast.success('Consulta editada correctamente')
         onClose()
         handleResetCurrentConsultId()
       })

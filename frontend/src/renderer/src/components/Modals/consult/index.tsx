@@ -57,7 +57,7 @@ export const CreateConsultModal = () => {
     reqCreateConsult(data)
       .then((res) => {
         dispatch(addConsult(res.data))
-        toast.success('Consulta creada correctamente.')
+        toast.success('Consulta creada correctamente')
         onClose()
         setIsSubmitted(false)
       })
