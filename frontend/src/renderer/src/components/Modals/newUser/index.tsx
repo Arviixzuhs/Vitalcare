@@ -40,6 +40,26 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     }
   }
 
+  React.useEffect(() => {
+    resetStates()
+  }, [isOpen])
+
+  React.useEffect(() => {
+    const requiredInputs = [
+      ...(modal.inputs?.filter((input) => input.isRequired) || []),
+      ...(modal.textArea?.filter((textarea) => textarea.isRequired) || []),
+    ]
+
+    const missing = requiredInputs.reduce((acc, input) => {
+      if (!(input.name in data) || data[input.name]?.trim() === '') {
+        acc.push(input.name)
+      }
+      return acc
+    }, [] as string[])
+
+    setMissingFields(missing)
+  }, [data, modal.inputs, modal.textArea])
+
   const validateEmail = (name: string, value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
@@ -48,25 +68,6 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
       setInvalidEmails((prev) => prev.filter((email) => email !== name))
     }
   }
-
-  React.useEffect(() => {
-    setData({})
-    setIsSubmitted(false)
-    setMissingFields([])
-    setInvalidEmails([])
-  }, [])
-
-  React.useEffect(() => {
-    const requiredInputs = modal.inputs?.filter((input) => input.isRequired)
-    const missing = requiredInputs?.reduce((acc, input) => {
-      if (!(input.name in data) || data[input.name]?.trim() === '') {
-        acc.push(input.name)
-      }
-      return acc
-    }, [] as string[])
-
-    setMissingFields(missing || [])
-  }, [data, modal.inputs])
 
   const onSubmit = async () => {
     let avatar = null
@@ -87,8 +88,15 @@ export const CreateNewUserModal = ({ modal }: { modal: ModalProps }) => {
     const dataToSend = avatar ? { ...data, avatar } : { ...data }
 
     modal.action(dataToSend)
-    setIsSubmitted(true)
+    resetStates()
     onClose()
+  }
+
+  const resetStates = () => {
+    setData({})
+    setIsSubmitted(false)
+    setMissingFields([])
+    setInvalidEmails([])
   }
 
   const isInvalid = (inputName: string, inputType: string): boolean =>
