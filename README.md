@@ -1,6 +1,8 @@
-# 🌙 Vitalcare
-
 <div align="center">
+
+<h1>
+  🏥 Vitalcare
+</h1>
 
 [![GitHub stars](https://img.shields.io/github/stars/Arviixzuhs/Vitalcare?style=for-the-badge)](https://github.com/Arviixzuhs/Vitalcare/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Arviixzuhs/Vitalcare?style=for-the-badge)](https://github.com/Arviixzuhs/Vitalcare/network)
